@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "tar -xzf uniq-source-full-quality.tgz && npm ci --ignore-scripts && ./node_modules/.bin/next build"
+    "build": "tar -xzf uniq-source-full-quality.tgz && npm ci --include=dev --ignore-scripts && ./node_modules/.bin/next build"
   },
   "engines": {
     "node": ">=20"
