@@ -35,8 +35,10 @@ npm run deploy:vinext
 ```
 
 Check `wrangler whoami` before a remote deployment. Wrangler's login is
-separate from the Cloudflare plugin connection. The new Worker uses the
-`flooruniq.workers.dev` account subdomain; no custom domain is configured.
+separate from the Cloudflare plugin connection. The deployed site is
+<https://uniq-floors.flooruniq.workers.dev>. No custom domain is configured.
+For this checkout, the named Wrangler profile `flooruniq` is active; verify
+it shows `flooruniq@gmail.com` before redeploying.
 
 The original Vercel source archive remains available in Git history for
 rollback. There are currently no server-side environment variables or
