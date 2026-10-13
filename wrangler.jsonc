@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "uniq-floors",
+  "account_id": "85c8ed649a0d046be18765c5ac7f3488",
+  "workers_dev": true,
+  "preview_urls": true,
+  "compatibility_date": "2026-10-12",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "routes": [
+    { "pattern": "leafcreationism.online", "custom_domain": true },
+    { "pattern": "www.leafcreationism.online", "custom_domain": true }
+  ],
+  "main": "vinext/server/fetch-handler",
+  "assets": {
+    "directory": "dist/client",
+    "not_found_handling": "none",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true,
+    "logs": { "head_sampling_rate": 1 },
+    "traces": { "enabled": true, "head_sampling_rate": 0.01 }
+  }
+}

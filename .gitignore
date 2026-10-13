@@ -1,0 +1,25 @@
+# Dependencies and generated builds
+node_modules/
+.next/
+out/
+tsconfig.tsbuildinfo
+
+# Local tools and duplicate working copies
+.local-tools/
+legacy-static/
+outputs/
+work/
+
+# Machine-specific deployment state
+.vercel/
+deploy-production.command
+
+# Environment and local system files
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+/dist/
+.vinext/
+.wrangler/
