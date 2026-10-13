@@ -36,7 +36,10 @@ npm run deploy:vinext
 
 Check `wrangler whoami` before a remote deployment. Wrangler's login is
 separate from the Cloudflare plugin connection. The deployed site is
-<https://uniq-floors.flooruniq.workers.dev>. No custom domain is configured.
+<https://uniq-floors.flooruniq.workers.dev>. The temporary test domain
+<https://leafcreationism.online> (including `www`) is configured as a Worker
+custom domain. Hostinger delegates its nameservers to Cloudflare. Replace these
+routes when the client provides the final domain.
 For this checkout, the named Wrangler profile `flooruniq` is active; verify
 it shows `flooruniq@gmail.com` before redeploying.
 

@@ -6,6 +6,10 @@
   "compatibility_flags": [
     "nodejs_compat"
   ],
+  "routes": [
+    { "pattern": "leafcreationism.online", "custom_domain": true },
+    { "pattern": "www.leafcreationism.online", "custom_domain": true }
+  ],
   "main": "vinext/server/fetch-handler",
   "assets": {
     "directory": "dist/client",
