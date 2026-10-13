@@ -421,7 +421,7 @@ export function Storefront(props: StorefrontProps) {
       <div
         className={`page-shell ${props.view === "home" ? "home-shell" : "inner-shell"}`}
       >
-        <CommerceHeader headerScrolled={headerScrolled} />
+        {props.view !== "product" ? <CommerceHeader headerScrolled={headerScrolled} /> : null}
 
         {/* Ghost cart: flies from header to nav */}
         {ghostCart && (
@@ -439,14 +439,14 @@ export function Storefront(props: StorefrontProps) {
           </div>
         )}
 
-        <SiteNav
+        {props.view !== "product" ? <SiteNav
           pathname={pathname}
           samplesCount={basketCount}
           cartLaunched={cartLaunched}
           navCartReceiving={navCartReceiving}
           navCartRef={navCartRef}
           onOpenSamples={() => setDrawerOpen(true)}
-        />
+        /> : null}
 
         <main id="app" tabIndex={-1}>
           {props.view === "home" ? <HomeView addSample={addSample} /> : null}
@@ -2193,9 +2193,10 @@ function ProductView({
         <img src={product.roomImage} alt={`${product.name} fitted in a room`} />
         <div className="product-hero-shade" />
         <div className="product-hero-inner">
-          <nav className="product-hero-crumbs" aria-label="Breadcrumb">
-            <Link href="/">Home</Link><span>/</span><Link href={`/category/${product.category}`}>{category.title}</Link>
-          </nav>
+          <button className="product-back-button" type="button" onClick={() => {
+            if (document.referrer && new URL(document.referrer).origin === window.location.origin) window.history.back();
+            else window.location.assign(`/category/${product.category}`);
+          }}><span aria-hidden="true">←</span> Back</button>
           <div className="product-hero-copy">
             <span className="product-hero-eyebrow">UNIQ FLOORS <i /> {category.title}</span>
             <h1 id="product-hero-title">{product.name}</h1>
@@ -2226,11 +2227,6 @@ function ProductView({
       </nav>
 
       <section className="section product-section" id="product-overview">
-        <div className="product-section-intro">
-          <p className="eyebrow">The floor, up close</p>
-          <h2>See every detail. Feel the difference.</h2>
-          <p>Explore the board, its texture and the way it changes a room.</p>
-        </div>
         <nav className="product-breadcrumb" aria-label="Breadcrumb">
           <Link href="/">Home</Link><span>/</span>
           <Link href={`/category/${product.category}`}>{category.title}</Link><span>/</span>
@@ -2243,6 +2239,11 @@ function ProductView({
               onTouchStart={handleGalleryTouchStart}
               onTouchEnd={handleGalleryTouchEnd}
             >
+              <div className="product-gallery-backdrop" style={{ backgroundImage: `url(${activeGallery.image})` }} aria-hidden="true" />
+              <div className="product-gallery-heading">
+                <h2>Natural character. Made for living.</h2>
+                <p><span aria-label={`${product.rating} out of 5 stars`}>★★★★★</span> <a href="#reviews">{product.rating}</a></p>
+              </div>
               <img key={activeGallery.id} src={activeGallery.image} alt={activeGallery.alt} />
               <div className="gallery-label"><span>{String(activeGalleryItem + 1).padStart(2, "0")}</span> {activeGallery.label}</div>
               <div className="gallery-caption">
