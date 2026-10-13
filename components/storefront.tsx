@@ -2186,6 +2186,9 @@ function ProductView({
 
   return (
     <div className="product-experience">
+      <div className="product-announcement" aria-label="Shopping benefits">
+        <span>Free samples</span><span>30-day returns on unopened packs</span><span>Expert flooring advice</span><span>Secure checkout</span>
+      </div>
       <section className="product-cinematic-hero" aria-labelledby="product-hero-title">
         <img src={product.roomImage} alt={`${product.name} fitted in a room`} />
         <div className="product-hero-shade" />
@@ -2196,17 +2199,17 @@ function ProductView({
           <div className="product-hero-copy">
             <span className="product-hero-eyebrow">UNIQ FLOORS <i /> {category.title}</span>
             <h1 id="product-hero-title">{product.name}</h1>
-            <p>{product.details}</p>
+            <p>{product.finish} finish <span aria-hidden="true">·</span> {product.colour} colour</p>
             <div className="product-hero-actions">
-              <a href="#product-buy" className="product-hero-primary">Explore this floor <span aria-hidden="true">↗</span></a>
-              <a href="#product-details" className="product-hero-secondary">Discover the details <span aria-hidden="true">↓</span></a>
+              <a href="#product-buy" className="product-hero-primary">Buy now <span aria-hidden="true">↗</span></a>
             </div>
+            <p className="product-hero-price">From <del>{money(product.old)}</del> <strong>{money(product.price)}</strong> per m²</p>
           </div>
           <div className="product-hero-bottom">
             <span><PremiumIcon name="sample" /> Free samples</span>
             <span><PremiumIcon name="return" /> 30-day returns</span>
             <span><PremiumIcon name="expert" /> Flooring experts</span>
-            <strong>From {money(product.price)} <small>/ m²</small></strong>
+            <strong>Free sample available <span aria-hidden="true">↗</span></strong>
           </div>
         </div>
       </section>
@@ -2219,14 +2222,14 @@ function ProductView({
           <a href="#product-specifications">Specifications</a>
           <a href="#reviews">Reviews</a>
         </div>
-        <a className="product-section-nav-buy" href="#product-buy">Plan your floor <span aria-hidden="true">↗</span></a>
+        <a className="product-section-nav-buy" href="#product-buy">Buy now <span aria-hidden="true">↗</span></a>
       </nav>
 
       <section className="section product-section" id="product-overview">
         <div className="product-section-intro">
           <p className="eyebrow">The floor, up close</p>
-          <h2>Made for a room that feels like yours.</h2>
-          <p>Explore the finish, compare it in a real space, then work out exactly what your room needs.</p>
+          <h2>See every detail. Feel the difference.</h2>
+          <p>Explore the board, its texture and the way it changes a room.</p>
         </div>
         <nav className="product-breadcrumb" aria-label="Breadcrumb">
           <Link href="/">Home</Link><span>/</span>
