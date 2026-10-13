@@ -4,6 +4,7 @@ import { SiteTransitionLoader } from "../components/site-loader";
 import "./globals.css";
 import "./home-refinements.css";
 import "./live-room.css";
+import "./product-redesign.css";
 
 const manrope = Manrope({
   subsets: ["latin"],

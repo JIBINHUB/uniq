@@ -2185,8 +2185,49 @@ function ProductView({
     .slice(0, 4);
 
   return (
-    <>
-      <section className="section product-section">
+    <div className="product-experience">
+      <section className="product-cinematic-hero" aria-labelledby="product-hero-title">
+        <img src={product.roomImage} alt={`${product.name} fitted in a room`} />
+        <div className="product-hero-shade" />
+        <div className="product-hero-inner">
+          <nav className="product-hero-crumbs" aria-label="Breadcrumb">
+            <Link href="/">Home</Link><span>/</span><Link href={`/category/${product.category}`}>{category.title}</Link>
+          </nav>
+          <div className="product-hero-copy">
+            <span className="product-hero-eyebrow">UNIQ FLOORS <i /> {category.title}</span>
+            <h1 id="product-hero-title">{product.name}</h1>
+            <p>{product.details}</p>
+            <div className="product-hero-actions">
+              <a href="#product-buy" className="product-hero-primary">Explore this floor <span aria-hidden="true">↗</span></a>
+              <a href="#product-details" className="product-hero-secondary">Discover the details <span aria-hidden="true">↓</span></a>
+            </div>
+          </div>
+          <div className="product-hero-bottom">
+            <span><PremiumIcon name="sample" /> Free samples</span>
+            <span><PremiumIcon name="return" /> 30-day returns</span>
+            <span><PremiumIcon name="expert" /> Flooring experts</span>
+            <strong>From {money(product.price)} <small>/ m²</small></strong>
+          </div>
+        </div>
+      </section>
+
+      <nav className="product-section-nav" aria-label="On this page">
+        <span>{product.name}</span>
+        <div>
+          <a href="#product-overview">Overview</a>
+          <a href="#product-details">Features</a>
+          <a href="#product-specifications">Specifications</a>
+          <a href="#reviews">Reviews</a>
+        </div>
+        <a className="product-section-nav-buy" href="#product-buy">Plan your floor <span aria-hidden="true">↗</span></a>
+      </nav>
+
+      <section className="section product-section" id="product-overview">
+        <div className="product-section-intro">
+          <p className="eyebrow">The floor, up close</p>
+          <h2>Made for a room that feels like yours.</h2>
+          <p>Explore the finish, compare it in a real space, then work out exactly what your room needs.</p>
+        </div>
         <nav className="product-breadcrumb" aria-label="Breadcrumb">
           <Link href="/">Home</Link><span>/</span>
           <Link href={`/category/${product.category}`}>{category.title}</Link><span>/</span>
@@ -2222,13 +2263,21 @@ function ProductView({
                 <span aria-hidden="true">→</span>
               </button>
             </div>
+            <div className="product-gallery-thumbnails" role="group" aria-label="Choose a product image">
+              {galleryItems.map((item, index) => (
+                <button className={index === activeGalleryItem ? "active" : ""} type="button" onClick={() => setActiveGalleryItem(index)} aria-label={`View ${item.label}`} aria-pressed={index === activeGalleryItem} key={item.id}>
+                  <img src={item.image} alt="" />
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="product-info reference-product-info">
+          <div className="product-info reference-product-info" id="product-buy">
             <div className="product-title-row">
               <p className="product-kicker"><PremiumIcon name="badge" /> {product.badge} · {category.title}</p>
               <span className="product-stock"><i /> In stock</span>
             </div>
-            <h1>{product.name}</h1>
+            <h2>{product.name}</h2>
             <div className="product-rating-row">
               <span className="product-stars" aria-label={`${product.rating} out of 5 stars`}>★★★★★</span>
               <a href="#reviews">{product.rating}/5 · verified flooring customers</a>
@@ -2321,20 +2370,6 @@ function ProductView({
               </Link>
             </div>
 
-            <div className="spec-grid">
-              <Spec icon="palette" label="Colour" value={product.colour} />
-              <Spec icon="sparkles" label="Finish" value={product.finish} />
-              <Spec icon="ruler" label="Thickness" value={product.thickness} />
-              <Spec icon="layers" label="Board size" value={product.size} />
-              <Spec icon="shield" label="Wear layer" value={product.wear} />
-              <Spec icon="install" label="Install" value={product.install} />
-              <Spec icon="badge" label="Warranty" value={product.warranty} />
-              <Spec
-                icon="sample"
-                label="Samples"
-                value="Free sample available"
-              />
-            </div>
           </div>
         </div>
 
@@ -2357,7 +2392,7 @@ function ProductView({
         </div>
       </section>
 
-      <section className="section product-confidence-section">
+      <section className="section product-confidence-section" id="product-details">
         <div className="confidence-intro">
           <p className="eyebrow">Why this floor works</p>
           <h2>Made to look considered. Built to live on.</h2>
@@ -2368,6 +2403,27 @@ function ProductView({
           <article><PremiumIcon name="shield" /><span>02</span><h3>Daily durability</h3><p>{product.wear} construction selected for busy UK homes and furniture movement.</p></article>
           <article><PremiumIcon name="install" /><span>03</span><h3>Clear installation</h3><p>{product.install} fitting with practical guidance for subfloor preparation.</p></article>
           <article><PremiumIcon name="care" /><span>04</span><h3>Simple care</h3><p>Regular vacuuming and a lightly damp flooring-safe clean keep it looking its best.</p></article>
+        </div>
+      </section>
+
+      <section className="section product-tech-section" id="product-specifications">
+        <div className="product-tech-heading">
+          <p className="eyebrow">The material, explained</p>
+          <h2>Every detail has a purpose.</h2>
+          <p>See the key specifications before choosing a sample or planning your order.</p>
+        </div>
+        <div className="product-tech-layout">
+          <div className="product-tech-image"><img src={product.textureImage} alt={`${product.name} surface and grain detail`} /><span>01 / SURFACE DETAIL</span></div>
+          <div className="spec-grid">
+            <Spec icon="palette" label="Colour" value={product.colour} />
+            <Spec icon="sparkles" label="Finish" value={product.finish} />
+            <Spec icon="ruler" label="Thickness" value={product.thickness} />
+            <Spec icon="layers" label="Board size" value={product.size} />
+            <Spec icon="shield" label="Wear layer" value={product.wear} />
+            <Spec icon="install" label="Install" value={product.install} />
+            <Spec icon="badge" label="Warranty" value={product.warranty} />
+            <Spec icon="sample" label="Samples" value="Free sample available" />
+          </div>
         </div>
       </section>
 
@@ -2443,7 +2499,7 @@ function ProductView({
           <article><span>03</span><h3>Simple decision making</h3><p>Order a free sample, compare it in your light and speak to an expert before buying.</p></article>
         </div>
       </section>
-    </>
+    </div>
   );
 }
 
