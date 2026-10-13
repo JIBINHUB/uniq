@@ -27,7 +27,7 @@
     linear-gradient(0deg, rgba(9,17,12,.68), transparent 33%);
 }
 .inner-shell:has(.product-experience) .aeline-brand { display: inline-flex; padding: .28rem .42rem; background: rgba(255,255,255,.94); border-radius: .25rem; }
-.inner-shell:has(.product-experience) .aeline-brand-logo { filter: none !important; }
+.inner-shell:has(.product-experience) .aeline-brand-logo { filter: brightness(0) !important; }
 .product-hero-inner {
   display: flex;
   flex-direction: column;
