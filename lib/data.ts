@@ -8,6 +8,8 @@ export type Category = {
 };
 
 export type Product = {
+  packCoverage?: number;
+  availability?: string;
   slug: string;
   name: string;
   category: string;

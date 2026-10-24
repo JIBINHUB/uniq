@@ -1,5 +1,6 @@
-import { Storefront } from "@/components/storefront";
+import { storefrontData } from "@/lib/owner/catalogue";
+import { redirect } from "next/navigation";
 
-export default function RoomsPage() {
-  return <Storefront view="rooms" />;
+export default async function RoomsPage() {
+  redirect("/retailers");
 }

@@ -1,0 +1,261 @@
+/* Product-page service story: consistent cards on desktop, readable rows on phones. */
+.inner-shell:has(.frido-legacy-product.product-experience),
+.inner-shell:has(.frido-legacy-product.product-experience) > main,
+.inner-shell .frido-legacy-product.product-experience,
+.inner-shell .frido-legacy-product.product-experience #product-overview {
+  background-color: #fff !important;
+}
+
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip {
+  grid-template-columns: minmax(12rem, 0.9fr) repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #dce7df !important;
+  border-radius: 1.15rem;
+  background: #fff !important;
+  box-shadow: 0 14px 34px rgba(22, 51, 34, 0.045);
+}
+
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-heading {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 16rem !important;
+  padding: 1.4rem !important;
+  border-right: 1px solid #dce7df;
+  background: #edf5ef !important;
+}
+
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-heading .eyebrow {
+  margin: 0;
+  color: #46725a;
+  font-size: 0.66rem;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+}
+
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-heading h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 2vw, 1.95rem);
+  line-height: 1.12;
+  letter-spacing: -0.04em;
+}
+
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  min-height: 16rem !important;
+  padding: 1.4rem !important;
+  border-right: 1px solid #e4ebe6;
+  background: #fff;
+}
+
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item:last-child {
+  border-right: 0;
+}
+
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-number {
+  color: #8ca89a;
+  font-size: 1.35rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item > svg {
+  width: 2rem;
+  height: 2rem;
+  margin: 0.65rem 0 0;
+  color: #377f55;
+}
+
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item > div {
+  width: 100%;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item h3 {
+  margin: 0 0 0.4rem;
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item p {
+  margin: 0;
+  color: #526459 !important;
+  font-size: 0.76rem;
+  font-weight: 450;
+  line-height: 1.5;
+}
+
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item :is(a, button) {
+  min-height: 2.25rem;
+  margin-top: 0.65rem;
+  color: #1d6942;
+  font-size: 0.76rem;
+  line-height: 1.2;
+}
+
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item :is(a, button):focus-visible {
+  outline: 2px solid #1d6942;
+  outline-offset: 3px;
+}
+
+@media (max-width: 1000px) {
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-heading {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    min-height: 0 !important;
+    gap: 1rem;
+    padding: 1.2rem 1.4rem !important;
+    border-right: 0;
+    border-bottom: 1px solid #dce7df;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item {
+    min-height: 15rem !important;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 900px) {
+  .inner-shell .frido-legacy-product.product-experience #product-overview .details-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience #product-overview :is(.product-gallery, .reference-product-info) {
+    width: min(100%, 40rem);
+    margin-inline: auto;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience #product-overview .product-gallery {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .inner-shell .frido-legacy-product.product-experience {
+    padding-bottom: 5rem;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip {
+    grid-template-columns: minmax(0, 1fr);
+    width: calc(100% - 2rem);
+    margin: 2rem auto 0;
+    border-radius: 1rem;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-heading {
+    display: block;
+    padding: 1.35rem !important;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-heading h2 {
+    margin-top: 0.5rem;
+    font-size: clamp(1.45rem, 6vw, 1.8rem);
+  }
+
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item {
+    display: grid !important;
+    grid-template-columns: 2.8rem minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    gap: 0.45rem 0.75rem;
+    min-height: 0 !important;
+    padding: 1.2rem 1.35rem !important;
+    border-right: 0;
+    border-top: 1px solid #e4ebe6;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-number {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 1.4rem;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item > svg {
+    grid-column: 1;
+    grid-row: 2;
+    width: 1.8rem;
+    height: 1.8rem;
+    margin: 0.1rem 0 0;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item > div {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin: 0;
+    padding: 0;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item h3 {
+    font-size: 1rem;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item p {
+    font-size: 0.8rem;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item :is(a, button) {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience .reference-product-info {
+    padding: 1.15rem 1rem !important;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience .reference-product-info > h1 {
+    font-size: clamp(1.8rem, 7.7vw, 2.35rem) !important;
+    line-height: 1.08;
+  }
+}
+
+@media (max-width: 420px) {
+  .inner-shell .frido-legacy-product.product-experience .flooring-configurator .pack-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .inner-shell .frido-legacy-product.product-experience .flooring-configurator .pack-summary > div:last-child {
+    grid-column: 1 / -1;
+    min-height: 3.7rem;
+    border-top: 1px solid rgba(216, 237, 214, 0.21);
+    border-right: 0 !important;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience .flooring-configurator .pack-summary :is(span, strong) {
+    font-size: 0.75rem;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience .flooring-configurator .product-buy-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .inner-shell .frido-legacy-product.product-experience .flooring-configurator .product-buy-actions > * {
+    min-height: 3.75rem;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience .frido-product-sticky-order {
+    gap: 0.45rem;
+    padding-inline: 0.65rem;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience .frido-product-sticky-order > span {
+    min-width: 0;
+    font-size: 0.93rem;
+  }
+
+  .inner-shell .frido-legacy-product.product-experience .frido-product-sticky-order > a {
+    padding: 0.68rem 0.75rem;
+    font-size: 0.72rem;
+  }
+}

@@ -1,0 +1,261 @@
+/* Storefront palette: the muted matcha, true white and near-black used across public pages. */
+:root {
+  --uniq-matcha: #9caf98;
+  --uniq-matcha-deep: #728a73;
+  --uniq-matcha-pale: #eef3ec;
+  --uniq-link: #3158d4;
+  --uniq-ink: #262525;
+  --uniq-white: #fff;
+}
+
+body {
+  color: var(--uniq-ink);
+  background: var(--uniq-white) !important;
+}
+
+.page-shell,
+.page-shell main,
+.carpets-page,
+.retailer-page {
+  background: var(--uniq-white) !important;
+}
+
+.page-shell .shop-page-intro,
+.page-shell .shop-catalogue,
+.page-shell .shop-category-discovery,
+.page-shell .featured-collections,
+.page-shell .category-section,
+.page-shell .real-homes-section,
+.page-shell .customer-editorial-section.section,
+.page-shell .reference-why,
+.page-shell .product-information-section,
+.page-shell .product-related-section {
+  background: var(--uniq-white) !important;
+}
+
+.page-shell :is(.section-head h2, .shop-page-intro h1, .category-hero h1),
+.carpets-page :is(h1, h2, h3),
+.retailer-page :is(h1, h2, h3) {
+  color: var(--uniq-ink);
+}
+
+.page-shell :is(.eyebrow, .material-featured-kicker) {
+  color: #5f785f;
+}
+
+/* BLUNT uses blue sparingly for editorial navigation. Keep it away from primary CTAs. */
+.page-shell :is(
+  .section-head > a,
+  .featured-head > a,
+  .shop-catalogue-head > a,
+  .material-featured-heading > a,
+  .text-link,
+  .product-breadcrumb a
+) {
+  color: var(--uniq-link) !important;
+  text-decoration-color: color-mix(in srgb, var(--uniq-link) 45%, transparent);
+}
+
+.page-shell :is(
+  .section-head > a,
+  .featured-head > a,
+  .shop-catalogue-head > a,
+  .material-featured-heading > a,
+  .text-link,
+  .product-breadcrumb a
+):is(:hover, :focus-visible) {
+  color: #163cae !important;
+}
+
+.page-shell .site-nav a.active,
+.page-shell .site-nav .live-room-nav.active,
+.home-shell .hero .primary-btn {
+  color: var(--uniq-ink) !important;
+  background: var(--uniq-matcha) !important;
+  border-color: var(--uniq-matcha) !important;
+}
+
+.page-shell .site-nav a.active:hover,
+.home-shell .hero .primary-btn:hover {
+  background: #b5c8b1 !important;
+}
+
+.page-shell .product-card .product-actions .primary-btn,
+.page-shell .shop-catalogue .primary-btn {
+  color: #fff !important;
+  background: #171d18 !important;
+  border-color: #171d18 !important;
+}
+
+.page-shell .product-card .product-actions .primary-btn:hover,
+.page-shell .shop-catalogue .primary-btn:hover {
+  background: #344739 !important;
+}
+
+.page-shell .shop-page-intro .shop-expanded-collection-link,
+.page-shell .shop-page-intro .shop-channel-option,
+.page-shell .product-actions-priority > a,
+.page-shell .product-actions-priority > button {
+  border-color: #d7e3d6;
+}
+
+.page-shell .shop-page-intro .shop-expanded-collection-link:is(:hover, :focus-visible),
+.page-shell .shop-page-intro .shop-channel-option:is(:hover, :focus-visible) {
+  background: var(--uniq-matcha-pale);
+  border-color: var(--uniq-matcha);
+}
+
+.home-shell .material-featured {
+  background: linear-gradient(125deg, var(--uniq-matcha-pale), #fff 60%, #f2f6f1);
+}
+
+.home-shell .customer-proof-rail article > span {
+  color: #324f37;
+  background: var(--uniq-matcha-pale);
+}
+
+.site-loading-screen {
+  --loader-ink: #fff;
+  --loader-accent: #d8f4dd;
+  background:
+    radial-gradient(ellipse at 12% 16%, rgba(241, 255, 237, .68) 0%, transparent 42%),
+    radial-gradient(ellipse at 85% 70%, rgba(191, 244, 196, .38) 0%, transparent 44%),
+    radial-gradient(ellipse at 56% 48%, rgba(14, 82, 47, .2) 0%, transparent 54%),
+    linear-gradient(130deg, #9bc4a0 0%, #65a581 35%, #307653 72%, #145035 100%) !important;
+}
+
+.site-loading-screen::before,
+.site-loading-screen::after {
+  display: block;
+  width: min(70vw, 58rem);
+  aspect-ratio: 1.1;
+  border: 0;
+  border-radius: 47% 53% 63% 37% / 53% 42% 58% 47%;
+  background: radial-gradient(ellipse, rgba(243, 255, 240, .39), rgba(216, 255, 223, .12) 52%, transparent 73%);
+  filter: blur(42px);
+  opacity: .84;
+  animation: loader-glass-float 9s ease-in-out infinite alternate;
+}
+.site-loading-screen::before { transform: translate(-38vw, -30vh) rotate(-18deg); }
+.site-loading-screen::after {
+  width: min(56vw, 45rem);
+  background: radial-gradient(ellipse, rgba(19, 106, 66, .29), rgba(185, 238, 190, .15) 48%, transparent 74%);
+  transform: translate(38vw, 32vh) rotate(28deg);
+  animation-delay: -4.5s;
+}
+
+.site-loading-screen .site-loader-content {
+  min-width: 0;
+  padding: 1rem;
+  overflow: visible;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  filter: drop-shadow(0 8px 24px rgba(13, 60, 35, .17));
+}
+
+.site-loading-screen .site-loader-content::before {
+  content: none;
+}
+
+@keyframes loader-glass-float {
+  from { translate: -1rem -.7rem; scale: .95; }
+  to { translate: 1rem .9rem; scale: 1.08; }
+}
+
+.site-loader-progress {
+  width: min(11rem, 100%);
+  height: 2px;
+  margin-top: 1.7rem;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, .3);
+}
+
+.site-loader-progress span {
+  display: block;
+  width: 38%;
+  height: 100%;
+  border-radius: inherit;
+  background: #f2fff0;
+  box-shadow: 0 0 12px #d8f4dd;
+  animation: loader-progress-glide 1.8s ease-in-out infinite;
+}
+
+@keyframes loader-progress-glide {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(300%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-loading-screen::before,
+  .site-loading-screen::after,
+  .site-loader-progress span { animation: none; }
+  .site-loader-progress span { width: 100%; }
+}
+
+@media (max-width: 600px) {
+  .site-loading-screen::before {
+    width: 85vw;
+    transform: translate(-34vw, -32vh) rotate(-18deg);
+  }
+  .site-loading-screen::after {
+    width: 65vw;
+    transform: translate(36vw, 33vh) rotate(28deg);
+  }
+  .site-loading-screen .site-loader-content {
+    min-width: 0;
+  }
+}
+
+.site-loader-caption {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Product page greens now use one soft, desaturated Matcha family. */
+.inner-shell .frido-legacy-product.product-experience .product-announcement {
+  background: var(--uniq-matcha-deep) !important;
+  border-color: rgba(38, 37, 37, 0.12) !important;
+  box-shadow: 0 0.7rem 2rem rgba(63, 84, 65, 0.12) !important;
+}
+
+.inner-shell .frido-legacy-product.product-experience .reference-product-info .flooring-configurator {
+  background: var(--uniq-matcha-deep) !important;
+  border-color: var(--uniq-matcha-deep) !important;
+}
+
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .waste-options button.active {
+  background: var(--uniq-white) !important;
+  border-color: var(--uniq-white) !important;
+}
+
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .buy-order-now,
+.inner-shell .frido-legacy-product.product-experience .reference-secondary-actions .secondary-btn:first-child {
+  color: var(--uniq-ink) !important;
+  background: var(--uniq-matcha-pale) !important;
+  border-color: #d9e4d7 !important;
+}
+
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator :is(.waste-options button, .product-buy-actions > *):focus-visible,
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .area-input:focus-within {
+  outline-color: #d9e7d8 !important;
+}
+
+.frido-legacy-product .frido-product-sticky-order > a,
+.frido-legacy-product .buy-order-now,
+.frido-legacy-product .product-related-section .product-card .secondary-btn,
+.frido-inspired-product .manufacturer-main-cta,
+.frido-inspired-product .manufacturer-mobile-order {
+  color: var(--uniq-ink) !important;
+  background: var(--uniq-matcha) !important;
+  border-color: var(--uniq-matcha) !important;
+}
+
+.frido-legacy-product .frido-product-sticky-order > a:hover,
+.frido-legacy-product .buy-order-now:hover,
+.frido-inspired-product .manufacturer-main-cta:hover {
+  background: #b5c8b1 !important;
+}

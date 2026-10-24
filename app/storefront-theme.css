@@ -1,0 +1,55 @@
+/* Shared storefront typography and the existing charcoal / forest palette. */
+.page-shell, .retailer-page {
+  --uniq-body: Metropolis, Arial, sans-serif;
+  --uniq-display: Metropolis, Arial, sans-serif;
+  --font-body: Metropolis, Arial, sans-serif;
+  --font-display: Metropolis, Arial, sans-serif;
+  --font-title: Metropolis, Arial, sans-serif;
+  font-family: Metropolis, Arial, sans-serif;
+}
+.page-shell :is(h1,h2,h3,h4,p,a,button,input,select,label,span,strong,small) { font-family: Metropolis, Arial, sans-serif !important; }
+.customer-shop-channel { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin:2rem auto 0; padding:1rem 1.3rem; max-width:1100px; background:linear-gradient(115deg,#1d2a22,#143421); border:1px solid #355b42; border-radius:16px; color:#e8f6ec; font-size:.8rem; }
+.customer-shop-channel :is(span,a) { display:flex; align-items:center; gap:.6rem; }
+.customer-shop-channel a { color:#85dfa3; }
+.customer-shop-channel svg { width:18px; height:18px; }
+.product-buy-actions a.buy-order-now { display:flex; align-items:center; gap:.8rem; text-decoration:none; }
+.sample-drawer a.primary-btn { text-decoration:none; display:flex; justify-content:center; }
+.retailer-access-layout { margin-bottom:5rem; }
+.retailer-login-fields { grid-template-columns:1fr; }
+.retailer-apply-prompt { border-top:1px solid #355b42; margin-top:2rem; padding-top:1.4rem; color:#a7beaf; font-size:.85rem; }
+.retailer-apply-prompt a { display:flex; gap:.8rem; align-items:center; color:#70d695; }
+.trade-intro .retailer-outline { display:inline-flex; gap:.6rem; align-items:center; margin-top:1rem; }
+.trade-preview-label { margin:0; padding:.8rem 5vw; background:#1c3022; color:#a9d3b7; font-size:.7rem; line-height:1.6; }
+.trade-catalogue { max-width:1280px; width:90%; margin:4rem auto; }
+.trade-catalogue-heading { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+.trade-catalogue-heading h2 { font-size:clamp(1.9rem,3vw,3rem); letter-spacing:-.05em; margin:.5rem 0 2rem; }
+.trade-catalogue-heading>span { color:#95b5a1; font-size:.85rem; }
+.trade-filters { display:grid; grid-template-columns:2fr 1fr 1fr; gap:1rem; margin-bottom:2rem; }
+.trade-filters label { display:flex; align-items:center; gap:.6rem; color:#b2c8ba; font-size:.75rem; padding:.8rem 1rem; background:#17251d; border:1px solid #355b42; border-radius:12px; }
+.trade-filters input,.trade-filters select { background:transparent; color:#e9f8ee; border:0; min-width:0; width:100%; font:inherit; font-size:.8rem; }
+.trade-filters select option { background:#17251d; }
+.trade-filters :is(input,select):focus-visible { outline:2px solid #70d695; outline-offset:4px; }
+.trade-products { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.2rem; }
+.trade-product { overflow:hidden; border:1px solid #355b42; border-radius:20px; background:linear-gradient(125deg,#1c2820,#143322); }
+.trade-product>img { width:100%; aspect-ratio:3/4; object-fit:cover; display:block; }
+.trade-product>div { padding:1.4rem; }
+.trade-product .retailer-kicker { font-size:.58rem; }
+.trade-product h3 { color:#f2fff6; letter-spacing:-.04em; font-size:1.15rem; line-height:1.35; margin:.7rem 0; }
+.trade-colour { font-size:.78rem; color:#a9c9b5; line-height:1.6; }
+.trade-spec { color:#7e9d8b; font-size:.7rem; }
+.trade-quantity { display:flex; align-items:center; gap:.8rem; border-top:1px solid #355b42; padding-top:1rem; margin-top:1.3rem; }
+.trade-quantity>span { flex:1; font-size:.75rem; color:#c4dfcd; }
+.trade-quantity button { width:32px; height:32px; display:grid; place-items:center; border:1px solid #487858; background:#213d2c; border-radius:50%; color:#e1f9e9; cursor:pointer; }
+.trade-quantity button:disabled { opacity:.35; cursor:default; }
+.trade-quantity output { min-width:2ch; text-align:center; font-size:.8rem; }
+.trade-selection { border:1px solid #355b42; border-radius:20px; background:linear-gradient(115deg,#1d2a22,#143421); padding:2rem; margin-top:2rem; display:flex; align-items:flex-start; gap:2rem; }
+.trade-selection>div { flex:1; }
+.trade-selection h2 { letter-spacing:-.04em; margin:.5rem 0; }
+.trade-selection p:not(.retailer-kicker),.trade-empty,.trade-disabled { color:#a7beaf; font-size:.8rem; line-height:1.75; }
+.trade-selection .retailer-button { flex-shrink:0; }
+.trade-selection ul { padding:0; list-style:none; margin-top:1.5rem; }
+.trade-selection li { border-top:1px solid #355b42; padding:.8rem 0; display:flex; flex-wrap:wrap; gap:.8rem; font-size:.75rem; align-items:center; }
+.trade-selection li>span { flex:1; min-width:160px; color:#dcefe3; }
+.trade-selection li button { background:none; border:0; color:#85dfa3; text-decoration:underline; cursor:pointer; font:inherit; }
+@media(max-width:900px) { .trade-products { grid-template-columns:repeat(2,minmax(0,1fr)); } .trade-selection { flex-direction:column; } }
+@media(max-width:720px) { .customer-shop-channel { align-items:flex-start; flex-direction:column; font-size:.72rem; } .trade-filters,.trade-products { grid-template-columns:1fr; } .trade-catalogue { margin:2.5rem auto; } .trade-selection { padding:1.5rem; } .trade-catalogue-heading>span { white-space:nowrap; } .trade-product>img { aspect-ratio:4/3; } }

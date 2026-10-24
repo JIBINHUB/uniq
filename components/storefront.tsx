@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
+  ArrowLeft,
   ArrowUpRight,
   BadgeCheck,
   BookOpen,
@@ -10,6 +11,8 @@ import {
   Briefcase,
   Camera,
   CircleCheck,
+  ChevronLeft,
+  ChevronRight,
   ClipboardCheck,
   Droplets,
   Hammer,
@@ -42,20 +45,23 @@ import {
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type TouchEvent } from "react";
+import { StoreDataProvider, useStoreData, type StoreData } from "@/components/business/store-data";
+import { defaultContent, defaultPromotions } from "@/lib/owner/model";
+import { products as defaultProducts, categories as defaultCategories } from "@/lib/data";
+import { manufacturerProducts as defaultRanges } from "@/lib/catalogue/data";
 import { LiveRoomVisualizer } from "@/components/live-room-visualizer";
+import { calculatePacks, lineTotalPence } from "@/lib/business/calculations";
+import { selectionWhatsAppHref } from "@/lib/business/whatsapp";
+import { ManufacturerCatalogue } from "@/components/business/manufacturer-catalogue";
+import { RealHomesEditorial } from "@/components/real-homes-editorial";
 import {
-  categories,
-  categoryById,
   money,
-  productBySlug,
-  products,
-  productsByCategory,
   rooms,
   type Product,
 } from "@/lib/data";
 
 type StorefrontProps =
-  | { view: "home" | "rooms" | "guides" | "delivery" }
+  | { view: "home" | "rooms" | "guides" | "delivery" | "about" }
   | { view: "shop" }
   | { view: "category"; id?: string }
   | { view: "product"; slug?: string };
@@ -144,7 +150,7 @@ const materialShowcase = [
     bestFor: "Living spaces",
     character: "Natural oak grain",
     href: "/category/engineered",
-    sample: "/assets/material-samples/sample-engineered.png",
+    sample: "/assets/featured-planks/engineered.webp",
     tone: "#b7773a",
   },
   {
@@ -157,7 +163,7 @@ const materialShowcase = [
     bestFor: "Busy family rooms",
     character: "Warm and practical",
     href: "/category/lvt",
-    sample: "/assets/material-samples/sample-lvt.png",
+    sample: "/assets/featured-planks/lvt.webp",
     tone: "#c98a43",
   },
   {
@@ -170,7 +176,7 @@ const materialShowcase = [
     bestFor: "Everyday spaces",
     character: "Clean oak texture",
     href: "/category/laminate",
-    sample: "/assets/material-samples/sample-laminate.png",
+    sample: "/assets/featured-planks/laminate.webp",
     tone: "#8d8980",
   },
   {
@@ -183,7 +189,7 @@ const materialShowcase = [
     bestFor: "Character homes",
     character: "Full timber depth",
     href: "/category/solid",
-    sample: "/assets/material-samples/sample-solid.png",
+    sample: "/assets/featured-planks/solid.webp",
     tone: "#7a3518",
   },
   {
@@ -196,7 +202,7 @@ const materialShowcase = [
     bestFor: "Feature rooms",
     character: "Patterned detail",
     href: "/category/herringbone",
-    sample: "/assets/material-samples/sample-herringbone.png",
+    sample: "/assets/featured-planks/herringbone.webp",
     tone: "#d09249",
   },
   {
@@ -209,7 +215,7 @@ const materialShowcase = [
     bestFor: "Kitchens and baths",
     character: "Soft stone texture",
     href: "/category/spc",
-    sample: "/assets/material-samples/sample-spc.png",
+    sample: "/assets/featured-planks/spc.webp",
     tone: "#b8b0a3",
   },
 ];
@@ -217,6 +223,47 @@ const materialShowcase = [
 function PremiumIcon({ name }: { name: IconName | string }) {
   const Icon = icons[name as IconName] ?? icons.check;
   return <Icon className="icon-svg" aria-hidden="true" strokeWidth={2.1} />;
+}
+
+function AnimatedMetric({ value, decimals = 0, suffix = "" }: { value: number; decimals?: number; suffix?: string }) {
+  const [display, setDisplay] = useState<number | null>(null);
+  const elementRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const element = elementRef.current;
+    if (!element) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setDisplay(value);
+      return;
+    }
+
+    let frame = 0;
+    let started = false;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting || started) return;
+      started = true;
+      observer.disconnect();
+      const start = performance.now();
+      const duration = 1250;
+      const animate = (now: number) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setDisplay(Number((value * eased).toFixed(decimals)));
+        if (progress < 1) frame = requestAnimationFrame(animate);
+      };
+      frame = requestAnimationFrame(animate);
+    }, { threshold: 0.35 });
+
+    observer.observe(element);
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, [value, decimals]);
+
+  return <strong ref={elementRef} aria-label={`${value.toFixed(decimals)}${suffix}`}>
+    <span aria-hidden="true">{display === null ? value.toFixed(decimals) : display.toFixed(decimals)}{suffix}</span>
+  </strong>;
 }
 
 function WhatsAppMark() {
@@ -228,6 +275,7 @@ function WhatsAppMark() {
 }
 
 function FloatingContactButton() {
+  const { whatsappHref, whatsappVideoHref } = useStoreData();
   const [mode, setMode] = useState<"whatsapp" | "video">("whatsapp");
 
   useEffect(() => {
@@ -264,7 +312,11 @@ const storeMapHref = "https://maps.app.goo.gl/9UGg8bqyL8oJ6SocA";
 
 type CartItem = { slug: string; quantity: number };
 
-export function Storefront(props: StorefrontProps) {
+export function Storefront(props: StorefrontProps & { data?: StoreData }) {
+  return <StoreDataProvider live data={props.data || {products:defaultProducts,categories:defaultCategories,ranges:defaultRanges,content:defaultContent}}><StorefrontView {...props}/></StoreDataProvider>;
+}
+
+function StorefrontView(props: StorefrontProps) {
   const pathname = usePathname();
   const [samples, setSamples] = useState<string[]>([]);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -341,47 +393,7 @@ export function Storefront(props: StorefrontProps) {
 
   useEffect(() => {
     setMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pathname]);
-
-  useEffect(() => {
-    if (props.view !== "home") return;
-
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    const sections = Array.from(
-      document.querySelectorAll<HTMLElement>(
-        ".post-hero-reference, .shop-room-band, .sbs-section, main > .section, .category-hero, .featured-collections, .site-footer",
-      ),
-    );
-
-    if (reduceMotion) {
-      sections.forEach((section) => section.classList.add("in-view"));
-      return;
-    }
-
-    sections.forEach((section) => section.classList.add("section-motion"));
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in-view");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { rootMargin: "0px 0px -14% 0px", threshold: 0.14 },
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => {
-      observer.disconnect();
-      sections.forEach((section) =>
-        section.classList.remove("section-motion", "in-view"),
-      );
-    };
-  }, [pathname, props.view]);
 
   function addSample(slug: string) {
     setSamples((current) =>
@@ -411,6 +423,12 @@ export function Storefront(props: StorefrontProps) {
 
   function removeCartItem(slug: string) {
     setCartItems((current) => current.filter((item) => item.slug !== slug));
+  }
+
+  function changeCartQuantity(slug: string, change: number) {
+    setCartItems((current) => current
+      .map((item) => item.slug === slug ? { ...item, quantity: item.quantity + change } : item)
+      .filter((item) => item.quantity > 0));
   }
 
   const basketCount =
@@ -466,6 +484,7 @@ export function Storefront(props: StorefrontProps) {
           ) : null}
           {props.view === "guides" ? <GuidesView /> : null}
           {props.view === "delivery" ? <DeliveryView /> : null}
+          {props.view === "about" ? <AboutPageView /> : null}
         </main>
 
         <Footer />
@@ -480,6 +499,7 @@ export function Storefront(props: StorefrontProps) {
         onClose={() => setDrawerOpen(false)}
         onRemove={removeSample}
         onRemoveCart={removeCartItem}
+        onChangeCartQuantity={changeCartQuantity}
       />
       <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
@@ -510,22 +530,50 @@ function SiteNav({
   const items = [
     { label: "Home", href: "/", icon: "home" },
     { label: "Shop", href: "/shop", icon: "layers" },
-    { label: "Live room", href: "/rooms", icon: "camera" },
+    { label: "Retailers", href: "/retailers", icon: "briefcase" },
     { label: "Guides", href: "/guides", icon: "book" },
   ] satisfies Array<{ label: string; href: string; icon: IconName }>;
 
-  return (
-    <nav className="site-nav" aria-label="Site navigation">
-      {items.map((item) => {
-        const active =
-          item.label === "Shop" ? shopActive : isActive(item.href);
+  const navRef = useRef<HTMLElement>(null);
+  const slotRefs = useRef<Array<HTMLElement | null>>([]);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [pill, setPill] = useState({ left: 0, width: 0 });
+  const activeIndex = items.findIndex((item) => item.label === "Shop" ? shopActive : isActive(item.href));
+  const targetIndex = hoveredIndex ?? activeIndex;
 
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const measure = () => {
+      const slot = slotRefs.current[targetIndex];
+      if (slot) setPill({ left: slot.offsetLeft, width: slot.offsetWidth });
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(nav);
+    return () => observer.disconnect();
+  }, [targetIndex]);
+
+  return (
+    <nav
+      ref={navRef}
+      className="site-pill-nav"
+      aria-label="Site navigation"
+      onPointerLeave={() => setHoveredIndex(null)}
+    >
+      <span className="site-pill-nav-glide" style={{ left: pill.left, width: pill.width, opacity: targetIndex >= 0 ? 1 : 0 }} aria-hidden="true" />
+      {items.map((item, index) => {
+        const active = index === activeIndex;
         return (
           <Link
-            className={`${active ? "active" : ""} ${item.href === "/rooms" ? "live-room-nav" : ""}`.trim()}
+            ref={(element) => { slotRefs.current[index] = element; }}
+            className={`site-pill-nav-item${index === targetIndex ? " is-highlighted" : ""}`}
             href={item.href}
             aria-current={active ? "page" : undefined}
             key={item.label}
+            onPointerEnter={(event) => { if (event.pointerType !== "touch") setHoveredIndex(index); }}
+            onFocus={() => setHoveredIndex(index)}
+            onBlur={() => setHoveredIndex(null)}
           >
             <PremiumIcon name={item.icon} />
             <span>{item.label}</span>
@@ -535,24 +583,26 @@ function SiteNav({
       <button
         ref={navCartRef}
         type="button"
+        aria-label={samplesCount ? `Open cart, ${samplesCount} items` : "Open cart"}
         onClick={onOpenSamples}
+        onPointerEnter={() => setHoveredIndex(null)}
         className={[
-          'site-nav-cart',
+          'site-pill-nav-cart',
           cartLaunched ? 'cart-entered' : '',
           navCartReceiving ? 'cart-receiving' : '',
         ].filter(Boolean).join(' ')}
       >
-        <span className="site-nav-cart-icon">
+        <span className="site-pill-nav-cart-icon">
           <PremiumIcon name="cart" />
           {samplesCount ? <i>{samplesCount}</i> : null}
         </span>
-        <span>Cart</span>
       </button>
     </nav>
   );
 }
 
 function HomeView({ addSample }: { addSample: (slug: string) => void }) {
+  const { products, categories, productBySlug, categoryById, productsByCategory, content, selectionWhatsAppHref, whatsappHref, whatsappVideoHref, storeMapHref } = useStoreData();
   const heroRef = useRef<HTMLElement>(null);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
   const [heroVideoNear, setHeroVideoNear] = useState(false);
@@ -581,41 +631,6 @@ function HomeView({ addSample }: { addSample: (slug: string) => void }) {
   }, [heroVideoNear]);
 
   const sampleProducts = products.slice(0, 3);
-  const realHomes = [
-    {
-      name: "Sophie B.",
-      initials: "SB",
-      location: "York, North Yorkshire",
-      quote:
-        "We wanted an oak floor with genuine character, but nothing that felt too formal. The warm grain has made the sitting room feel settled, comfortable and properly finished.",
-      image: "/assets/real/real-home-york-oak.jpg",
-      product: "Ashford Natural Oak Brushed",
-      finish: "Warm character oak",
-      href: "/product/ashford-natural-oak-engineered",
-    },
-    {
-      name: "Oliver H.",
-      initials: "OH",
-      location: "Didsbury, Manchester",
-      quote:
-        "The smoked boards gave the room exactly the depth we were hoping for. They work beautifully with the darker walls, and the wider plank makes the whole space feel calmer.",
-      image: "/assets/real/real-home-manchester-smoked.jpg",
-      product: "Kensington Smoked Oak Wide Plank",
-      finish: "Deep smoked oak",
-      href: "/product/kensington-smoked-oak-engineered",
-    },
-    {
-      name: "Amelia C.",
-      initials: "AC",
-      location: "Clerkenwell, London",
-      quote:
-        "We needed a light floor that would soften the concrete and keep the natural light moving through the flat. The pale oak feels understated, modern and very easy to live with.",
-      image: "/assets/real/real-home-london-white-oak.jpg",
-      product: "Brighton White Oak Matt",
-      finish: "Pale contemporary oak",
-      href: "/product/brighton-white-oak-engineered",
-    },
-  ];
   const roomPills = [
     ["Living Room", "/category/herringbone", "/assets/real/living-walnut.jpg"],
     ["Dining Room", "/category/solid", "/assets/real/dining-oak.jpg"],
@@ -630,12 +645,12 @@ function HomeView({ addSample }: { addSample: (slug: string) => void }) {
     <>
       <section ref={heroRef} className="hero aeline-hero">
         <div className="hero-depth-plane" aria-hidden="true">
-          <img className="hero-fallback-image" src="/assets/real/living-oak.jpg" alt="" />
-          {heroVideoNear ? (
+          <img className="hero-fallback-image" src={String(content.hero.image)} alt="" />
+          {heroVideoNear && content.hero.video ? (
             <video
               ref={heroVideoRef}
               className="hero-motion-video"
-              src="/assets/hero/uniq-video-1.mp4"
+              src={String(content.hero.video)}
               muted
               loop
               playsInline
@@ -644,16 +659,16 @@ function HomeView({ addSample }: { addSample: (slug: string) => void }) {
           ) : null}
         </div>
         <div className="hero-content">
-          <h1>Building the future<br />with premium floors</h1>
+          <h1 style={{whiteSpace:"pre-line"}}>{String(content.hero.title)}</h1>
           <p>
-            We help homes unlock warmth and style through distinctive wood and practical luxury vinyl.
+            {String(content.hero.description)}
           </p>
           <div className="hero-actions">
             <Link
               className="primary-btn hero-cta-btn"
-              href="/category/engineered"
+              href={String(content.hero.button_href)}
             >
-              GET STARTED
+              {String(content.hero.button_label)}
               <span className="cta-icon-circle"><PremiumIcon name="arrow" /></span>
             </Link>
           </div>
@@ -665,171 +680,101 @@ function HomeView({ addSample }: { addSample: (slug: string) => void }) {
 
       <MaterialFinishShowcase />
 
-      <section className="section real-homes-section">
-        <SectionHead
-          eyebrow="REAL HOMES"
-          title="Floors styled by customers, not just showrooms."
-          copy="Warm rooms, honest notes and product routes that help visitors imagine the floor in a lived-in space."
-          action={
-            <Link className="secondary-btn" href="/rooms">
-              View all
-            </Link>
-          }
-        />
-        <div className="real-homes-grid">
-          {realHomes.map((home) => (
-            <article className="real-home-card" key={home.name}>
-              <div className="real-home-photo">
-                <Image
-                  src={home.image}
-                  alt={`${home.finish} flooring in a ${home.location} home`}
-                  fill
-                  sizes="(max-width: 760px) 78vw, (max-width: 1100px) 42vw, 30vw"
-                />
-                <span className="real-home-photo-label">REAL HOME</span>
-                <span className="real-home-watermark" aria-hidden="true">
-                  <Image
-                    src="/assets/brand/uniq-white-watermark.png"
-                    alt=""
-                    width={72}
-                    height={72}
-                  />
-                </span>
-              </div>
-              <div className="real-home-copy">
-                <div className="real-home-person">
-                  <span>{home.initials}</span>
-                  <div>
-                    <strong>{home.name}</strong>
-                    <em>{home.location}</em>
-                  </div>
-                  <b>
-                    <PremiumIcon name="star" /> 5.0/5
-                  </b>
-                </div>
-                <blockquote>“{home.quote}”</blockquote>
-                <span className="real-home-finish">{home.finish}</span>
-                <Link href={home.href}>
-                  <span>{home.product}</span>
-                  <PremiumIcon name="arrow" />
-                </Link>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+      <RealHomesEditorial />
 
       <BeforeAfterComparison />
 
-      <section className="section customer-section stories-customer-section customer-editorial-section">
-        <div className="customer-editorial-inner">
-          <div className="customer-editorial-heading">
-            <p className="eyebrow">Thousands of happy customers</p>
-            <h2>
-              Chosen with confidence. Lived on beautifully.
-            </h2>
+      <section className="section customer-matched-section" aria-labelledby="customer-story-title">
+        <div className="about-editorial-inner">
+          <div className="about-editorial-top">
+            <div>
+              <p className="about-editorial-kicker">THOUSANDS OF HAPPY CUSTOMERS</p>
+              <h2 id="customer-story-title">Chosen with confidence. Lived on beautifully.</h2>
+            </div>
+            <Link className="about-editorial-link" href="/shop">
+              Discover floors <ArrowUpRight size={20} aria-hidden="true" />
+            </Link>
           </div>
-          <p className="customer-copy">
-            Samples that arrive quickly, advice that stays clear and floors that
-            feel right long after fitting. UNIQ keeps every decision calm,
-            visual and personal.
+          <p className="customer-matched-intro">
+            Samples that arrive quickly, advice that stays clear and floors that feel right long after fitting.
           </p>
-          <div className="customer-proof-rail" aria-label="UNIQ Floors customer proof">
+          <div className="about-editorial-principles customer-matched-principles" aria-label="UNIQ Floors customer proof">
             <article>
-              <span><PremiumIcon name="sample" /> 01</span>
-              <strong>18k+</strong>
+              <PremiumIcon name="sample" />
+              <h3><AnimatedMetric value={18} suffix="k+" /></h3>
               <p>Real flooring samples requested by UK homes.</p>
             </article>
             <article>
-              <span><PremiumIcon name="star" /> 02</span>
-              <strong>4.8/5</strong>
+              <PremiumIcon name="star" />
+              <h3><AnimatedMetric value={4.8} decimals={1} suffix="/5" /></h3>
               <p>Average customer rating for product and service.</p>
             </article>
             <article>
-              <span><PremiumIcon name="return" /> 03</span>
-              <strong>30 days</strong>
+              <PremiumIcon name="return" />
+              <h3><AnimatedMetric value={30} suffix=" days" /></h3>
               <p>Easy returns on unopened flooring packs.</p>
             </article>
           </div>
         </div>
       </section>
 
-      <AboutScrollReveal />
-
       <SampleBoxSection />
     </>
   );
 }
 
-function AboutScrollReveal() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [revealed, setRevealed] = useState(false);
-  const statement =
-    "We help homes choose better floors, compare real materials, and create rooms with lasting character.";
-  const words = statement.split(" ");
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setRevealed(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        setRevealed(true);
-        observer.disconnect();
-      },
-      { threshold: 0.24, rootMargin: "0px 0px -10% 0px" },
-    );
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
-
+function AboutPageView() {
   return (
-    <section
-      ref={sectionRef}
-      className={`section about-story-section about-type-section${revealed ? " is-revealed" : ""}`}
-      aria-labelledby="about-story-title"
-    >
-      <div className="about-type-sticky">
-        <div className="about-type-topline">
-          <span>About UNIQ FLOORS</span>
-          <i />
-          <span>Flooring, clearly chosen.</span>
+    <>
+      <section className="about-page-hero">
+        <div className="about-page-hero-copy">
+          <span>ABOUT UNIQ FLOORS</span>
+          <h1>Flooring, clearly chosen.</h1>
+          <p>We help homes find floors with lasting character. Discover distinctive materials, picture them in real rooms and get practical advice before making your choice.</p>
+          <Link href="/shop">Explore floors <ArrowUpRight size={19} aria-hidden="true" /></Link>
         </div>
-
-        <h2 id="about-story-title" aria-label={statement}>
-          {words.map((word, wordIndex) => (
-            <span
-              className="about-type-word"
-              aria-hidden="true"
-              key={`${word}-${wordIndex}`}
-              style={{ "--word-index": wordIndex } as CSSProperties}
-            >
-              {word}
-            </span>
-          ))}
-        </h2>
-
-        <div className="about-type-footer">
-          <p>
-            Distinctive materials, honest guidance and real-room inspiration
-            for confident flooring decisions.
-          </p>
-          <Link className="about-approach-btn" href="/guides">
-            Our approach
-            <PremiumIcon name="arrow" />
-          </Link>
+        <div className="about-page-hero-image">
+          <Image src="/assets/real/living-oak.jpg" alt="A warm living room with natural oak flooring" fill sizes="(max-width: 760px) 100vw, 50vw" />
         </div>
+      </section>
+      <AboutScrollReveal />
+      <section className="about-page-next">
+        <span>START WITH A SAMPLE</span>
+        <h2>See the finish in your space.</h2>
+        <p>Compare colour and texture at home, then ask our team about your room, measurements or fitting plan.</p>
+        <Link href="/category/engineered">Explore free samples <ArrowUpRight size={19} aria-hidden="true" /></Link>
+      </section>
+    </>
+  );
+}
 
-        <div className="about-type-progress" aria-hidden="true">
-          <span>01</span>
-          <i><b /></i>
-          <span>02</span>
+function AboutScrollReveal() {
+  return (
+    <section className="section about-editorial-section" aria-labelledby="about-story-title">
+      <div className="about-editorial-inner">
+        <div className="about-editorial-top">
+          <div>
+            <p className="about-editorial-kicker">ABOUT UNIQ FLOORS</p>
+            <h2 id="about-story-title">Better floors begin with a clearer choice.</h2>
+          </div>
+          <Link className="about-editorial-link" href="/about">About us <ArrowUpRight size={20} aria-hidden="true" /></Link>
+        </div>
+        <div className="about-editorial-principles">
+          <article>
+            <Layers3 aria-hidden="true" strokeWidth={1.5} />
+            <h3>Materials with character</h3>
+            <p>Real wood, considered patterns and practical finishes chosen for the way a room feels and works.</p>
+          </article>
+          <article>
+            <Sofa aria-hidden="true" strokeWidth={1.5} />
+            <h3>Made for real rooms</h3>
+            <p>See finishes in lived-in spaces and compare samples in your own light before you decide.</p>
+          </article>
+          <article>
+            <MessageCircle aria-hidden="true" strokeWidth={1.5} />
+            <h3>Guidance that stays</h3>
+            <p>Practical help with colour, quantities, fitting and delivery from the first sample onward.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -840,63 +785,15 @@ function HeroCarousel({ active }: { active: boolean }) {
   const [activeGroup, setActiveGroup] = useState(0);
   const [animating, setAnimating] = useState(true);
 
-  const adSlides = [
-    {
-      brand: "UNIQ Premium",
-      title: "Engineered Oak Classic",
-      sub: "Buy it once. Buy it right.",
-      desc: "From £51.99/m²",
-      image: "/assets/real/living-oak.jpg",
-      href: "/category/engineered",
-      bg: "linear-gradient(to right, #1e3a8a, #3b82f6)",
-      badge: "MEGA SALE",
-    },
-    {
-      brand: "LVT Collection",
-      title: "Waterproof Click Vinyl",
-      sub: "Perfect for kitchens & bathrooms",
-      desc: "From £16.99/m²",
-      image: "/assets/concerns-generated/concern-waterproof.webp",
-      href: "/category/lvt",
-      bg: "linear-gradient(to right, #111827, #374151)",
-      badge: "POPULAR",
-    },
-    {
-      brand: "Herringbone",
-      title: "Parquet Elegance",
-      sub: "Pattern floors · Boutique feel",
-      desc: "From £34.99/m²",
-      image: "/assets/real/dining-oak.jpg",
-      href: "/category/herringbone",
-      bg: "linear-gradient(to right, #064e3b, #10b981)",
-      badge: "TRENDING",
-    },
-    {
-      brand: "Solid Wood",
-      title: "True Oak Character",
-      sub: "Rich, natural textures",
-      desc: "From £65.00/m²",
-      image: "/assets/real/living-walnut.jpg",
-      href: "/category/solid",
-      bg: "linear-gradient(to right, #78350f, #d97706)",
-      badge: "PREMIUM",
-    },
-    {
-      brand: "Next Day",
-      title: "Free Samples",
-      sub: "Try colour at home first",
-      desc: "£0.00",
-      image: "/assets/real/office-oak.jpg",
-      href: "/samples",
-      bg: "linear-gradient(to right, #4c1d95, #8b5cf6)",
-      badge: "SAMPLES",
-    }
-  ];
+  const { content } = useStoreData();
+  const allSlides = (content.promotions.items || defaultPromotions) as Record<string, unknown>[];
+  const now = Date.now();
+  const adSlides = allSlides.filter(slide => slide.enabled && (!slide.starts_at || Date.parse(String(slide.starts_at)) <= now) && (!slide.ends_at || Date.parse(String(slide.ends_at)) > now)).map(slide => ({...slide, brand:String(slide.brand||''),title:String(slide.title),sub:String(slide.sub||''),desc:String(slide.desc||''),image:String(slide.image),href:String(slide.href),badge:String(slide.badge||''),bg:String(slide.colour)}));
 
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    if (!active) return;
+    if (!active || !adSlides.length) return;
 
     const timer = window.setInterval(() => {
       setActiveIndex((i) => (i + 1) % adSlides.length);
@@ -904,6 +801,7 @@ function HeroCarousel({ active }: { active: boolean }) {
     return () => window.clearInterval(timer);
   }, [active, adSlides.length]);
 
+  if (!adSlides.length) return null;
   return (
     <div className="hero-carousel" aria-label="Flooring promotions carousel">
       <div className="hc-window">
@@ -968,158 +866,130 @@ function HeroCarousel({ active }: { active: boolean }) {
 }
 
 function MaterialFinishShowcase() {
+  const { products } = useStoreData();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState<"next" | "previous">("next");
+  const [isVisible, setIsVisible] = useState(false);
   const swipeStartX = useRef<number | null>(null);
-  const active = materialShowcase[activeIndex] ?? materialShowcase[0];
+  const suppressClickAfterSwipe = useRef(false);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const floors = materialShowcase
+    .map((material) => ({
+      material,
+      product: products
+        .filter((product) => product.category === material.id)
+        .sort((first, second) => Number(second.rating) - Number(first.rating))[0],
+    }))
+    .filter((floor): floor is { material: (typeof materialShowcase)[number]; product: Product } => Boolean(floor.product));
+  const active = floors[activeIndex] ?? floors[0];
 
-  const showMaterial = (index: number) => {
-    const nextIndex = (index + materialShowcase.length) % materialShowcase.length;
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage || !('IntersectionObserver' in window)) {
+      setIsVisible(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.2 });
+    observer.observe(stage);
+    return () => observer.disconnect();
+  }, []);
+
+  if (!active) return null;
+
+  const showFloor = (index: number) => {
+    const nextIndex = (index + floors.length) % floors.length;
     if (nextIndex === activeIndex) return;
-    setDirection(index > activeIndex ? "next" : "previous");
     setActiveIndex(nextIndex);
   };
 
-  const finishMaterialSwipe = (endX: number) => {
+  const finishSwipe = (endX: number) => {
     if (swipeStartX.current === null) return;
-
     const distance = endX - swipeStartX.current;
     swipeStartX.current = null;
-
     if (Math.abs(distance) < 42) return;
-    showMaterial(activeIndex + (distance < 0 ? 1 : -1));
+    suppressClickAfterSwipe.current = true;
+    showFloor(activeIndex + (distance < 0 ? 1 : -1));
   };
 
   return (
-    <section
-      className="section category-section material-showcase-section"
-      aria-labelledby="material-showcase-title"
-    >
-      <SectionHead
-        eyebrow="Flooring types"
-        title="Meet every material, one at a time."
-        copy="Swipe the planks and bring each floor into focus. Compare its build, finish and best use before exploring the collection."
-      />
-
+    <section className="section category-section floor-editorial-section" aria-labelledby="floor-editorial-title">
       <div
-        className={`material-showcase-shell material-presentation-shell direction-${direction}`}
-        style={{ "--sample-tone": active.tone } as CSSProperties}
+        ref={stageRef}
+        className={`floor-editorial-stage${isVisible ? " is-visible" : ""}`}
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Featured flooring"
+        tabIndex={0}
+        onKeyDown={(event) => {
+          if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+          event.preventDefault();
+          showFloor(activeIndex + (event.key === "ArrowRight" ? 1 : -1));
+        }}
+        onPointerDown={(event) => {
+          if ((event.target as HTMLElement).closest("a, .floor-editorial-controls")) return;
+          suppressClickAfterSwipe.current = false;
+          swipeStartX.current = event.clientX;
+        }}
+        onPointerUp={(event) => finishSwipe(event.clientX)}
+        onPointerCancel={() => { swipeStartX.current = null; }}
       >
-        <div
-          className="material-presentation-stage"
-          role="region"
-          aria-roledescription="carousel"
-          aria-label={`${active.title}, material ${activeIndex + 1} of ${materialShowcase.length}`}
-          tabIndex={0}
-          onPointerDown={(event) => {
-            if ((event.target as HTMLElement).closest(".material-presentation-controls, a")) return;
-            swipeStartX.current = event.clientX;
-            event.currentTarget.setPointerCapture(event.pointerId);
-          }}
-          onPointerUp={(event) => finishMaterialSwipe(event.clientX)}
-          onPointerCancel={() => {
-            swipeStartX.current = null;
-          }}
-          onKeyDown={(event) => {
-            if (event.key === "ArrowLeft") showMaterial(activeIndex - 1);
-            if (event.key === "ArrowRight") showMaterial(activeIndex + 1);
-          }}
-        >
-          {materialShowcase.map((item, index) => {
-            let offset = index - activeIndex;
-            const halfway = Math.floor(materialShowcase.length / 2);
-            if (offset > halfway) offset -= materialShowcase.length;
-            if (offset < -halfway) offset += materialShowcase.length;
-            const selected = index === activeIndex;
+        <div className="floor-editorial-heading">
+          <span className="floor-editorial-overline">THE UNIQ FLOOR EDIT <i /> {String(activeIndex + 1).padStart(2, "0")} / {String(floors.length).padStart(2, "0")}</span>
+          <h2 id="floor-editorial-title" key={active.product.slug}>{active.product.colour || active.material.title}</h2>
+        </div>
 
+        <div className="floor-editorial-gallery" aria-label="Choose a featured floor">
+          {floors.map(({ material, product }, index) => {
+            let offset = index - activeIndex;
+            const halfway = Math.floor(floors.length / 2);
+            if (offset > halfway) offset -= floors.length;
+            if (offset < -halfway) offset += floors.length;
+            const selected = index === activeIndex;
+            const distance = Math.abs(offset);
+            const angle = offset * 5;
             return (
               <button
-                className={`material-deck-card${selected ? " is-active" : ""}`}
+                className={`floor-editorial-plank${selected ? " is-active" : ""}`}
                 type="button"
-                aria-label={`Show ${item.title}`}
-                aria-current={selected ? "true" : undefined}
+                aria-label={`Show ${product.name}`}
+                aria-pressed={selected}
+                aria-hidden={distance > 1}
                 tabIndex={selected ? 0 : -1}
-                onClick={() => showMaterial(index)}
+                onClick={() => {
+                  if (suppressClickAfterSwipe.current) {
+                    suppressClickAfterSwipe.current = false;
+                    return;
+                  }
+                  showFloor(index);
+                }}
                 data-offset={offset}
-                style={
-                  {
-                    "--material-offset": offset,
-                    "--material-distance": Math.abs(offset),
-                    "--material-card-tone": item.tone,
-                    zIndex: materialShowcase.length - Math.abs(offset),
-                  } as CSSProperties
-                }
-                key={item.id}
+                style={{ "--floor-offset": offset, "--floor-distance": distance, "--floor-angle": `${angle}deg`, "--floor-scale": Math.max(0.4, 1 - distance * 0.24), "--floor-arrival": offset + 3, zIndex: floors.length - distance } as CSSProperties}
+                key={material.id}
               >
-                <span className="material-deck-glow" aria-hidden="true" />
-                <img src={item.sample} alt="" draggable={false} />
-                <span className="material-deck-name">{item.title}</span>
+                <span className="floor-editorial-visual" aria-hidden="true">
+                  <Image src={product.textureImage} alt="" fill sizes="(max-width: 700px) 52vw, 18vw" draggable={false} />
+                </span>
               </button>
             );
           })}
-
-          <div className="material-presentation-title" key={`title-${active.id}`}>
-            <span>{active.label}</span>
-            <strong>{active.title}</strong>
-          </div>
-
-          <span className="material-presentation-count">
-            {String(activeIndex + 1).padStart(2, "0")}
-            <i />
-            {String(materialShowcase.length).padStart(2, "0")}
-          </span>
-
-          <span className="material-presentation-hint">
-            <PremiumIcon name="sliders" /> Swipe to discover
-          </span>
-
-          <div className="material-presentation-controls">
-            <button type="button" aria-label="Previous material" onClick={() => showMaterial(activeIndex - 1)}>
-              ←
-            </button>
-            <div role="tablist" aria-label="Choose a flooring material">
-              {materialShowcase.map((item, index) => (
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={index === activeIndex}
-                  aria-label={`Show ${item.title}`}
-                  className={index === activeIndex ? "active" : ""}
-                  onClick={() => showMaterial(index)}
-                  key={`dot-${item.id}`}
-                />
-              ))}
-            </div>
-            <button type="button" aria-label="Next material" onClick={() => showMaterial(activeIndex + 1)}>
-              →
-            </button>
-          </div>
         </div>
 
-        <div className="material-presentation-copy" key={`copy-${active.id}`}>
-          <div className="material-presentation-intro">
-            <div className="material-focus-option-head">
-              <span className="material-focus-number">
-                {String(activeIndex + 1).padStart(2, "0")}
-              </span>
-              <p className="eyebrow">
-                <PremiumIcon name="layers" /> Material in focus
-              </p>
-              <span className="material-focus-selected">Selected</span>
-            </div>
-            <p>{active.short}</p>
+        <div className="floor-editorial-details" key={`detail-${active.product.slug}`} aria-live="polite">
+          <div className="floor-editorial-description">
+            <h3>{active.product.name}</h3>
           </div>
-
-          <div className="material-presentation-specs">
-            <span><small>Build</small><strong>{active.detail}</strong></span>
-            <span><small>Finish</small><strong>{active.finish}</strong></span>
-            <span><small>Best for</small><strong>{active.bestFor}</strong></span>
-            <span><small>Character</small><strong>{active.character}</strong></span>
+          <div className="floor-editorial-facts">
+            <span><small>From</small><strong>{money(active.product.price)} <em>/ m²</em></strong></span>
+            <Link href={`/product/${active.product.slug}`}>Explore this floor <ArrowUpRight size={19} aria-hidden="true" /></Link>
           </div>
-
-          <Link className="material-presentation-link" href={active.href}>
-            Explore collection <PremiumIcon name="arrow" />
-          </Link>
+        </div>
+        <div className="floor-editorial-controls" aria-label="Choose a featured floor">
+          <button type="button" aria-label="Previous floor" onClick={() => showFloor(activeIndex - 1)}><ChevronLeft size={20} aria-hidden="true" /></button>
+          <button type="button" aria-label="Next floor" onClick={() => showFloor(activeIndex + 1)}><ChevronRight size={20} aria-hidden="true" /></button>
         </div>
       </div>
     </section>
@@ -1127,29 +997,29 @@ function MaterialFinishShowcase() {
 }
 
 function SampleBoxSection() {
+  const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const [opened, setOpened] = useState(false);
 
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setOpened(true), 400);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.4 },
-    );
-    observer.observe(el);
+    const section = sectionRef.current;
+    if (!section || !("IntersectionObserver" in window)) {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setIsVisible(true);
+      observer.disconnect();
+    }, { threshold: 0.22 });
+    observer.observe(section);
     return () => observer.disconnect();
   }, []);
 
   return (
     <section
       ref={sectionRef}
-      className={`sbs-section sample-palette-section${opened ? " sbs-opened" : ""}`}
+      className={`sbs-section sample-palette-section${isVisible ? " is-visible" : ""}`}
     >
       <div className="sample-palette-visual">
         <div className="sample-palette-stage">
@@ -1179,7 +1049,7 @@ function SampleBoxSection() {
           </p>
           <span>01 / 03</span>
         </div>
-        <h2>Let the floor rise into your room before you buy.</h2>
+        <h2>Let the floor <em>rise</em> into your room before you buy.</h2>
         <p>
           Choose real wood tones, compare texture at home and build a premium
           palette before ordering full packs.
@@ -1216,61 +1086,17 @@ function SampleBoxSection() {
 
 
 function PostHeroReference() {
+  const { products, categories, productBySlug, categoryById, productsByCategory, content, selectionWhatsAppHref, whatsappHref, whatsappVideoHref, storeMapHref } = useStoreData();
   const benefitStrip = [
     ["price", "Price Match Guarantee"],
     ["truck", "Free Next Day Samples"],
     ["sample", "Free XL Samples"],
     ["return", "30-Day Returns"],
   ];
-  const floorTypes = [
-    [
-      "Engineered Wood Flooring",
-      "/category/engineered",
-      "/assets/categories/generated/engineered-focused.jpg",
-    ],
-    [
-      "Vinyl (LVT)",
-      "/category/lvt",
-      "/assets/categories/generated/lvt-focused.jpg",
-    ],
-    [
-      "Laminate Flooring",
-      "/category/laminate",
-      "/assets/categories/generated/laminate-focused.jpg",
-    ],
-    [
-      "Solid Oak Flooring",
-      "/category/solid",
-      "/assets/categories/generated/solid-oak-focused.jpg",
-    ],
-    [
-      "SPC Click Vinyl",
-      "/category/spc",
-      "/assets/categories/generated/spc-focused.jpg",
-    ],
-    [
-      "Parquet & Herringbone",
-      "/category/herringbone",
-      "/assets/categories/generated/herringbone-focused.jpg",
-    ],
-  ];
   const whyItems = [
-    ["price", "Price Match Promise", "Found it cheaper? We'll match it."],
-    [
-      "truck",
-      "Fast Nationwide Delivery",
-      "Your flooring delivered quickly and reliably across the UK.",
-    ],
-    [
-      "sample",
-      "Free XL Samples",
-      "Order samples to see and feel the quality before you buy.",
-    ],
-    [
-      "star",
-      "Trustpilot Rated Excellent",
-      "Thousands of happy customers choose UNIQ FLOORS.",
-    ],
+    ["layers", "Considered materials", "Real wood, resilient vinyl and carefully chosen finishes for rooms that feel like yours."],
+    ["palette", "Distinctive by design", "From quiet natural oak to bold parquet, every collection starts with the character of the space."],
+    ["care", "Made for everyday life", "Practical advice, samples and dependable support help you choose a floor you will love living on."],
   ];
 
   return (
@@ -1299,26 +1125,12 @@ function PostHeroReference() {
         </div>
       </div>
 
-      <div className="reference-category-band">
-        <div className="reference-category-grid">
-          {floorTypes.map(([title, href, image]) => (
-            <Link href={href} key={title}>
-              <img
-                src={image}
-                alt={`${title} close-up`}
-                loading="lazy"
-                decoding="async"
-              />
-              <strong>{title}</strong>
-            </Link>
-          ))}
-        </div>
-      </div>
+      <FlooringCategoryBlocks />
 
       <div className="reference-why">
         <div className="reference-why-head">
-          <p>Why choose us</p>
-          <h2>Discover the Magic</h2>
+          <h2>Floors made for the way you live.</h2>
+          <Link href="/about">About us <ArrowUpRight size={17} aria-hidden="true" /></Link>
         </div>
         <div className="reference-why-grid">
           {whyItems.map(([icon, title, copy]) => (
@@ -1336,6 +1148,44 @@ function PostHeroReference() {
   );
 }
 
+const categoryBlockCollections = {
+  residential: [
+    { title: "Engineered Wood", href: "/category/engineered", image: "/assets/categories/generated/engineered-focused.jpg" },
+    { title: "Luxury Vinyl", href: "/category/lvt", image: "/assets/categories/generated/lvt-focused.jpg" },
+    { title: "Herringbone", href: "/category/herringbone", image: "/assets/categories/generated/herringbone-focused.jpg" },
+    { title: "Carpet", href: "/carpets", image: "/assets/material-illustrations/carpet.webp" },
+  ],
+  commercial: [
+    { title: "Luxury Vinyl", href: "/category/lvt", image: "/assets/rooms-generated/room-commercial.webp" },
+    { title: "SPC Rigid Core", href: "/category/spc", image: "/assets/categories/generated/spc-focused.jpg" },
+    { title: "Laminate", href: "/category/laminate", image: "/assets/categories/generated/laminate-focused.jpg" },
+    { title: "Carpet", href: "/carpets", image: "/assets/material-illustrations/carpet-grey.webp" },
+  ],
+} as const;
+
+function FlooringCategoryBlocks() {
+  const [audience, setAudience] = useState<"residential" | "commercial">("residential");
+
+  return (
+    <section className="home-category-blocks" aria-label="Explore flooring collections">
+      <div className="home-category-blocks-switch" aria-label="Choose a flooring collection">
+        <button type="button" aria-pressed={audience === "residential"} onClick={() => setAudience("residential")}>Residential</button>
+        <button type="button" aria-pressed={audience === "commercial"} onClick={() => setAudience("commercial")}>Commercial</button>
+      </div>
+      <div className="home-category-blocks-grid" key={audience}>
+        {categoryBlockCollections[audience].map(({ title, href, image }) => (
+          <Link className="home-category-block" href={href} key={title} aria-label={`Explore ${title} flooring`}>
+            <img src={image} alt="" loading="lazy" decoding="async" />
+            <span className="home-category-block-shade" aria-hidden="true" />
+            <span className="home-category-block-title">{title}</span>
+            <ArrowUpRight className="home-category-block-arrow" size={27} aria-hidden="true" />
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function BeforeAfterComparison() {
   const [dividerPosition, setDividerPosition] = useState(52);
 
@@ -1344,11 +1194,10 @@ function BeforeAfterComparison() {
       <div className="before-after-heading">
         <div>
           <p className="eyebrow">Before &amp; after</p>
-          <h2 id="before-after-title">Slide into a completely different room.</h2>
+          <h2 id="before-after-title">See what a floor can do.</h2>
         </div>
         <p>
-          Drag the glass handle to see how a warm natural floor changes the light,
-          depth and feeling of the same space.
+          One room, two finishes. Drag across to see the difference.
         </p>
       </div>
 
@@ -1392,11 +1241,6 @@ function BeforeAfterComparison() {
           aria-valuetext={`${dividerPosition}% before image and ${100 - dividerPosition}% after image`}
         />
 
-        <div className="comparison-note" aria-hidden="true">
-          <span>Concrete shell</span>
-          <i>Drag to transform</i>
-          <span>Natural oak finish</span>
-        </div>
       </div>
     </section>
   );
@@ -1520,7 +1364,7 @@ function RollingAds() {
         copy: "Living, dining, hallway and office",
         deal: "Inspire",
         image: "/assets/real/office-oak.jpg",
-        href: "/rooms",
+        href: "/live-room",
         icon: "room",
         tone: "lime",
       },
@@ -1642,6 +1486,7 @@ function CategoryView({
   id?: string;
   addSample: (slug: string) => void;
 }) {
+  const { products, categories, productBySlug, categoryById, productsByCategory, content, selectionWhatsAppHref, whatsappHref, whatsappVideoHref, storeMapHref } = useStoreData();
   const category = categoryById(id);
   const [filter, setFilter] = useState("all");
   const visibleProducts = productsByCategory(category.id).filter((product) => {
@@ -1697,7 +1542,10 @@ function ShopView({
 }: {
   addToCart: (slug: string, quantity: number) => void;
 }) {
+  const { products, categories, productBySlug, categoryById, productsByCategory, content, selectionWhatsAppHref, whatsappHref, whatsappVideoHref, storeMapHref } = useStoreData();
   const [material, setMaterial] = useState("all");
+  const [shopColour, setShopColour] = useState("all");
+  const [shopSearch, setShopSearch] = useState("");
   const [discoveryTab, setDiscoveryTab] = useState<"category" | "concern">("category");
   const shopConcerns: {
     title: string;
@@ -1749,12 +1597,13 @@ function ShopView({
     "brighton-white-oak-engineered",
   ];
   const bestsellerProducts = bestsellerSlugs
-    .map((slug) => productBySlug(slug))
+    .map((slug) => products.find(product => product.slug === slug))
     .filter((product): product is Product => Boolean(product));
-  const visibleProducts =
-    material === "all"
-      ? products
-      : products.filter((product) => product.category === material);
+  const visibleProducts = products.filter(product =>
+    (material === "all" || product.category === material) &&
+    (shopColour === "all" || product.colour === shopColour) &&
+    `${product.name} ${product.colour} ${product.finish}`.toLowerCase().includes(shopSearch.toLowerCase())
+  );
 
   return (
     <>
@@ -1762,6 +1611,25 @@ function ShopView({
         <p className="eyebrow">The UNIQ floor edit</p>
         <h1>Shop floors for every kind of home.</h1>
         <p>Browse by material or start with what your room needs.</p>
+        <div className="shop-intro-actions">
+          <Link className="shop-expanded-collection-link" href="/carpets" aria-label="Explore the carpet collection">
+            <span className="shop-collection-symbol" aria-hidden="true"><PremiumIcon name="layers" /></span>
+            <span className="shop-collection-label"><small>EXPLORE THE COLLECTION</small><strong>Shop carpets</strong></span>
+            <PremiumIcon name="arrow" />
+          </Link>
+          <nav className="customer-shop-channel" aria-label="Choose how to shop">
+            <Link className="shop-channel-option is-current" href="#products" aria-current="page">
+              <span className="shop-channel-icon"><PremiumIcon name="home" /></span>
+              <span className="shop-channel-copy"><strong>For your home</strong><small>Browse floors &amp; samples</small></span>
+              <PremiumIcon name="arrow" />
+            </Link>
+            <Link className="shop-channel-option" href="/retailers">
+              <span className="shop-channel-icon"><PremiumIcon name="briefcase" /></span>
+              <span className="shop-channel-copy"><strong>For professionals</strong><small>Retailer sign in</small></span>
+              <PremiumIcon name="arrow" />
+            </Link>
+          </nav>
+        </div>
       </section>
 
       <section className="shop-discovery-section" aria-label="Discover flooring">
@@ -1856,6 +1724,7 @@ function ShopView({
             </button>
           ))}
         </div>
+        <div className="customer-colour-filters"><label>Find your floor<input value={shopSearch} onChange={e=>setShopSearch(e.target.value)} placeholder="Search names, colours or finishes"/></label><label>Colour<select value={shopColour} onChange={e=>setShopColour(e.target.value)}><option value="all">All colours</option>{[...new Set(products.map(product=>product.colour))].map(colour=><option key={colour}>{colour}</option>)}</select></label></div>
         <p className="catalogue-count">Showing <strong>{visibleProducts.length}</strong> floors</p>
         <div className="grid products-grid">
           {visibleProducts.map((product) => (
@@ -1863,6 +1732,7 @@ function ShopView({
           ))}
         </div>
       </section>
+      <ManufacturerCatalogue/>
       <RoomInspirationSection />
     </>
   );
@@ -1875,7 +1745,7 @@ function RoomInspirationSection() {
         eyebrow="Shop by room"
         title="Start with how the room lives."
         copy="Find flooring shaped around moisture, traffic, comfort and the atmosphere you want to create."
-        action={<Link className="secondary-btn" href="/rooms">Try Live Room <PremiumIcon name="camera" /></Link>}
+        action={<Link className="secondary-btn" href="/live-room">Try Live Room <PremiumIcon name="camera" /></Link>}
       />
       <div className="room-inspiration-scroll">
         {rooms.map(([name, copy, category, image]) => (
@@ -1900,6 +1770,7 @@ function RoomCameraStudio({
   addToCart: (slug: string, quantity: number) => void;
   autoStart?: boolean;
 }) {
+  const { products, categories, productBySlug, categoryById, productsByCategory, content, selectionWhatsAppHref, whatsappHref, whatsappVideoHref, storeMapHref } = useStoreData();
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const autoAttemptedRef = useRef(false);
@@ -2115,21 +1986,21 @@ function ProductView({
   addSample: (slug: string) => void;
   addToCart: (slug: string, quantity: number) => void;
 }) {
+  const { products, categories, productBySlug, categoryById, productsByCategory, content, selectionWhatsAppHref, whatsappHref, whatsappVideoHref, storeMapHref } = useStoreData();
   const product = productBySlug(slug);
   const category = categoryById(product.category);
   const [area, setArea] = useState(20);
   const [waste, setWaste] = useState(10);
-  const packCoverage = 2.2;
-  const requiredArea = area * (1 + waste / 100);
-  const packs = Math.max(1, Math.ceil(requiredArea / packCoverage));
-  const coveredArea = packs * packCoverage;
-  const estimatedTotal = coveredArea * product.price;
+  const packCoverage = product.packCoverage || 2.2;
+  const { packs, coveredArea } = calculatePacks(area.toFixed(4), packCoverage.toFixed(4), waste);
+  const estimatedTotal = lineTotalPence(coveredArea.toFixed(4), Math.round(product.price * 100)) / 100;
   const discountPercent = Math.max(0, Math.round((1 - product.price / product.old) * 100));
   const packPrice = product.price * packCoverage;
+  const orderWhatsAppHref = selectionWhatsAppHref("customer", [{ name: product.name, colour: product.colour, quantity: packs, unit: "packs", area: String(area) }]);
   const shadeOptions = products.filter((item) => item.category === product.category).slice(0, 6);
-  const productWhatsappHref = `https://api.whatsapp.com/send/?phone=447938373500&text=${encodeURIComponent(`Hello, I'm interested in buying ${product.name} through WhatsApp.`)}&type=phone_number&app_absent=0`;
-  const productVideoHref = `https://api.whatsapp.com/send/?phone=447938373500&text=${encodeURIComponent(`Hello, I'm interested in buying ${product.name} through a WhatsApp video call.`)}&type=phone_number&app_absent=0`;
-  const bulkOrderHref = `https://api.whatsapp.com/send/?phone=447938373500&text=${encodeURIComponent(`Hello, I'd like a bulk flooring quote for ${product.name}.`)}&type=phone_number&app_absent=0`;
+  const productWhatsappHref = `https://api.whatsapp.com/send/?phone=${String(content.business?.whatsapp_number||"447938373500")}&text=${encodeURIComponent(`Hello, I'm interested in buying ${product.name} through WhatsApp.`)}&type=phone_number&app_absent=0`;
+  const productVideoHref = `https://api.whatsapp.com/send/?phone=${String(content.business?.whatsapp_number||"447938373500")}&text=${encodeURIComponent(`Hello, I'm interested in buying ${product.name} through a WhatsApp video call.`)}&type=phone_number&app_absent=0`;
+  const bulkOrderHref = `https://api.whatsapp.com/send/?phone=${String(content.business?.whatsapp_number||"447938373500")}&text=${encodeURIComponent(`Hello, I'd like a bulk flooring quote for ${product.name}.`)}&type=phone_number&app_absent=0`;
   const galleryItems = [
     {
       id: "sample",
@@ -2178,17 +2049,30 @@ function ProductView({
   };
 
   const related = products
-    .filter(
-      (item) =>
-        item.category === product.category && item.slug !== product.slug,
-    )
+    .filter((item) => item.slug !== product.slug)
+    .sort((a, b) => Number(b.category === product.category) - Number(a.category === product.category))
     .slice(0, 4);
+  const reviewWhatsappHref = `https://api.whatsapp.com/send/?phone=${String(content.business?.whatsapp_number||"447938373500")}&text=${encodeURIComponent(`Hello UNIQ FLOORS, I'd like to share feedback about ${product.name}.`)}&type=phone_number&app_absent=0`;
 
   return (
-    <div className="product-experience">
+    <div className="product-experience frido-legacy-product">
+      <header className="frido-product-topbar"><button className="frido-product-back" type="button" onClick={() => {
+        if (document.referrer && new URL(document.referrer).origin === window.location.origin) window.history.back();
+        else window.location.assign(`/category/${product.category}`);
+      }}><span className="frido-back-icon"><ArrowLeft size={17} strokeWidth={1.8} aria-hidden="true" /></span><span>Back to shop</span></button><div className="frido-product-brand"><img src="/assets/brand/uniq-header-logo.png" alt="UNIQ FLOORS" width="720" height="279" /></div><div className="frido-product-category" aria-label={`Collection: ${category.title}`}><span className="frido-category-icon" aria-hidden="true"><Layers3 size={18} strokeWidth={1.5} /></span><span className="frido-category-copy"><small>THE COLLECTION</small><strong>{category.title}</strong></span></div></header>
       <div className="product-announcement" aria-label="Shopping benefits">
-        <span>Free samples</span><span>30-day returns on unopened packs</span><span>Expert flooring advice</span><span>Secure checkout</span>
+        <div className="product-benefit-track">
+          {[0, 1, 2, 3].map((copy) => (
+            <div className="product-benefit-set" aria-hidden={copy !== 0} key={copy}>
+              <span><PackageCheck aria-hidden="true" size={17} strokeWidth={1.6} />Free samples</span>
+              <span><RotateCcw aria-hidden="true" size={17} strokeWidth={1.6} />30-day returns on unopened packs</span>
+              <span><Ruler aria-hidden="true" size={17} strokeWidth={1.6} />Expert flooring advice</span>
+              <span><MessageCircle aria-hidden="true" size={17} strokeWidth={1.6} />Order with our team</span>
+            </div>
+          ))}
+        </div>
       </div>
+      <div className="frido-product-sticky-order"><strong>{product.name}</strong><span>{money(product.price)} <small>per m²</small></span><a href={orderWhatsAppHref} target="_blank" rel="noopener noreferrer">Order on WhatsApp <span aria-hidden="true">↗</span></a></div>
       <section className="product-cinematic-hero" aria-labelledby="product-hero-title">
         <img src={product.roomImage} alt={`${product.name} fitted in a room`} />
         <div className="product-hero-shade" />
@@ -2239,12 +2123,13 @@ function ProductView({
               onTouchStart={handleGalleryTouchStart}
               onTouchEnd={handleGalleryTouchEnd}
             >
-              <div className="product-gallery-backdrop" style={{ backgroundImage: `url(${activeGallery.image})` }} aria-hidden="true" />
               <div className="product-gallery-heading">
-                <h2>Natural character. Made for living.</h2>
+                <h2>{product.colour}. Made for living.</h2>
                 <p><span aria-label={`${product.rating} out of 5 stars`}>★★★★★</span> <a href="#reviews">{product.rating}</a></p>
               </div>
-              <img key={activeGallery.id} src={activeGallery.image} alt={activeGallery.alt} />
+              <div className="product-gallery-image-frame">
+                <img key={activeGallery.id} src={activeGallery.image} alt={activeGallery.alt} />
+              </div>
               <div className="gallery-label"><span>{String(activeGalleryItem + 1).padStart(2, "0")}</span> {activeGallery.label}</div>
               <div className="gallery-caption">
                 <PremiumIcon name={activeGallery.id === "sample" ? "scan" : "room"} />
@@ -2278,31 +2163,31 @@ function ProductView({
           </div>
           <div className="product-info reference-product-info" id="product-buy">
             <div className="product-title-row">
-              <p className="product-kicker"><PremiumIcon name="badge" /> {product.badge} · {category.title}</p>
-              <span className="product-stock"><i /> In stock</span>
+              <p className="product-kicker"><span className="product-kicker-marker" aria-hidden="true" /><span><small>UNIQ SELECT / {product.badge}</small><strong>{category.title}</strong></span></p>
+              <span className="product-stock"><span className="product-stock-icon"><MessageCircle size={17} strokeWidth={1.7} aria-hidden="true" /></span><span><small>AVAILABILITY</small><strong>{product.availability === "in_stock" ? "In stock" : product.availability === "out_of_stock" ? "Out of stock" : product.availability === "made_to_order" ? "Made to order" : "Ask our team"}</strong></span></span>
             </div>
-            <h2>{product.name}</h2>
+            <h1>{product.name}</h1>
             <div className="product-rating-row">
               <span className="product-stars" aria-label={`${product.rating} out of 5 stars`}>★★★★★</span>
-              <a href="#reviews">{product.rating}/5 · verified flooring customers</a>
+              <a href="#reviews">{product.rating}/5 · customer rating</a>
             </div>
 
             <div className="reference-price-block">
-              <div><strong>{money(product.price)}</strong><del>{money(product.old)}</del><span>{discountPercent}% OFF</span></div>
+              <div><strong>{money(product.price)}</strong>{product.old > product.price && <><del>{money(product.old)}</del><span>{discountPercent}% OFF</span></>}</div>
               <p>per m² · VAT included</p>
-              <small>One 2.2 m² pack from <b>{money(packPrice)}</b></small>
+              <small>One {packCoverage} m² pack from <b>{money(packPrice)}</b></small>
             </div>
 
             <div className="floor-offer-card">
               <span><PremiumIcon name="price" /></span>
-              <div><strong>Order exactly what your room needs</strong><small>Use the pack calculator below. Waste allowance is included automatically.</small></div>
+              <div><strong>Plan your floor with confidence</strong><small>Estimate packs for your room, including a waste allowance.</small></div>
             </div>
 
             <div className="product-shade-choice">
-              <div><span>Colour</span><strong>{product.colour}</strong></div>
-              <div className="product-shade-options" aria-label="Available flooring colours">
+              <div><span>Explore similar floors</span><strong>{product.colour}</strong></div>
+              <div className="product-shade-options" aria-label="Explore other floors in this range">
                 {shadeOptions.map((option) => (
-                  <Link className={option.slug === product.slug ? "active" : ""} href={`/product/${option.slug}`} aria-label={`Choose ${option.colour}`} key={option.slug}>
+                  <Link className={option.slug === product.slug ? "active" : ""} href={`/product/${option.slug}`} aria-label={`Explore ${option.name}`} key={option.slug}>
                     <img src={option.image} alt="" />
                     <span>{option.colour}</span>
                   </Link>
@@ -2319,7 +2204,7 @@ function ProductView({
               </div>
               <label className="area-input">
                 <span>Floor area</span>
-                <span><input type="number" min="1" max="500" value={area} onChange={(event) => setArea(Math.max(1, Number(event.target.value) || 1))} /> m²</span>
+                <span><input type="number" min="1" max="500" step="0.0001" value={area} onChange={(event) => { const value = Number(event.target.value); setArea(Number.isFinite(value) ? Math.min(500, Math.max(1, value)) : 1); }} /> m²</span>
               </label>
 
               <div className="config-title config-title-spacing">
@@ -2343,17 +2228,11 @@ function ProductView({
               </div>
               <div className="product-buy-actions">
                 <button className="buy-add-cart" type="button" onClick={() => addToCart(product.slug, packs)}><PremiumIcon name="cart" /><span>Add to cart<small>{packs} packs · {money(estimatedTotal)}</small></span></button>
-                <button className="buy-order-now" type="button" onClick={() => addToCart(product.slug, packs)}><PremiumIcon name="arrow" /><span>Order now<small>Continue securely</small></span></button>
+                <a className="buy-order-now" href={orderWhatsAppHref} target="_blank" rel="noopener noreferrer"><PremiumIcon name="message" /><span>Order on WhatsApp<small>Confirm with our flooring team</small></span></a>
                 <a className="buy-visit-store" href={storeMapHref} target="_blank" rel="noreferrer"><PremiumIcon name="map" /><span>Visit store<small>Open Google Maps</small></span></a>
               </div>
-              <p className="checkout-reassurance"><PremiumIcon name="shield" /> Secure checkout · Exact delivery cost confirmed before payment</p>
-            </div>
-
-            <div className="reference-service-strip" aria-label="Product services">
-              <div><PremiumIcon name="shield" /><span><strong>5 Year Warranty</strong><small>Store warranty support</small></span></div>
-              <button type="button" onClick={() => addSample(product.slug)}><PremiumIcon name="sample" /><span><strong>Free sample</strong><small>See it in your home</small></span></button>
-              <div><PremiumIcon name="return" /><span><strong>30-day returns</strong><small>On unopened packs</small></span></div>
-              <div><PremiumIcon name="shield" /><span><strong>Secure payment</strong><small>Protected checkout</small></span></div>
+              <p className="checkout-reassurance"><PremiumIcon name="shield" /> Our team confirms stock, price, delivery and payment on WhatsApp</p>
+              <p className="pack-estimate-note">Pack quantities use {packCoverage} m² coverage. Our team confirms the pack size and availability before you order.</p>
             </div>
 
             <div className="product-actions product-actions-priority product-secondary-actions reference-secondary-actions">
@@ -2377,6 +2256,13 @@ function ProductView({
           </div>
         </div>
 
+        <section className="reference-service-strip" aria-label="Why choose UNIQ FLOORS">
+          <div className="service-strip-heading"><p className="eyebrow">THE UNIQ EXPERIENCE</p><h2>Why choose <br />UNIQ FLOORS.</h2></div>
+          <article className="service-strip-item"><span className="service-strip-number">01</span><PackageCheck aria-hidden="true" strokeWidth={1.1} /><div><h3>See it at home</h3><p>Order a free sample and compare the colour in your own light before choosing.</p><button type="button" onClick={() => addSample(product.slug)}>Order a sample <ArrowUpRight size={16} /></button></div></article>
+          <article className="service-strip-item"><span className="service-strip-number">02</span><Ruler aria-hidden="true" strokeWidth={1.1} /><div><h3>Plan with confidence</h3><p>Our team can help check your measurements, pack estimate and delivery options.</p><a href={productWhatsappHref} target="_blank" rel="noopener noreferrer">Ask our team <ArrowUpRight size={16} /></a></div></article>
+          <article className="service-strip-item"><span className="service-strip-number">03</span><RotateCcw aria-hidden="true" strokeWidth={1.1} /><div><h3>Support after purchase</h3><p>30-day returns on unopened packs. Listed warranty: {product.warranty}. Ask us for the terms.</p><a href={productWhatsappHref} target="_blank" rel="noopener noreferrer">View your options <ArrowUpRight size={16} /></a></div></article>
+        </section>
+
         <div className="product-shopping-help">
           <div className="shopping-help-copy">
             <p className="eyebrow">Need help shopping?</p>
@@ -2398,15 +2284,14 @@ function ProductView({
 
       <section className="section product-confidence-section" id="product-details">
         <div className="confidence-intro">
-          <p className="eyebrow">Why this floor works</p>
-          <h2>Made to look considered. Built to live on.</h2>
-          <p>From the surface texture to the fitting system, every detail is chosen to make the room feel calmer and everyday care feel easier.</p>
+          <p className="eyebrow">Closer look</p>
+          <h2>Product highlights</h2>
+          <p>Explore the finish, see it in a room and check the details before you choose.</p>
         </div>
         <div className="confidence-grid">
-          <article><PremiumIcon name="layers" /><span>01</span><h3>Authentic surface</h3><p>{product.finish} texture with balanced grain variation across each board.</p></article>
-          <article><PremiumIcon name="shield" /><span>02</span><h3>Daily durability</h3><p>{product.wear} construction selected for busy UK homes and furniture movement.</p></article>
-          <article><PremiumIcon name="install" /><span>03</span><h3>Clear installation</h3><p>{product.install} fitting with practical guidance for subfloor preparation.</p></article>
-          <article><PremiumIcon name="care" /><span>04</span><h3>Simple care</h3><p>Regular vacuuming and a lightly damp flooring-safe clean keep it looking its best.</p></article>
+          <article><img src={product.textureImage} alt={`${product.name} surface detail`} loading="lazy" /><div><span>01 / THE FINISH</span><h3>Colour with character</h3><p>{product.finish} surface in {product.colour.toLowerCase()}.</p></div></article>
+          <article><img src={product.roomImage} alt={`${product.name} in a room`} loading="lazy" /><div><span>02 / IN YOUR SPACE</span><h3>Picture the room</h3><p>View the floor in a styled interior, then order a sample to check it in your own light.</p></div></article>
+          <article><img src={product.image} alt={`${product.name} board detail`} loading="lazy" /><div><span>03 / THE DETAILS</span><h3>Built around your project</h3><p>{product.thickness} construction with {product.install.toLowerCase()} installation.</p></div></article>
         </div>
       </section>
 
@@ -2462,15 +2347,15 @@ function ProductView({
 
       <section className="section product-reviews-section" id="reviews">
         <div className="review-summary">
-          <p className="eyebrow">Verified customer feedback</p>
-          <strong>{product.rating}</strong>
-          <span className="review-stars">★★★★★</span>
-          <p>Rated highly for colour accuracy, finish and helpful sample support.</p>
+          <p className="eyebrow">Customer reviews</p>
+          <h2>What customers say</h2>
+          <p>Feedback helps others choose the right floor for their home.</p>
         </div>
-        <div className="review-bars" aria-label="Rating distribution">
-          {[94, 82, 34, 10, 4].map((width, index) => <div key={width}><span>{5 - index}</span><i><b style={{ width: `${width}%` }} /></i><small>{width}%</small></div>)}
+        <div className="review-empty-state">
+          <span aria-hidden="true">☆</span>
+          <div><h3>No published reviews yet</h3><p>Have this floor at home? Share your experience with our team. We review feedback before it appears here.</p></div>
+          <a href={reviewWhatsappHref} target="_blank" rel="noopener noreferrer">Share your review <span aria-hidden="true">↗</span></a>
         </div>
-        <blockquote><span>“</span><p>The sample made choosing easy, and the finished room looks even better in natural light. The grain feels premium without being too busy.</p><footer>Charlotte M. · Verified buyer</footer></blockquote>
       </section>
 
       <section className="section product-faq-section">
@@ -2483,10 +2368,10 @@ function ProductView({
         </div>
       </section>
 
-      <section className="section tight">
+      <section className="section tight product-related-section">
         <SectionHead
-          eyebrow="Complete the look"
-          title={`More from ${category.title}.`}
+          eyebrow="Explore more floors"
+          title="You may also like"
         />
         <div className="grid products-grid">
           {related.map((item) => (
@@ -2515,14 +2400,28 @@ function ShopProductCard({
   addToCart: (slug: string, quantity: number) => void;
 }) {
   const discount = Math.max(0, Math.round((1 - product.price / product.old) * 100));
+  const [imageIndex, setImageIndex] = useState(0);
+  const images = [
+    { src: product.image, label: "Product view" },
+    { src: product.textureImage, label: "Surface detail" },
+    { src: product.roomImage, label: "In a room" },
+  ].filter((image, index, all) => all.findIndex((item) => item.src === image.src) === index);
+  const selectedImage = images[imageIndex % images.length];
 
   return (
     <article className="shop-product-card">
-      <Link href={`/product/${product.slug}`} className="shop-product-image">
+      <div className="shop-product-image">
         <span className="shop-product-rating"><PremiumIcon name="star" /> {product.rating}</span>
         <span className="shop-product-favourite" aria-hidden="true"><Heart className="icon-svg" strokeWidth={1.7} /></span>
-        <img src={product.image} alt={product.name} loading="lazy" />
-      </Link>
+        <Link href={`/product/${product.slug}`} aria-label={`View ${product.name}`} className="shop-product-image-link">
+          <img src={selectedImage.src} alt={`${product.name} — ${selectedImage.label.toLowerCase()}`} loading="lazy" />
+        </Link>
+        {images.length > 1 && <div className="shop-product-image-controls" aria-label={`${product.name} images`}>
+          <button type="button" aria-label={`Previous image of ${product.name}`} onClick={() => setImageIndex((index) => (index - 1 + images.length) % images.length)}><ChevronLeft aria-hidden="true" /></button>
+          <span aria-live="polite">{imageIndex + 1} / {images.length}</span>
+          <button type="button" aria-label={`Next image of ${product.name}`} onClick={() => setImageIndex((index) => (index + 1) % images.length)}><ChevronRight aria-hidden="true" /></button>
+        </div>}
+      </div>
       <div className="shop-product-body">
         <span className="shop-product-meta">{product.colour} · {product.finish}</span>
         <h3><Link href={`/product/${product.slug}`}>{product.name}</Link></h3>
@@ -2691,6 +2590,7 @@ function SearchModal({
   open: boolean;
   onClose: () => void;
 }) {
+  const { products, categories, productBySlug, categoryById, productsByCategory, content, selectionWhatsAppHref, whatsappHref, whatsappVideoHref, storeMapHref } = useStoreData();
   const [query, setQuery] = useState("");
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -2775,6 +2675,7 @@ function SampleDrawer({
   onClose,
   onRemove,
   onRemoveCart,
+  onChangeCartQuantity,
 }: {
   open: boolean;
   samples: string[];
@@ -2782,11 +2683,17 @@ function SampleDrawer({
   onClose: () => void;
   onRemove: (slug: string) => void;
   onRemoveCart: (slug: string) => void;
+  onChangeCartQuantity: (slug: string, change: number) => void;
 }) {
+  const { products, categories, productBySlug, categoryById, productsByCategory, content, selectionWhatsAppHref, whatsappHref, whatsappVideoHref, storeMapHref } = useStoreData();
   const subtotal = cartItems.reduce((total, item) => {
     const product = productBySlug(item.slug);
-    return total + product.price * 2.2 * item.quantity;
+    return total + product.price * (product.packCoverage || 2.2) * item.quantity;
   }, 0);
+  const basketWhatsAppHref = selectionWhatsAppHref("customer", [
+    ...cartItems.map(item => { const product = productBySlug(item.slug); return { name: product.name, colour: product.colour, quantity: item.quantity, unit: "packs" as const }; }),
+    ...samples.map(slug => { const product = productBySlug(slug); return { name: product.name, colour: product.colour, quantity: 1, unit: "samples" as const }; }),
+  ]);
 
   return (
     <>
@@ -2795,11 +2702,14 @@ function SampleDrawer({
         className={`sample-drawer ${open ? "open" : ""}`}
         aria-label="Shopping basket"
         aria-hidden={!open}
+        role="dialog"
+        aria-modal={open}
       >
         <div className="drawer-head">
           <div>
-            <p className="eyebrow">Your selection</p>
-            <h2>Flooring basket</h2>
+            <p className="eyebrow">UNIQ FLOORS / YOUR SELECTION</p>
+            <h2>Your basket<span aria-hidden="true">.</span></h2>
+            <p className="drawer-head-caption">The floors you love, all in one place.</p>
           </div>
           <button
             className="icon-btn"
@@ -2810,23 +2720,28 @@ function SampleDrawer({
             <PremiumIcon name="x" />
           </button>
         </div>
+        <div className="drawer-editorial-band" aria-hidden="true">
+          <span>FLOORS FOR LIVING</span>
+          <span>01 / 03</span>
+        </div>
+        <div className="drawer-scroll-content">
         {cartItems.length ? (
           <div className="cart-list">
-            <p className="drawer-section-label">Flooring packs</p>
+            <p className="drawer-section-label">Flooring packs <span>{cartItems.reduce((total, item) => total + item.quantity, 0)}</span></p>
             {cartItems.map((item) => {
               const product = productBySlug(item.slug);
               return (
                 <div className="cart-row" key={item.slug}>
-                  <span className="thumb"><img src={`/assets/material-samples/sample-${product.category}.png`} alt="" /></span>
-                  <span><strong>{product.name}</strong><p>{item.quantity} packs · {(item.quantity * 2.2).toFixed(1)} m²</p></span>
-                  <span className="cart-row-price"><b>{money(product.price * 2.2 * item.quantity)}</b><button type="button" onClick={() => onRemoveCart(item.slug)}>Remove</button></span>
+                  <span className="thumb"><img src={product.image} alt="" /></span>
+                  <span className="cart-row-copy"><strong>{product.name}</strong><small>{product.colour} · {money(product.price)} / m²</small><span className="cart-quantity"><button type="button" aria-label={`Remove one pack of ${product.name}`} onClick={() => onChangeCartQuantity(item.slug, -1)}>−</button><output aria-label={`${item.quantity} packs`}>{item.quantity}</output><button type="button" aria-label={`Add one pack of ${product.name}`} onClick={() => onChangeCartQuantity(item.slug, 1)}>+</button></span></span>
+                  <span className="cart-row-price"><b>{money(product.price * (product.packCoverage || 2.2) * item.quantity)}</b><button type="button" onClick={() => onRemoveCart(item.slug)}>Remove</button></span>
                 </div>
               );
             })}
           </div>
         ) : null}
         <div className="sample-list">
-          <p className="drawer-section-label">Free samples</p>
+          <p className="drawer-section-label">Free samples <span>{samples.length}</span></p>
           {samples.length ? (
             samples.map((slug) => {
               const product = productBySlug(slug);
@@ -2851,12 +2766,11 @@ function SampleDrawer({
               );
             })
           ) : !cartItems.length ? (
-            <p className="empty-state">
-              <PremiumIcon name="package" /> Your basket is empty. Add flooring packs
-              or request a free sample from a product page.
-            </p>
+            <div className="drawer-empty-state"><PremiumIcon name="package" /><h3>Your next floor starts here.</h3><p>Explore the collection and bring home the finish that feels right.</p><Link href="/shop" onClick={onClose}>Explore floors <PremiumIcon name="arrow" /></Link></div>
           ) : <p className="drawer-muted">No free samples added yet.</p>}
         </div>
+        </div>
+        <div className="drawer-checkout">
         <div className="drawer-total">
           <span>{cartItems.length ? "Estimated subtotal" : "Free samples"}</span>
           <strong>{cartItems.length ? money(subtotal) : samples.length}</strong>
@@ -2866,19 +2780,19 @@ function SampleDrawer({
           <span><PremiumIcon name="truck" /> Fast dispatch</span>
           <span><PremiumIcon name="shield" /> Secure request</span>
         </div>
-        <button className="primary-btn full" type="button">
-          <PremiumIcon name={cartItems.length ? "cart" : "send"} />
-          {cartItems.length ? "Continue to secure checkout" : "Request samples"}
-        </button>
+        {cartItems.length || samples.length ? <a className="primary-btn full" href={basketWhatsAppHref} target="_blank" rel="noopener noreferrer"><PremiumIcon name="message" />{cartItems.length ? "Order through WhatsApp" : "Request samples on WhatsApp"}</a> : <button className="primary-btn full" type="button" disabled>Select flooring or samples first</button>}
+        <p className="drawer-muted">Review and send your message in WhatsApp. The team confirms your order and payment arrangements.</p>
         <button className="skip-popup full" type="button" onClick={onClose}>
-          Skip for now
+          Continue shopping
         </button>
+        </div>
       </aside>
     </>
   );
 }
 
 function Footer() {
+  const { content, whatsappHref, whatsappVideoHref, storeMapHref } = useStoreData();
   return (
     <footer className="site-footer minimal-footer">
       <div className="blended-footer-hero">
@@ -2889,7 +2803,7 @@ function Footer() {
         </div>
         <div className="blended-footer-actions">
           <Link href="/shop">Shop all floors <PremiumIcon name="arrow" /></Link>
-          <Link href="/rooms">Open Live Room <PremiumIcon name="camera" /></Link>
+          <Link href="/live-room">Open Live Room <PremiumIcon name="camera" /></Link>
           <a href={storeMapHref} target="_blank" rel="noreferrer">Visit store <PremiumIcon name="map" /></a>
         </div>
       </div>
@@ -2917,7 +2831,8 @@ function Footer() {
 
         <nav className="minimal-footer-links" aria-label="Footer help links">
           <span>Help</span>
-          <Link href="/rooms">Live room view</Link>
+          <Link href="/about">About us</Link>
+          <Link href="/live-room">Live room view</Link>
           <Link href="/guides">Buying guides</Link>
           <Link href="/delivery">Delivery & returns</Link>
           <Link href="/">Privacy</Link>
@@ -2925,6 +2840,8 @@ function Footer() {
 
         <div className="minimal-footer-contact">
           <span>Talk to us</span>
+          {!!content.business?.business_email && <a href={`mailto:${String(content.business.business_email)}`}>{String(content.business.business_email)}</a>}
+          {!!content.business?.address && <p>{String(content.business.address)}</p>}
           <p>Fast help with samples, quantities and fitting.</p>
           <a className="footer-whatsapp" href={whatsappHref} target="_blank" rel="noreferrer"><WhatsAppMark /> WhatsApp</a>
           <a className="footer-video-call" href={whatsappVideoHref} target="_blank" rel="noreferrer"><PremiumIcon name="video" /> Video call</a>

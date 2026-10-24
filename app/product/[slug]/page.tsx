@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation";
+import { storefrontData } from "@/lib/owner/catalogue";
 import { Storefront } from "@/components/storefront";
 import { products } from "@/lib/data";
 
@@ -11,5 +13,8 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return <Storefront view="product" slug={slug} />;
+  let data = await storefrontData();
+  if (!data.products.some(p => p.slug === slug)) data = await storefrontData('supabase');
+  if (!data.products.some(p => p.slug === slug)) notFound();
+  return <Storefront data={data} view="product" slug={slug} />;
 }

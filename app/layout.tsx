@@ -1,33 +1,32 @@
 import type { Metadata } from "next";
-import { Geist, Host_Grotesk, Manrope, Outfit } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import { SiteTransitionLoader } from "../components/site-loader";
 import "./globals.css";
 import "./home-refinements.css";
 import "./live-room.css";
 import "./product-redesign.css";
+import "./storefront-theme.css";
+import "./manufacturer-catalogue.css";
+import "./home-motion.css";
+import "./shop-intro-controls.css";
+import "./product-mobile-polish.css";
+import "./blunt-reference.css";
+import "./home-featured-motion.css";
+import "./matcha-theme.css";
+import "./home-floor-editorial.css";
+import "./about-editorial.css";
+import "./cart-polish.css";
+import "./real-homes-editorial.css";
+import "./sample-palette-refresh.css";
+import "./before-after-refresh.css";
+import "./pill-nav.css";
+import "./home-category-blocks.css";
+import "./shop-manufacturer-editorial.css";
 
-const manrope = Manrope({
+const productSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-manrope",
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-const hostGrotesk = Host_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-host-grotesk",
+  variable: "--font-product-sans",
   weight: ["400", "500", "600", "700"],
-});
-
-const geist = Geist({
-  subsets: ["latin"],
-  variable: "--font-geist",
-  weight: ["300", "400", "500", "600", "700"],
-});
-
-const outfit = Outfit({
-  subsets: ["latin"],
-  variable: "--font-outfit",
-  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -49,7 +48,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${manrope.variable} ${hostGrotesk.variable} ${geist.variable} ${outfit.variable}`}
+      className={productSans.variable}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
     >

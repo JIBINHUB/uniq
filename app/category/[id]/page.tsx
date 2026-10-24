@@ -1,3 +1,4 @@
+import { storefrontData } from "@/lib/owner/catalogue";
 import { Storefront } from "@/components/storefront";
 import { categories } from "@/lib/data";
 
@@ -11,5 +12,5 @@ export default async function CategoryPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  return <Storefront view="category" id={id} />;
+  return <Storefront data={await storefrontData()} view="category" id={id} />;
 }

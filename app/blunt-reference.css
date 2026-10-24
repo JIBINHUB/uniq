@@ -1,0 +1,232 @@
+/* BLUNT inspired storefront typography using the licensed DM Sans family already bundled by Next. */
+:root {
+  /* Legacy component tokens resolve to the same family without downloading five more fonts. */
+  --font-manrope: var(--font-product-sans);
+  --font-host-grotesk: var(--font-product-sans);
+  --font-geist: var(--font-product-sans);
+  --font-outfit: var(--font-product-sans);
+  --font-poppins: var(--font-product-sans);
+  --font-body: var(--font-product-sans), Arial, sans-serif;
+  --font-title: var(--font-product-sans), Arial, sans-serif;
+  --font-display: var(--font-product-sans), Arial, sans-serif;
+}
+
+body,
+.page-shell,
+.retailer-page,
+.carpets-page {
+  --uniq-body: var(--font-product-sans), Arial, sans-serif;
+  --uniq-display: var(--font-product-sans), Arial, sans-serif;
+  --font-body: var(--font-product-sans), Arial, sans-serif;
+  --font-title: var(--font-product-sans), Arial, sans-serif;
+  --font-display: var(--font-product-sans), Arial, sans-serif;
+  font-family: var(--font-product-sans), Arial, sans-serif;
+}
+
+.page-shell.page-shell.page-shell *,
+.retailer-page.retailer-page *,
+.carpets-page.carpets-page * {
+  font-family: var(--font-product-sans), Arial, sans-serif !important;
+}
+
+.page-shell :is(h1, h2, h3, h4, h5, h6),
+.retailer-page :is(h1, h2, h3, h4, h5, h6),
+.carpets-page :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+/* The homepage About Us composition: quiet surface, clear heading, and three icon stories. */
+.home-shell .reference-why {
+  display: block;
+  padding: clamp(3.8rem, 6vw, 6.5rem) clamp(1.5rem, 4vw, 4.5rem) clamp(4.2rem, 6vw, 6rem);
+  color: #202422;
+  background: #f2f4f6 !important;
+  border: 0;
+}
+
+.home-shell .reference-why-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  justify-items: stretch;
+  column-gap: 2rem;
+  row-gap: 0.75rem;
+  min-height: 0;
+  padding: 0;
+  margin: 0 0 clamp(3.5rem, 6vw, 6rem);
+  border: 0;
+}
+
+.home-shell .reference-why-head > p {
+  grid-column: 1 / -1;
+  color: #52745d;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+}
+
+.home-shell .reference-why-head h2 {
+  display: block;
+  justify-self: start;
+  max-width: 18ch;
+  margin: 0;
+  color: #202422;
+  font-size: clamp(2.1rem, 2.8vw, 3.1rem);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.055em;
+}
+
+.home-shell .reference-why-head > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  min-width: 11.5rem;
+  min-height: 3.4rem;
+  margin: 0 0 0.15rem;
+  padding: 0.8rem 1.1rem;
+  color: #202422;
+  background: #fff;
+  border: 1px solid #e4e7e3;
+  border-radius: 4px;
+  box-shadow: none;
+  font-size: 0.86rem;
+  font-weight: 600;
+  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.home-shell .reference-why-head > a svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  padding: 0;
+  color: currentColor;
+  background: none;
+  border-radius: 0;
+}
+
+.home-shell .reference-why-head > a:is(:hover, :focus-visible) {
+  color: #0f3c28;
+  background: #edf4ee;
+  border-color: #96b19b;
+  box-shadow: none;
+  transform: translateY(-2px);
+}
+
+.home-shell .reference-why-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 4vw, 5rem);
+  width: 100%;
+}
+
+.home-shell .reference-why-grid article {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  min-height: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.home-shell .reference-why-grid article > span {
+  display: block;
+  width: 2.6rem;
+  height: 2.6rem;
+  margin: 0 0 2rem;
+  color: #263a2e;
+  border: 0;
+  background: none;
+}
+
+.home-shell .reference-why-grid .icon-svg {
+  width: 2.5rem;
+  height: 2.5rem;
+  stroke-width: 1.55;
+}
+
+.home-shell .reference-why-grid h3 {
+  max-width: none;
+  margin: 0 0 0.75rem;
+  color: #202422;
+  font-size: clamp(1.18rem, 1.7vw, 1.45rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.035em;
+}
+
+.home-shell .reference-why-grid article > p {
+  max-width: 27ch;
+  margin: 0;
+  color: #555e58;
+  font-size: clamp(0.94rem, 1.1vw, 1.06rem);
+  line-height: 1.52;
+}
+
+@media (max-width: 760px) {
+  .home-shell .reference-why {
+    padding: 3.7rem 1.25rem 4rem;
+  }
+
+  .home-shell .reference-why-head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.9rem;
+    margin-bottom: 3rem;
+  }
+
+  .home-shell .reference-why-head > p {
+    grid-column: auto;
+  }
+
+  .home-shell .reference-why-head h2 {
+    max-width: 14ch;
+    font-size: clamp(2.2rem, 9vw, 3.2rem);
+  }
+
+  .home-shell .reference-why-head > a {
+    justify-self: start;
+    margin-top: 0.55rem;
+  }
+
+  .home-shell .reference-why-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .home-shell .reference-why-grid article {
+    display: block;
+    min-height: 0;
+    padding: 1.55rem 0;
+    border-bottom: 1px solid #dfe4df;
+  }
+
+  .home-shell .reference-why-grid article:first-child {
+    border-top: 1px solid #dfe4df;
+  }
+
+  .home-shell .reference-why-grid article > span {
+    width: 2.3rem;
+    height: 2.3rem;
+    margin-bottom: 1.3rem;
+  }
+
+  .home-shell .reference-why-grid .icon-svg {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+
+  .home-shell .reference-why-grid h3 {
+    margin-bottom: 0.55rem;
+    font-size: 1.25rem;
+  }
+
+  .home-shell .reference-why-grid article > p {
+    max-width: 34ch;
+    font-size: 0.97rem;
+  }
+}

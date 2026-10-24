@@ -44,5 +44,12 @@ For this checkout, the named Wrangler profile `flooruniq` is active; verify
 it shows `flooruniq@gmail.com` before redeploying.
 
 The original Vercel source archive remains available in Git history for
-rollback. There are currently no server-side environment variables or
-Supabase dependencies in this application.
+rollback. Supabase stores the owner catalogue, content and retailer requests.
+Use `.env.example` for configuration names; keep private credentials in ignored
+environment files and Worker secrets. The protected owner dashboard at `/admin`
+uses the configured four-digit PIN and a revocable server session. The separate
+retailer shop is available to guests; approved accounts can request quotations.
+See the [current implementation audit](docs/IMPLEMENTATION-AUDIT-2026-10-16.md)
+for deployed features, verification and remaining validation. The older
+[platform status](docs/PLATFORM-IMPLEMENTATION.md) and
+[initial verification record](docs/VERIFICATION.md) document earlier stages.

@@ -1809,10 +1809,10 @@
 
 /* Global UNIQ loading experience */
 .site-loading-screen {
-  --loader-surface: #f3f1eb;
-  --loader-surface-deep: #e8e6df;
-  --loader-ink: #10263b;
-  --loader-accent: #c8ff3d;
+  --loader-surface: #164633;
+  --loader-surface-deep: #0a291d;
+  --loader-ink: #f4f9f3;
+  --loader-accent: #a8d8a8;
   position: fixed;
   inset: 0;
   z-index: 100000;
@@ -1829,7 +1829,7 @@
     ),
     radial-gradient(
       circle at 85% 78%,
-      rgba(226, 179, 168, 0.24),
+      rgba(84, 157, 104, 0.22),
       transparent 38%
     ),
     linear-gradient(
@@ -1961,9 +1961,9 @@
   opacity: 0;
   transform: scale(1.015);
   transition:
-    opacity 340ms ease,
-    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 340ms;
+    opacity 220ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 220ms;
 }
 
 @keyframes uniq-load-1 {
@@ -2065,12 +2065,6 @@
     top: 0;
     height: 0;
   }
-}
-
-.site-loading-screen[data-tone="dark"] {
-  --loader-surface: #10263b;
-  --loader-surface-deep: #071827;
-  --loader-ink: #f6f4ed;
 }
 
 @media (prefers-reduced-motion: reduce) {
