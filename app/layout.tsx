@@ -22,6 +22,15 @@ import "./before-after-refresh.css";
 import "./pill-nav.css";
 import "./home-category-blocks.css";
 import "./shop-manufacturer-editorial.css";
+import "./footer-directory.css";
+import "./contact-guide.css";
+import "./account-design.css";
+import "./manufacturer-product-refresh.css";
+import "./editorial-labels-cleanup.css";
+import "./hero-reviews.css";
+import "./home-benefits.css";
+import "./home-proof-samples.css";
+import "./retailer-account-unified.css";
 
 const productSans = DM_Sans({
   subsets: ["latin"],

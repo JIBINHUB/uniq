@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     const { error } = await client.auth.exchangeCodeForSession(code);
     if (!error) {
       const next = request.nextUrl.searchParams.get("next");
-      const destination = next === "/admin" || next === "/retailers/studio" ? next : "/retailers/register";
+      const destination = next === "/admin" || next === "/retailers/studio" || next === "/account" ? next : "/retailers/register";
       return NextResponse.redirect(new URL(destination, request.url));
     }
   }

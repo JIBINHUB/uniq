@@ -31,7 +31,6 @@ export function RealHomesEditorial() {
     <section className="section real-homes-section homes-editorial" aria-labelledby="homes-editorial-title">
       <div className="homes-editorial-inner">
         <div className="homes-editorial-heading">
-          <p className="homes-editorial-kicker">TESTIMONIALS / REAL HOMES</p>
           <h2 id="homes-editorial-title">What our customers say about us.</h2>
           <p>Honest notes from homes living with UNIQ floors.</p>
         </div>

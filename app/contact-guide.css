@@ -1,0 +1,298 @@
+.contact-guide {
+  position: fixed;
+  right: clamp(1rem, 2vw, 1.5rem);
+  bottom: clamp(5.5rem, 9vw, 6.5rem);
+  z-index: 96;
+  font-family: var(--uniq-display), var(--font-product-sans), sans-serif;
+}
+
+.contact-guide-launcher {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  min-height: 3.65rem;
+  padding: .35rem .8rem .35rem .35rem;
+  color: #fff;
+  background: #183b2d;
+  border: 1px solid #39634b;
+  border-radius: 999px;
+  box-shadow: 0 12px 30px rgba(9, 39, 25, .25);
+  cursor: pointer;
+  transition: transform .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+.contact-guide-launcher:hover,
+.contact-guide-launcher[aria-expanded="true"] {
+  background: #24553d;
+  box-shadow: 0 16px 38px rgba(9, 39, 25, .32);
+  animation: none;
+  transform: translateY(-2px);
+}
+.contact-guide-launcher:focus-visible,
+.contact-guide-panel :is(a, button):focus-visible { outline: 3px solid #d8ff5f; outline-offset: 3px; }
+.contact-guide-launcher-avatar,
+.contact-guide-avatar {
+  position: relative;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 2.85rem;
+  height: 2.85rem;
+  color: #173727;
+  background: #d8ff5f;
+  border-radius: 50%;
+}
+.contact-guide-launcher-avatar::before {
+  position: absolute;
+  inset: -.28rem;
+  border: 2px solid rgba(216,255,95,.76);
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  animation: contact-guide-orbit 9s linear infinite;
+  content: "";
+  pointer-events: none;
+}
+.contact-guide-advisor-mark {
+  width: 1.85rem;
+  height: 1.85rem;
+  overflow: visible;
+}
+.contact-guide-voice { animation: contact-guide-voice 3.6s ease-in-out infinite; }
+.contact-guide-presence {
+  position: absolute;
+  right: -.08rem;
+  bottom: .04rem;
+  width: .72rem;
+  height: .72rem;
+  background: #67d985;
+  border: 2px solid #183b2d;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px rgba(103,217,133,.18);
+}
+.contact-guide-launcher-copy { display: flex; flex-direction: column; align-items: flex-start; min-width: 8.1rem; line-height: 1.15; }
+.contact-guide-launcher-copy strong { font-size: .87rem; font-weight: 600; }
+.contact-guide-launcher-copy small { margin-top: .22rem; color: #c7d8c9; font-size: .68rem; }
+.contact-guide-launcher > svg { margin-left: .15rem; color: #d8ff5f; }
+
+.contact-guide-panel {
+  width: min(20rem, calc(100vw - 2rem));
+  margin-bottom: .75rem;
+  padding: 1rem;
+  color: #1c2b21;
+  background: #fffefa;
+  border: 1px solid #e3e7d6;
+  border-radius: 1.1rem;
+  box-shadow: 0 22px 60px rgba(8, 37, 24, .2);
+  transform-origin: bottom right;
+  animation: contact-guide-panel-in .32s cubic-bezier(.18,.85,.25,1.1) both;
+}
+.contact-guide-panel-head { display: flex; align-items: center; gap: .65rem; }
+.contact-guide-panel-head > div { display: flex; flex: 1; flex-direction: column; gap: .15rem; min-width: 0; }
+.contact-guide-panel-head small { color: #667868; font-size: .58rem; font-weight: 700; letter-spacing: .12em; }
+.contact-guide-panel-head strong { font-size: 1.15rem; font-weight: 600; line-height: 1.1; letter-spacing: -.04em; }
+.contact-guide-close { display: grid; flex: 0 0 auto; place-items: center; width: 2rem; height: 2rem; padding: 0; color: #3d5743; background: #f2f5ec; border: 0; border-radius: 50%; cursor: pointer; }
+.contact-guide-panel p { margin: .95rem 0; color: #526254; font-size: .8rem; line-height: 1.45; }
+.contact-guide-option { display: flex; align-items: center; gap: .65rem; min-height: 2.85rem; margin-top: .45rem; padding: .55rem .7rem; color: #1d3e2b; background: #f2f6ed; border: 1px solid #e2e9dc; border-radius: .65rem; font-size: .78rem; font-weight: 650; text-decoration: none; }
+.contact-guide-option:hover { background: #e8efdf; }
+.contact-guide-option.is-primary { color: #172817; background: #d8ff5f; border-color: #caed56; }
+.contact-guide-option.is-primary:hover { background: #caf248; }
+.contact-guide-option > svg:last-child { width: 1rem; height: 1rem; margin-left: auto; }
+.contact-guide-option .whatsapp-mark { width: 1.1rem; height: 1.1rem; }
+
+@keyframes contact-guide-orbit { to { transform: rotate(360deg); } }
+@keyframes contact-guide-voice {
+  0%, 100% { opacity: .28; }
+  50% { opacity: 1; }
+}
+@keyframes contact-guide-panel-in {
+  from { opacity: 0; transform: translateY(.8rem) scale(.94); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+html.ar-room-route .contact-guide,
+.ar-camera-open .contact-guide { display: none; }
+
+@media (max-width: 700px) {
+  .contact-guide { right: .85rem; bottom: max(5.35rem, calc(env(safe-area-inset-bottom, 0px) + 5rem)); }
+  .contact-guide-launcher { width: 3.35rem; min-height: 3.35rem; padding: .24rem; justify-content: center; }
+  .contact-guide-launcher-avatar { width: 2.75rem; height: 2.75rem; }
+  .contact-guide-launcher-copy,
+  .contact-guide-launcher > svg { display: none; }
+  .contact-guide-panel { margin-right: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-guide-launcher,
+  .contact-guide-launcher-avatar::before,
+  .contact-guide-advisor-mark,
+  .contact-guide-voice,
+  .contact-guide-presence,
+  .contact-guide-panel { animation: none; transition: none; }
+}
+
+/* Quiet, compact advisor entry point. */
+.contact-guide-launcher {
+  gap: .62rem;
+  min-height: 3.25rem;
+  padding: .3rem .75rem .3rem .3rem;
+  color: #f7faf5;
+  background: #173a2c;
+  border-color: #5b7965;
+  box-shadow: 0 8px 28px #1639272c, 0 2px 5px #16392718;
+  animation: contact-guide-arrive .55s cubic-bezier(.2,.8,.2,1) backwards;
+  transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s ease, background-color .3s ease;
+}
+.contact-guide-launcher:hover,
+.contact-guide-launcher[aria-expanded="true"] {
+  background: #204a37;
+  box-shadow: 0 13px 34px #1639273d, 0 2px 5px #16392718;
+  transform: translateY(-3px);
+}
+.contact-guide-launcher-avatar {
+  width: 2.55rem;
+  height: 2.55rem;
+  color: #183b2d;
+  background: #e4f1de;
+}
+.contact-guide-launcher-avatar::before { display: none; }
+.contact-guide-launcher-avatar::after {
+  position: absolute;
+  inset: -.22rem;
+  border: 1px solid #cceba6;
+  border-radius: 50%;
+  opacity: 0;
+  animation: contact-guide-signal 7s ease-out 1.6s infinite;
+  content: "";
+  pointer-events: none;
+}
+.contact-guide-presence {
+  width: .53rem;
+  height: .53rem;
+  background: #7cc892;
+  border-color: #e4f1de;
+  box-shadow: none;
+}
+.contact-guide-launcher-copy { min-width: 7.4rem; }
+.contact-guide-launcher-copy strong { font-size: .81rem; letter-spacing: -.015em; }
+.contact-guide-launcher-copy small { color: #c4d6c7; font-size: .66rem; }
+.contact-guide-launcher > .contact-guide-launcher-arrow {
+  margin-left: .25rem;
+  color: #d5eec3;
+  transition: transform .3s cubic-bezier(.2,.8,.2,1);
+}
+.contact-guide-launcher:hover .contact-guide-launcher-arrow { transform: translate(2px,-2px); }
+@keyframes contact-guide-arrive {
+  from { opacity: 0; transform: translateY(.75rem) scale(.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes contact-guide-signal {
+  0%, 88%, 100% { opacity: 0; transform: scale(.9); }
+  90% { opacity: .7; transform: scale(1); }
+  96% { opacity: 0; transform: scale(1.32); }
+}
+@media (max-width: 700px) {
+  .contact-guide-launcher { width: 3.1rem; min-height: 3.1rem; padding: .25rem; }
+  .contact-guide-launcher-avatar { width: 2.5rem; height: 2.5rem; }
+  .contact-guide-launcher > .contact-guide-launcher-arrow { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-guide-launcher,
+  .contact-guide-launcher-avatar::after { animation: none; transition: none; }
+}
+
+/* Soft refraction on the help control, with the icon as the brightest surface. */
+.contact-guide-launcher {
+  background: radial-gradient(circle at 14% 0%, #ffffff30, transparent 36%), linear-gradient(125deg, #214838df, #173a2cd9);
+  border-color: #e5f5e57a;
+  box-shadow: inset 0 1px 0 #ffffff75, inset 0 -1px 0 #0b241d66, 0 10px 28px #08291d46;
+  backdrop-filter: blur(18px) saturate(1.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
+}
+.contact-guide-launcher:hover,
+.contact-guide-launcher[aria-expanded="true"] {
+  background: radial-gradient(circle at 14% 0%, #ffffff42, transparent 36%), linear-gradient(125deg, #2d5944ec, #1b4333e8);
+}
+.contact-guide-launcher-avatar {
+  color: #14352a;
+  background: radial-gradient(circle at 26% 16%, #ffffffd9, #ffffff75 28%, #d5f0e0a6 60%, #b4ddc9a3);
+  border: 1px solid #ffffffe6;
+  box-shadow: inset 0 1px 2px #fff, inset 0 -3px 7px #789e865c, 0 2px 10px #061e183d;
+  backdrop-filter: blur(12px) saturate(1.4);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+}
+.contact-guide-launcher-avatar::before {
+  display: block;
+  inset: 3px;
+  border: 0;
+  border-radius: 50%;
+  background: linear-gradient(112deg, transparent 36%, #ffffffa6 50%, transparent 64%) 100% 0 / 250% 100%;
+  animation: contact-guide-glint 8s ease-in-out 1.5s infinite;
+}
+.contact-guide-launcher-avatar > svg { position: relative; z-index: 1; }
+.contact-guide-presence { z-index: 2; }
+@keyframes contact-guide-glint {
+  0%, 82%, 100% { background-position: 100% 0; }
+  91% { background-position: 0 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-guide-launcher-avatar::before { animation: none; }
+}
+
+/* Match the site's warm lime accent while keeping the layered glass finish. */
+.contact-guide-launcher {
+  color: #173b28;
+  background: radial-gradient(circle at 15% 0%, #ffffffc2, transparent 42%), linear-gradient(125deg, #edffa9e8, #d8ff5ff0);
+  border-color: #f8ffdb;
+  box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 #a2cb5a88, 0 10px 28px #3456264a;
+}
+.contact-guide-launcher:hover,
+.contact-guide-launcher[aria-expanded="true"] {
+  color: #123321;
+  background: radial-gradient(circle at 15% 0%, #fff, transparent 42%), linear-gradient(125deg, #efffb6f2, #cfff47f5);
+}
+.contact-guide-launcher-copy small { color: #466047; }
+.contact-guide-launcher > .contact-guide-launcher-arrow { color: #214a30; }
+.contact-guide-launcher-avatar {
+  color: #183929;
+  background: radial-gradient(circle at 26% 16%, #fff, #ffffffc9 28%, #f7ffeaa6 60%, #d8f3bc9e);
+  border-color: #fff;
+}
+.contact-guide-presence { background: #4aa776; border-color: #fff; }
+.contact-guide-avatar {
+  color: #214a30;
+  background: radial-gradient(circle at 22% 12%, #fff, #f9ffd9 36%, #d8ff5f 100%);
+  border: 1px solid #fff;
+  box-shadow: inset 0 1px 2px #fff, inset 0 -3px 8px #9bbf52a1, 0 3px 12px #688c4c45;
+  backdrop-filter: blur(10px) saturate(1.4);
+  -webkit-backdrop-filter: blur(10px) saturate(1.4);
+}
+.contact-guide-option-icon {
+  position: relative;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  color: #244b31;
+  background: radial-gradient(circle at 25% 10%, #fff, #fffbdccc 55%, #d9eac5a8);
+  border: 1px solid #ffffffeb;
+  border-radius: .6rem;
+  box-shadow: inset 0 1px 2px #fff, inset 0 -2px 4px #b8c9a286, 0 2px 7px #214b2424;
+  backdrop-filter: blur(8px) saturate(1.35);
+  -webkit-backdrop-filter: blur(8px) saturate(1.35);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.contact-guide-option:hover .contact-guide-option-icon { transform: translateY(-2px) rotate(-4deg); box-shadow: inset 0 1px 2px #fff, 0 5px 12px #214b2435; }
+.contact-guide-option-icon svg { width: 1rem; height: 1rem; }
+.contact-guide-option .contact-guide-option-icon .whatsapp-mark { width: 1rem; height: 1rem; }
+.contact-guide-close {
+  background: linear-gradient(145deg, #fff, #e9f2dfd9);
+  border: 1px solid #fff;
+  box-shadow: inset 0 1px 1px #fff, 0 2px 7px #214b2420;
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-guide-option-icon { transition: none; }
+}

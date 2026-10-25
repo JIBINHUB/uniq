@@ -259,22 +259,44 @@
 .shop-collection-symbol svg { width: 1.2rem; height: 1.2rem; }
 .shop-page-intro .shop-channel-option.is-current { background: linear-gradient(135deg, #fff, #e4f2e8); }
 
-/* Warm yellow accents make the three shop routes easier to pick out. */
+/* Solid warm yellow controls echo the shop's product actions. */
 .page-shell .shop-page-intro .shop-intro-actions :is(.shop-expanded-collection-link, .shop-channel-option),
 .page-shell .shop-page-intro .shop-intro-actions .shop-channel-option.is-current {
-  border-color: #e9d77f;
-  background: linear-gradient(135deg, #fff8d7, #f8eaa8);
-  box-shadow: 0 10px 25px rgba(101, 82, 19, .1), inset 0 1px 0 rgba(255, 255, 255, .9);
+  border-color: #e5d477;
+  background: #f8eaa8;
+  box-shadow: 0 8px 20px rgba(101, 82, 19, .1);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.page-shell .shop-page-intro .shop-intro-actions :is(.shop-expanded-collection-link, .shop-channel-option)::before {
+  display: none;
 }
 .page-shell .shop-page-intro .shop-intro-actions :is(.shop-expanded-collection-link, .shop-channel-option):is(:hover, :focus-visible) {
   border-color: #d5b94f;
-  background: linear-gradient(135deg, #fff5bd, #f2dd83);
+  background: #f2dd83;
   box-shadow: 0 14px 28px rgba(101, 82, 19, .15);
 }
 .page-shell .shop-page-intro .shop-intro-actions :is(.shop-collection-symbol, .shop-channel-icon) {
   color: #31573c;
   border-color: rgba(143, 113, 23, .2);
-  background: rgba(255, 255, 255, .54);
+  background: #fff8d8;
+  box-shadow: none;
+}
+.shop-page-intro .shop-intro-actions :is(.shop-collection-label, .shop-channel-copy) small {
+  color: #576943;
+  font-size: .61rem;
+  font-weight: 700;
+  letter-spacing: .115em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+.shop-page-intro .shop-intro-actions :is(.shop-collection-label, .shop-channel-copy) strong {
+  color: #1d3524;
+  font-family: var(--uniq-display), var(--font-product-sans), sans-serif;
+  font-size: .98rem;
+  font-weight: 600;
+  letter-spacing: -.025em;
+  line-height: 1.2;
 }
 
 /* Keep every product photo inside the same portrait frame. */

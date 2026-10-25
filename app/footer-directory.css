@@ -1,0 +1,242 @@
+.site-footer.minimal-footer.uniq-directory-footer {
+  display: block;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  color: #fff;
+  background: #fff;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.site-footer.uniq-directory-footer::before { display: none; }
+
+.uniq-footer-bridge {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  width: min(100% - 2rem, 92rem);
+  margin: 0 auto;
+  padding: clamp(2rem, 4vw, 3.5rem) 0;
+  color: #164b38;
+}
+.uniq-footer-bridge-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(.75rem, 1.6vw, 1.35rem);
+  min-width: 0;
+  padding: .45rem clamp(1rem, 2.7vw, 2.5rem);
+}
+.uniq-footer-bridge-item:first-child { padding-left: 0; border-right: 1px solid #dbe8df; }
+.uniq-footer-bridge-icon {
+  display: grid;
+  place-items: center;
+  width: 3.1rem;
+  height: 3.1rem;
+  color: #1f694b;
+  background: #e8f3eb;
+  border-radius: 50%;
+}
+.uniq-footer-bridge-icon .icon-svg { width: 1.25rem; }
+.uniq-footer-bridge-item small {
+  display: block;
+  margin-bottom: .3rem;
+  color: #628374;
+  font-size: .63rem;
+  font-weight: 750;
+  letter-spacing: .12em;
+}
+.uniq-footer-bridge-item strong {
+  display: block;
+  color: #173d30;
+  font-family: var(--font-product-sans), sans-serif;
+  font-size: clamp(1.12rem, 1.8vw, 1.55rem);
+  font-weight: 600;
+  line-height: 1.1;
+}
+.site-footer .uniq-footer-bridge-item > a {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  color: #15523b !important;
+  font-size: .84rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: .28em;
+  white-space: nowrap;
+}
+.uniq-footer-bridge-item > a svg { transition: transform .2s ease; }
+.uniq-footer-bridge-item > a:hover svg { transform: translate(2px, -2px); }
+
+.uniq-footer-panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: radial-gradient(circle at 92% 8%, rgba(93,163,125,.22), transparent 31rem), #11563e;
+}
+.uniq-footer-panel::after {
+  position: absolute;
+  z-index: -1;
+  right: -.04em;
+  bottom: -.35em;
+  color: rgba(255,255,255,.045);
+  content: "UNIQ";
+  font-family: var(--font-product-sans), sans-serif;
+  font-size: clamp(12rem, 25vw, 28rem);
+  font-weight: 700;
+  letter-spacing: -.09em;
+  line-height: 1;
+  pointer-events: none;
+}
+.site-footer.uniq-directory-footer .minimal-footer-main {
+  display: grid;
+  grid-template-columns: minmax(16rem, 1.45fr) repeat(2, minmax(9rem, .72fr)) minmax(15rem, 1fr);
+  gap: clamp(1.75rem, 3.6vw, 4rem);
+  align-items: start;
+  width: min(100%, 92rem);
+  margin: 0 auto;
+  padding: clamp(3.2rem, 5vw, 5.3rem) 1rem clamp(3.5rem, 5vw, 5rem);
+}
+.site-footer.uniq-directory-footer .minimal-footer-brand .footer-brand strong {
+  color: #fff;
+  font-size: 1.15rem;
+}
+.site-footer.uniq-directory-footer .minimal-footer-brand .footer-brand small,
+.site-footer.uniq-directory-footer .minimal-footer-brand > p,
+.site-footer.uniq-directory-footer .minimal-footer-contact p {
+  color: rgba(255,255,255,.73) !important;
+}
+.site-footer.uniq-directory-footer .minimal-footer-brand > p {
+  max-width: 25rem;
+  margin: 1.4rem 0 1.2rem;
+  font-size: .92rem;
+}
+.site-footer.uniq-directory-footer .minimal-footer-promises span {
+  padding: 0;
+  color: rgba(255,255,255,.78);
+  background: none;
+  border: 0;
+  font-size: .72rem;
+}
+.site-footer.uniq-directory-footer .minimal-footer-promises .icon-svg { color: #cae6c8; }
+.site-footer.uniq-directory-footer .minimal-footer-links > span,
+.site-footer.uniq-directory-footer .minimal-footer-contact > span {
+  margin: .2rem 0 .6rem;
+  color: #fff;
+  font-size: .93rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.site-footer.uniq-directory-footer .minimal-footer-links { gap: .82rem; }
+.site-footer.uniq-directory-footer .minimal-footer-links a,
+.site-footer.uniq-directory-footer .minimal-footer-contact .uniq-footer-email {
+  color: rgba(255,255,255,.78) !important;
+  font-size: .86rem !important;
+  font-weight: 470 !important;
+  line-height: 1.45;
+  text-decoration: none;
+}
+.site-footer.uniq-directory-footer .minimal-footer-links a:hover,
+.site-footer.uniq-directory-footer .minimal-footer-contact .uniq-footer-email:hover {
+  color: #fff !important;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+.site-footer.uniq-directory-footer .minimal-footer-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .7rem;
+}
+.site-footer.uniq-directory-footer .minimal-footer-contact p { margin: 0; font-size: .86rem; }
+.uniq-footer-contact-actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .6rem; }
+.site-footer.uniq-directory-footer .uniq-footer-contact-actions a {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-width: 0;
+  min-height: 2.7rem;
+  margin: 0;
+  padding: .65rem .85rem;
+  border: 1px solid rgba(255,255,255,.55);
+  border-radius: .2rem;
+  box-shadow: none;
+  font-size: .76rem;
+  font-weight: 700;
+}
+.site-footer.uniq-directory-footer .uniq-footer-contact-actions .footer-whatsapp {
+  color: #124f39 !important;
+  background: #fff;
+}
+.site-footer.uniq-directory-footer .uniq-footer-contact-actions .footer-video-call {
+  color: #fff !important;
+  background: transparent;
+}
+.site-footer.uniq-directory-footer .uniq-footer-contact-actions a:hover { transform: translateY(-2px); }
+
+.site-footer.uniq-directory-footer .minimal-footer-credit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: min(100% - 2rem, 92rem);
+  margin: 0 auto;
+  padding: 1.5rem 0;
+  border: 0;
+  color: #3d6553;
+}
+.site-footer.uniq-directory-footer .minimal-footer-credit > span,
+.site-footer.uniq-directory-footer .minimal-footer-credit > a {
+  color: #456b59 !important;
+  font-size: .75rem !important;
+}
+.site-footer.uniq-directory-footer .minimal-footer-credit > a strong { color: #194e38; }
+.site-footer.uniq-directory-footer .minimal-footer-credit > a .icon-svg { color: #194e38; }
+.site-footer.uniq-directory-footer .minimal-footer-credit .uniq-footer-top {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin-right: 4.5rem;
+  font-weight: 700 !important;
+}
+.uniq-directory-footer a:focus-visible { outline: 3px solid #aed879; outline-offset: 4px; }
+
+@media (max-width: 1080px) {
+  .uniq-footer-bridge-item { grid-template-columns: auto minmax(0, 1fr); }
+  .uniq-footer-bridge-item > a { grid-column: 2; }
+  .site-footer.uniq-directory-footer .minimal-footer-main {
+    grid-template-columns: minmax(14rem, 1.3fr) repeat(2, minmax(8rem, .75fr));
+  }
+  .site-footer.uniq-directory-footer .minimal-footer-contact { grid-column: 1 / -1; }
+}
+@media (max-width: 680px) {
+  .uniq-footer-bridge { grid-template-columns: 1fr; width: calc(100% - 2rem); padding: 1.5rem 0; }
+  .uniq-footer-bridge-item { grid-template-columns: auto minmax(0, 1fr) auto; padding: 1.15rem 0; }
+  .uniq-footer-bridge-item:first-child { border-right: 0; border-bottom: 1px solid #dbe8df; }
+  .uniq-footer-bridge-item > a { grid-column: auto; }
+  .uniq-footer-bridge-icon { width: 2.7rem; height: 2.7rem; }
+  .uniq-footer-bridge-item strong { font-size: 1.03rem; }
+  .site-footer .uniq-footer-bridge-item > a { font-size: .72rem; }
+  .site-footer.uniq-directory-footer .minimal-footer-main {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2.2rem 1.2rem;
+    padding: 3rem 1.25rem;
+  }
+  .site-footer.uniq-directory-footer .minimal-footer-brand,
+  .site-footer.uniq-directory-footer .minimal-footer-contact { grid-column: 1 / -1; }
+  .site-footer.uniq-directory-footer .minimal-footer-credit {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: .8rem;
+    padding: 1.4rem 0 5.5rem;
+  }
+  .site-footer.uniq-directory-footer .minimal-footer-credit .uniq-footer-top { margin-right: 0; }
+}
+@media (max-width: 390px) {
+  .uniq-footer-bridge-item { grid-template-columns: auto minmax(0, 1fr); }
+  .uniq-footer-bridge-item > a { grid-column: 2; }
+}

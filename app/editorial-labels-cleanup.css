@@ -1,0 +1,24 @@
+/* Remove repetitive editorial overlines while retaining headings and product details. */
+.page-shell main .eyebrow,
+.page-shell main .about-editorial-kicker,
+.page-shell main .floor-editorial-overline,
+.page-shell main .product-hero-eyebrow,
+.page-shell main .gsap-eyebrow,
+.page-shell main .retailer-kicker,
+.page-shell main .homes-editorial-kicker,
+.account-page .account-eyebrow,
+.manufacturer-lower-section .eyebrow { display: none; }
+
+main.retailer-page .retailer-kicker,
+main.retailer-page .eyebrow,
+.homes-editorial-map-top,
+.homes-editorial-feature-top > span:first-child { display: none; }
+
+.page-shell main .manufacturer-card .eyebrow,
+.page-shell main .trade-product .retailer-kicker { display: block; }
+main.retailer-page .trade-product .retailer-kicker { display: block; }
+.homes-editorial-feature-top { justify-content: flex-end; }
+
+.account-story h1,
+.account-panel h2,
+.homes-editorial-heading h2 { margin-top: 0; }

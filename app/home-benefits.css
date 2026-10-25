@@ -1,0 +1,90 @@
+/* A still, editorial promise row between the image hero and collection selector. */
+.home-shell .reference-benefits {
+  display: block !important;
+  min-height: 0;
+  margin: 0;
+  padding: 0 clamp(1rem, 3.2vw, 3rem);
+  overflow: visible !important;
+  color: #f8f7ed;
+  background: #183b2d;
+  box-shadow: none !important;
+  text-transform: none;
+  animation: none;
+}
+.home-shell .reference-benefits::before,
+.home-shell .reference-benefits::after {
+  content: none !important;
+  display: none !important;
+}
+.reference-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 100rem;
+  min-height: 5.1rem;
+  margin-inline: auto;
+  border-block: 1px solid #365a45;
+}
+.reference-benefit {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  min-width: 0;
+  padding: .85rem clamp(.35rem, 1vw, 1.1rem);
+  transition: background-color .25s ease;
+}
+.reference-benefit + .reference-benefit::before {
+  position: absolute;
+  top: 24%;
+  bottom: 24%;
+  left: 0;
+  width: 1px;
+  background: #42614c;
+  content: "";
+}
+.reference-benefit:hover { background: #234c38; }
+.home-shell .reference-benefits .reference-benefit-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  color: #d8ff5f;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  transition: transform .25s ease;
+}
+.reference-benefit:hover .reference-benefit-icon { transform: translateY(-2px); }
+.reference-benefit-icon .icon-svg { width: 1.45rem; height: 1.45rem; stroke-width: 1.45; }
+.reference-benefit strong {
+  max-width: 10rem;
+  color: #f8f7ed;
+  font-family: var(--font-product-sans), sans-serif;
+  font-size: clamp(.78rem, .97vw, .94rem);
+  font-weight: 550;
+  letter-spacing: -.01em;
+  line-height: 1.22;
+  text-wrap: balance;
+}
+@media (max-width: 760px) {
+  .home-shell .reference-benefits { padding: 0 1rem; }
+  .reference-benefits-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .reference-benefit { justify-content: flex-start; gap: .55rem; min-height: 4.2rem; padding: .6rem .35rem; }
+  .reference-benefit:nth-child(3), .reference-benefit:nth-child(4) { border-top: 1px solid #42614c; }
+  .reference-benefit:nth-child(3)::before { content: none; }
+  .home-shell .reference-benefits .reference-benefit-icon { width: 1.8rem; height: 1.8rem; }
+  .reference-benefit-icon .icon-svg { width: 1.2rem; height: 1.2rem; }
+  .reference-benefit strong { font-size: .76rem; }
+}
+@media (max-width: 380px) {
+  .home-shell .reference-benefits { padding-inline: .65rem; }
+  .reference-benefit { gap: .4rem; }
+  .reference-benefit strong { font-size: .69rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reference-benefit,
+  .home-shell .reference-benefits .reference-benefit-icon { transition: none; }
+}

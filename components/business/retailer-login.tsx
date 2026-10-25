@@ -1,30 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import {
-  ArrowDown,
-  ArrowUpRight,
-  BriefcaseBusiness,
-  Layers3,
-  MessageCircle,
-  Store,
-} from "lucide-react";
+import { useState, type FormEvent } from "react";
+import { ArrowRight, ArrowUpRight, BriefcaseBusiness, Check, Eye, EyeOff, Layers3, LockKeyhole, MessageCircle, Store } from "lucide-react";
 import { browserSupabase } from "@/lib/supabase/client";
-import { RetailerHeader, RetailerFooter } from "./retailer-shell";
+import { RetailerFooter } from "./retailer-shell";
 
 export function RetailerLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
 
-  async function signIn(event: React.FormEvent<HTMLFormElement>) {
+  async function signIn(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy(true);
     setMessage("");
     try {
-      const { error } = await browserSupabase().auth.signInWithPassword({ email, password });
+      const { error } = await browserSupabase().auth.signInWithPassword({ email: email.trim(), password });
       if (error) throw new Error("Unable to sign in. Check your email, password and email verification.");
       window.location.assign("/retailers/shop");
     } catch (error) {
@@ -34,74 +28,57 @@ export function RetailerLogin() {
   }
 
   return (
-    <main className="retailer-page retailer-matcha-page">
-      <RetailerHeader />
+    <main className="account-page retailer-account-landing">
+      <header className="account-header">
+        <Link href="/" aria-label="UNIQ FLOORS home"><img src="/assets/brand/uniq-header-logo.png" alt="UNIQ FLOORS" /></Link>
+        <Link href="/shop">Explore floors <ArrowUpRight size={17} /></Link>
+      </header>
 
-      <section className="retailer-matcha-hero">
-        <div className="retailer-matcha-copy">
-          <p className="retailer-kicker">UNIQ FLOORS · TRADE PARTNERS</p>
-          <h1>Better flooring.<br />Built around your business.</h1>
-          <p>Explore a considered collection, create trade selections and keep every conversation with our flooring team in one clear place.</p>
-          <div className="retailer-matcha-actions">
-            <Link className="retailer-dark-button" href="/retailers/shop">Browse wholesale shop <ArrowUpRight size={17} /></Link>
-            <a className="retailer-blue-link" href="#retailer-access">Retailer account <ArrowDown size={17} /></a>
-            <Link className="retailer-blue-link" href="/retailers/register">Become a retailer <ArrowUpRight size={17} /></Link>
+      <div className="account-layout">
+        <section className="account-story" aria-label="UNIQ FLOORS retailer introduction">
+          <div className="account-story-photo" aria-hidden="true" />
+          <div className="account-story-copy">
+            <h1>Better flooring. Built around your business.</h1>
+            <p>A considered collection, clear specifications and direct support for every project.</p>
+            <div className="account-story-notes">
+              <span><Layers3 size={18} /> Curated trade collection</span>
+              <span><Check size={18} /> Dedicated project support</span>
+            </div>
           </div>
-        </div>
-        <div className="retailer-matcha-visual">
-          <img src="/assets/real/living-oak.jpg" alt="Natural oak flooring in a considered living space" />
-          <div className="retailer-visual-note">
-            <span>TRADE COLLECTION</span>
-            <strong>Floors selected for real projects.</strong>
-            <small>Samples · specifications · direct support</small>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="retailer-benefit-strip" aria-label="Retailer benefits">
-        <article><span><Layers3 /></span><div><strong>A focused collection</strong><small>Compare materials and finishes quickly.</small></div></article>
-        <article><span><MessageCircle /></span><div><strong>Direct project support</strong><small>Discuss every selection with our team.</small></div></article>
-        <article><span><BriefcaseBusiness /></span><div><strong>One business space</strong><small>Your projects, selections and support together.</small></div></article>
-      </section>
+        <section className="account-panel" id="retailer-access" aria-labelledby="retailer-login-title">
+          <div className="account-panel-inner">
+            <div className="account-panel-mark"><Store size={24} /></div>
+            <h2 id="retailer-login-title">Your trade space.</h2>
+            <p className="account-panel-lede">Sign in with your approved retailer account to explore flooring for your next project.</p>
 
-      <section className="retailer-access-section" id="retailer-access">
-        <div className="retailer-access-heading">
-          <p className="retailer-kicker">RETAILER ACCESS</p>
-          <h2>Your trade space.</h2>
-          <p>Sign in with your approved business account to browse the trade collection and build your next flooring selection.</p>
-        </div>
-
-        <div className="retailer-access-frame">
-          <aside className="retailer-access-story">
-            <span className="retailer-access-icon" aria-hidden="true"><Store /></span>
-            <p className="retailer-kicker">RETAILER ACCOUNT</p>
-            <h3>Your next project starts here.</h3>
-            <p>Build a flooring selection and open a direct trade conversation with UNIQ FLOORS.</p>
-            <ul>
-              <li><span>01</span>Approved trade access</li>
-              <li><span>02</span>Dedicated product catalogue</li>
-              <li><span>03</span>WhatsApp order support</li>
-            </ul>
-          </aside>
-
-          <section className="retailer-form-panel retailer-access-card">
-            <p className="retailer-kicker">WELCOME BACK</p>
-            <h2>Retailer sign in</h2>
-            <p>Use your verified business account. Retailer approval is required.</p>
             <form onSubmit={signIn}>
-              <div className="retailer-fields retailer-login-fields">
-                <label>Email address<input type="email" autoComplete="username" required maxLength={254} value={email} onChange={event => setEmail(event.target.value)} /></label>
-                <label>Password<input type="password" autoComplete="current-password" required value={password} onChange={event => setPassword(event.target.value)} /></label>
+              <label htmlFor="retailer-email">Email address</label>
+              <input id="retailer-email" type="email" autoComplete="username" required maxLength={254} value={email} onChange={event => setEmail(event.target.value)} placeholder="you@yourbusiness.co.uk" />
+              <label htmlFor="retailer-password">Password</label>
+              <div className="account-password-field">
+                <input id="retailer-password" type={showPassword ? "text" : "password"} autoComplete="current-password" required value={password} onChange={event => setPassword(event.target.value)} placeholder="Enter your password" />
+                <button type="button" onClick={() => setShowPassword(value => !value)} aria-label={showPassword ? "Hide password" : "Show password"}>{showPassword ? <EyeOff size={19} /> : <Eye size={19} />}</button>
               </div>
-              <p className="retailer-form-message" role="status">{message}</p>
-              <button className="retailer-button" disabled={busy}>{busy ? "Signing in…" : "Open retailer shop"}<ArrowUpRight size={17} /></button>
+              <p className="account-message" role="status">{message}</p>
+              <button className="account-submit" type="submit" disabled={busy}>
+                <span>{busy ? "Signing in…" : "Sign in to trade"}</span><ArrowUpRight size={20} />
+              </button>
             </form>
-            <div className="retailer-apply-prompt"><p>New to UNIQ FLOORS?</p><Link href="/retailers/register">Apply for a retailer account <ArrowUpRight size={17} /></Link></div>
-          </section>
-        </div>
-      </section>
+            <Link className="account-secondary-action" href="/retailers/register">Apply for a retailer account <ArrowUpRight size={15} /></Link>
+            <Link className="retailer-account-browse" href="/retailers/shop">Explore the trade collection <ArrowRight size={16} /></Link>
+            <div className="account-secure-note"><LockKeyhole size={15} /> Secure sign in powered by UNIQ FLOORS</div>
+          </div>
+        </section>
+      </div>
 
-      <RetailerFooter />
+      <section className="retailer-account-benefits" aria-label="Why work with UNIQ FLOORS">
+        <article><Layers3 size={25} /><h3>A focused collection</h3><p>Compare materials and finishes with confidence.</p></article>
+        <article><MessageCircle size={25} /><h3>Direct project support</h3><p>Discuss specifications and selections with our team.</p></article>
+        <article><BriefcaseBusiness size={25} /><h3>One business space</h3><p>Keep projects, selections and support together.</p></article>
+      </section>
+      <div className="retailer-page retailer-account-footer"><RetailerFooter /></div>
     </main>
   );
 }

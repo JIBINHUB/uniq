@@ -39,11 +39,12 @@ import {
   Tags,
   Truck,
   Video,
+  UserRound,
   Wrench,
   X,
   type LucideIcon,
 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type TouchEvent } from "react";
 import { StoreDataProvider, useStoreData, type StoreData } from "@/components/business/store-data";
 import { defaultContent, defaultPromotions } from "@/lib/owner/model";
@@ -274,33 +275,60 @@ function WhatsAppMark() {
   );
 }
 
+function FlooringAdvisorMark() {
+  return (
+    <svg className="contact-guide-advisor-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <path className="contact-guide-headset" d="M7.2 16.8v-2.2a8.8 8.8 0 0 1 17.6 0v2.2M7.2 17.1v4.1c0 1 .7 1.8 1.7 1.8h1.2v-7.6H8.9c-1 0-1.7.8-1.7 1.7ZM24.8 17.1v4.1c0 1-.7 1.8-1.7 1.8h-1.2v-7.6h1.2c1 0 1.7.8 1.7 1.7Z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M12.4 16.8c0 2.4 1.5 4.3 3.6 4.3s3.6-1.9 3.6-4.3M10.7 27.2c1-2.6 2.8-3.8 5.3-3.8s4.3 1.2 5.3 3.8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path className="contact-guide-voice" d="M27.2 12.1c1.3 1 1.3 3.4 0 4.4M29.1 10.4c2.1 1.8 2.1 5.5 0 7.3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function FloatingContactButton() {
   const { whatsappHref, whatsappVideoHref } = useStoreData();
-  const [mode, setMode] = useState<"whatsapp" | "video">("whatsapp");
+  const [open, setOpen] = useState(false);
+  const guideRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      setMode((current) => current === "whatsapp" ? "video" : "whatsapp");
-    }, 4800);
-    return () => window.clearInterval(timer);
-  }, []);
+    if (!open) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    const closeOnOutsideClick = (event: PointerEvent) => {
+      if (guideRef.current && !guideRef.current.contains(event.target as Node)) setOpen(false);
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    document.addEventListener("pointerdown", closeOnOutsideClick);
+    return () => {
+      document.removeEventListener("keydown", closeOnEscape);
+      document.removeEventListener("pointerdown", closeOnOutsideClick);
+    };
+  }, [open]);
 
-  const isWhatsApp = mode === "whatsapp";
   return (
-    <a
-      className={`contact-orbit ${isWhatsApp ? "is-whatsapp" : "is-video"}`}
-      href={isWhatsApp ? whatsappHref : whatsappVideoHref}
-      target="_blank"
-      rel="noreferrer"
-      aria-label={isWhatsApp ? "Chat with UNIQ FLOORS on WhatsApp" : "Request a WhatsApp video call"}
-      title={isWhatsApp ? "WhatsApp us" : "Request a video call"}
-    >
-      <span className="contact-orbit-ring" aria-hidden="true" />
-      <span className="contact-orbit-icon" key={mode}>
-        {isWhatsApp ? <WhatsAppMark /> : <PremiumIcon name="video" />}
-      </span>
-      <small>{isWhatsApp ? "Chat" : "Video"}</small>
-    </a>
+    <div className="contact-guide" ref={guideRef}>
+      {open && (
+        <div className="contact-guide-panel" id="contact-guide-panel">
+          <div className="contact-guide-panel-head">
+            <span className="contact-guide-avatar" aria-hidden="true"><FlooringAdvisorMark /></span>
+            <div>
+              <strong>Let&apos;s find your floor.</strong>
+            </div>
+            <button type="button" className="contact-guide-close" aria-label="Close contact options" onClick={() => setOpen(false)}><X size={18} /></button>
+          </div>
+          <p>Talk through colours and samples with a real person, or visit us in store.</p>
+          <a className="contact-guide-option is-primary" href={whatsappVideoHref} target="_blank" rel="noreferrer"><span className="contact-guide-option-icon"><Video size={18} /></span> Request a video call <ArrowUpRight size={16} /></a>
+          <a className="contact-guide-option" href={whatsappHref} target="_blank" rel="noreferrer"><span className="contact-guide-option-icon"><WhatsAppMark /></span> Chat on WhatsApp <ArrowUpRight size={16} /></a>
+          <a className="contact-guide-option" href={storeMapHref} target="_blank" rel="noreferrer"><span className="contact-guide-option-icon"><MapPin size={18} /></span> Visit our store <ArrowUpRight size={16} /></a>
+        </div>
+      )}
+      <button className="contact-guide-launcher" type="button" aria-label="Talk to the UNIQ flooring team" aria-expanded={open} aria-controls={open ? "contact-guide-panel" : undefined} onClick={() => setOpen((current) => !current)}>
+        <span className="contact-guide-launcher-avatar" aria-hidden="true"><MessageCircle size={20} strokeWidth={1.8} /><span className="contact-guide-presence" /></span>
+        <span className="contact-guide-launcher-copy"><strong>Flooring advice</strong><small>Talk to our team</small></span>
+        <ArrowUpRight className="contact-guide-launcher-arrow" size={18} aria-hidden="true" />
+      </button>
+    </div>
   );
 }
 
@@ -664,13 +692,12 @@ function HomeView({ addSample }: { addSample: (slug: string) => void }) {
             {String(content.hero.description)}
           </p>
           <div className="hero-actions">
-            <Link
-              className="primary-btn hero-cta-btn"
-              href={String(content.hero.button_href)}
-            >
-              {String(content.hero.button_label)}
-              <span className="cta-icon-circle"><PremiumIcon name="arrow" /></span>
-            </Link>
+            <a className="hero-review-proof" href="#homes-editorial-title" aria-label="Rated 4.8 out of 5 by customers. Read customer stories">
+              <span className="hero-review-stars" aria-hidden="true">
+                {Array.from({ length: 5 }, (_, index) => <span key={index} style={{ "--star-index": index } as CSSProperties}>★</span>)}
+              </span>
+              <span className="hero-review-copy"><strong>4.8 <small>/ 5</small></strong><span>Customer rating <ArrowUpRight size={14} aria-hidden="true" /></span></span>
+            </a>
           </div>
         </div>
         <HeroCarousel active={heroVideoNear} />
@@ -688,7 +715,6 @@ function HomeView({ addSample }: { addSample: (slug: string) => void }) {
         <div className="about-editorial-inner">
           <div className="about-editorial-top">
             <div>
-              <p className="about-editorial-kicker">THOUSANDS OF HAPPY CUSTOMERS</p>
               <h2 id="customer-story-title">Chosen with confidence. Lived on beautifully.</h2>
             </div>
             <Link className="about-editorial-link" href="/shop">
@@ -700,17 +726,14 @@ function HomeView({ addSample }: { addSample: (slug: string) => void }) {
           </p>
           <div className="about-editorial-principles customer-matched-principles" aria-label="UNIQ Floors customer proof">
             <article>
-              <PremiumIcon name="sample" />
               <h3><AnimatedMetric value={18} suffix="k+" /></h3>
               <p>Real flooring samples requested by UK homes.</p>
             </article>
             <article>
-              <PremiumIcon name="star" />
               <h3><AnimatedMetric value={4.8} decimals={1} suffix="/5" /></h3>
               <p>Average customer rating for product and service.</p>
             </article>
             <article>
-              <PremiumIcon name="return" />
               <h3><AnimatedMetric value={30} suffix=" days" /></h3>
               <p>Easy returns on unopened flooring packs.</p>
             </article>
@@ -728,7 +751,6 @@ function AboutPageView() {
     <>
       <section className="about-page-hero">
         <div className="about-page-hero-copy">
-          <span>ABOUT UNIQ FLOORS</span>
           <h1>Flooring, clearly chosen.</h1>
           <p>We help homes find floors with lasting character. Discover distinctive materials, picture them in real rooms and get practical advice before making your choice.</p>
           <Link href="/shop">Explore floors <ArrowUpRight size={19} aria-hidden="true" /></Link>
@@ -739,7 +761,6 @@ function AboutPageView() {
       </section>
       <AboutScrollReveal />
       <section className="about-page-next">
-        <span>START WITH A SAMPLE</span>
         <h2>See the finish in your space.</h2>
         <p>Compare colour and texture at home, then ask our team about your room, measurements or fitting plan.</p>
         <Link href="/category/engineered">Explore free samples <ArrowUpRight size={19} aria-hidden="true" /></Link>
@@ -754,7 +775,6 @@ function AboutScrollReveal() {
       <div className="about-editorial-inner">
         <div className="about-editorial-top">
           <div>
-            <p className="about-editorial-kicker">ABOUT UNIQ FLOORS</p>
             <h2 id="about-story-title">Better floors begin with a clearer choice.</h2>
           </div>
           <Link className="about-editorial-link" href="/about">About us <ArrowUpRight size={20} aria-hidden="true" /></Link>
@@ -1031,24 +1051,10 @@ function SampleBoxSection() {
             alt="Floating natural wood flooring sample palette"
           />
           <span className="sample-palette-shadow" aria-hidden="true" />
-          <div className="sample-float-note sample-float-note-top">
-            <strong>01</strong>
-            <span>Real grain</span>
-          </div>
-          <div className="sample-float-note sample-float-note-bottom">
-            <strong>6</strong>
-            <span>Free samples</span>
-          </div>
         </div>
       </div>
 
       <div className="sample-palette-copy">
-        <div className="sample-palette-kicker">
-          <p className="eyebrow">
-            <PremiumIcon name="sample" /> Order Free Samples
-          </p>
-          <span>01 / 03</span>
-        </div>
         <h2>Let the floor <em>rise</em> into your room before you buy.</h2>
         <p>
           Choose real wood tones, compare texture at home and build a premium
@@ -1058,26 +1064,7 @@ function SampleBoxSection() {
           <Link href="/category/engineered" className="sbs-cta">
             Shop Free Samples <PremiumIcon name="arrow" />
           </Link>
-          <span>Next day sample dispatch</span>
         </div>
-        <ul className="sample-palette-perks">
-          <li>
-            <span>01</span>
-            <div><strong>Feel the finish</strong><small>Large touch-and-feel boards</small></div>
-          </li>
-          <li>
-            <span>02</span>
-            <div><strong>Compare at home</strong><small>Warm, natural and smoked tones</small></div>
-          </li>
-          <li>
-            <span>03</span>
-            <div><strong>Choose clearly</strong><small>A simple sample-first journey</small></div>
-          </li>
-        </ul>
-        <Link href="/category/engineered" className="sample-palette-link">
-          Start with engineered oak
-          <PremiumIcon name="arrow" />
-        </Link>
       </div>
     </section>
   );
@@ -1105,21 +1092,11 @@ function PostHeroReference() {
       aria-label="Flooring promises and categories"
     >
       <div className="reference-benefits">
-        <div className="reference-benefits-track">
-          {[0, 1].map((setIndex) => (
-            <div
-              className="reference-benefits-group"
-              aria-hidden={setIndex === 1 ? true : undefined}
-              key={`promise-set-${setIndex}`}
-            >
-              {benefitStrip.map(([icon, label]) => (
-                <span key={`${setIndex}-${label}`}>
-                  <i className="benefit-icon" aria-hidden="true">
-                    <PremiumIcon name={icon} />
-                  </i>
-                  <b>{label}</b>
-                </span>
-              ))}
+        <div className="reference-benefits-grid" aria-label="Why shop with UNIQ FLOORS">
+          {benefitStrip.map(([icon, label]) => (
+            <div className="reference-benefit" key={label}>
+              <span className="reference-benefit-icon" aria-hidden="true"><PremiumIcon name={icon} /></span>
+              <strong>{label}</strong>
             </div>
           ))}
         </div>
@@ -1150,37 +1127,71 @@ function PostHeroReference() {
 
 const categoryBlockCollections = {
   residential: [
-    { title: "Engineered Wood", href: "/category/engineered", image: "/assets/categories/generated/engineered-focused.jpg" },
-    { title: "Luxury Vinyl", href: "/category/lvt", image: "/assets/categories/generated/lvt-focused.jpg" },
-    { title: "Herringbone", href: "/category/herringbone", image: "/assets/categories/generated/herringbone-focused.jpg" },
-    { title: "Carpet", href: "/carpets", image: "/assets/material-illustrations/carpet.webp" },
+    { title: "Engineered Wood Flooring", href: "/category/engineered", image: "/assets/categories/generated/engineered-focused.jpg" },
+    { title: "Vinyl (LVT)", href: "/category/lvt", image: "/assets/categories/generated/lvt-focused.jpg" },
+    { title: "Laminate Flooring", href: "/category/laminate", image: "/assets/categories/generated/laminate-focused.jpg" },
+    { title: "Solid Oak Flooring", href: "/category/solid", image: "/assets/categories/generated/solid-oak-focused.jpg" },
+    { title: "SPC Click Vinyl", href: "/category/spc", image: "/assets/categories/generated/spc-focused.jpg" },
+    { title: "Parquet & Herringbone", href: "/category/herringbone", image: "/assets/categories/generated/herringbone-focused.jpg" },
   ],
   commercial: [
-    { title: "Luxury Vinyl", href: "/category/lvt", image: "/assets/rooms-generated/room-commercial.webp" },
-    { title: "SPC Rigid Core", href: "/category/spc", image: "/assets/categories/generated/spc-focused.jpg" },
+    { title: "Commercial Vinyl (LVT)", href: "/category/lvt", image: "/assets/rooms-generated/room-commercial.webp" },
+    { title: "SPC Click Vinyl", href: "/category/spc", image: "/assets/categories/generated/spc-focused.jpg" },
     { title: "Laminate", href: "/category/laminate", image: "/assets/categories/generated/laminate-focused.jpg" },
     { title: "Carpet", href: "/carpets", image: "/assets/material-illustrations/carpet-grey.webp" },
+    { title: "Parquet & Herringbone", href: "/category/herringbone", image: "/assets/categories/generated/herringbone-focused.jpg" },
+    { title: "Engineered Wood Flooring", href: "/category/engineered", image: "/assets/categories/generated/engineered-focused.jpg" },
   ],
 } as const;
 
 function FlooringCategoryBlocks() {
+  const router = useRouter();
   const [audience, setAudience] = useState<"residential" | "commercial">("residential");
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const collection = categoryBlockCollections[audience];
+  const selected = collection[selectedIndex];
+  const selectAudience = (next: "residential" | "commercial") => {
+    setAudience(next);
+    setSelectedIndex(0);
+  };
+  const selectCategory = (index: number) => {
+    if (index === selectedIndex) router.push(collection[index].href);
+    else setSelectedIndex(index);
+  };
+  const moveSelection = (direction: number) => {
+    setSelectedIndex((index) => (index + direction + collection.length) % collection.length);
+  };
 
   return (
     <section className="home-category-blocks" aria-label="Explore flooring collections">
-      <div className="home-category-blocks-switch" aria-label="Choose a flooring collection">
-        <button type="button" aria-pressed={audience === "residential"} onClick={() => setAudience("residential")}>Residential</button>
-        <button type="button" aria-pressed={audience === "commercial"} onClick={() => setAudience("commercial")}>Commercial</button>
+      <div className="home-category-blocks-top">
+        <div className="home-category-blocks-switch" aria-label="Choose a flooring collection">
+          <button type="button" aria-pressed={audience === "residential"} onClick={() => selectAudience("residential")}>Residential</button>
+          <button type="button" aria-pressed={audience === "commercial"} onClick={() => selectAudience("commercial")}>Commercial</button>
+        </div>
+        <div className="home-category-blocks-arrows">
+          <button type="button" onClick={() => moveSelection(-1)} aria-label="Previous flooring category"><ChevronLeft aria-hidden="true" /></button>
+          <button type="button" onClick={() => moveSelection(1)} aria-label="Next flooring category"><ChevronRight aria-hidden="true" /></button>
+        </div>
       </div>
+      <strong className="home-category-blocks-backdrop" aria-hidden="true">{selected.title}</strong>
       <div className="home-category-blocks-grid" key={audience}>
-        {categoryBlockCollections[audience].map(({ title, href, image }) => (
-          <Link className="home-category-block" href={href} key={title} aria-label={`Explore ${title} flooring`}>
+        {collection.map(({ title, image }, index) => (
+          <button
+            className="home-category-block"
+            type="button"
+            key={title}
+            aria-label={`${title}${index === selectedIndex ? "; selected, press again to explore" : "; select category"}`}
+            aria-pressed={index === selectedIndex}
+            onClick={() => selectCategory(index)}
+          >
             <img src={image} alt="" loading="lazy" decoding="async" />
-            <span className="home-category-block-shade" aria-hidden="true" />
-            <span className="home-category-block-title">{title}</span>
-            <ArrowUpRight className="home-category-block-arrow" size={27} aria-hidden="true" />
-          </Link>
+          </button>
         ))}
+      </div>
+      <div className="home-category-blocks-detail" aria-live="polite">
+        <div><span>{String(selectedIndex + 1).padStart(2, "0")} / {String(collection.length).padStart(2, "0")}</span><h2>{selected.title}</h2></div>
+        <Link href={selected.href}>Explore this category <ArrowUpRight size={20} aria-hidden="true" /></Link>
       </div>
     </section>
   );
@@ -1256,6 +1267,9 @@ function CommerceHeader({ headerScrolled }: { headerScrolled: boolean }) {
             src="/assets/brand/uniq-header-logo.png"
             alt="UNIQ Floors"
           />
+        </Link>
+        <Link className="aeline-account-link" href="/account" aria-label="Open your account" title="Account">
+          <UserRound size={20} strokeWidth={1.8} aria-hidden="true" />
         </Link>
       </div>
     </header>
@@ -1610,22 +1624,22 @@ function ShopView({
       <section className="shop-page-intro">
         <p className="eyebrow">The UNIQ floor edit</p>
         <h1>Shop floors for every kind of home.</h1>
-        <p>Browse by material or start with what your room needs.</p>
+        <p>Explore considered materials, compare finishes and choose with confidence.</p>
         <div className="shop-intro-actions">
-          <Link className="shop-expanded-collection-link" href="/carpets" aria-label="Explore the carpet collection">
+          <Link className="shop-expanded-collection-link" href="/carpets" aria-label="Explore carpet collections">
             <span className="shop-collection-symbol" aria-hidden="true"><PremiumIcon name="layers" /></span>
-            <span className="shop-collection-label"><small>EXPLORE THE COLLECTION</small><strong>Shop carpets</strong></span>
+            <span className="shop-collection-label"><small>CARPET COLLECTION</small><strong>Explore carpets</strong></span>
             <PremiumIcon name="arrow" />
           </Link>
           <nav className="customer-shop-channel" aria-label="Choose how to shop">
             <Link className="shop-channel-option is-current" href="#products" aria-current="page">
               <span className="shop-channel-icon"><PremiumIcon name="home" /></span>
-              <span className="shop-channel-copy"><strong>For your home</strong><small>Browse floors &amp; samples</small></span>
+              <span className="shop-channel-copy"><small>RESIDENTIAL FLOORING</small><strong>Floors &amp; samples</strong></span>
               <PremiumIcon name="arrow" />
             </Link>
             <Link className="shop-channel-option" href="/retailers">
               <span className="shop-channel-icon"><PremiumIcon name="briefcase" /></span>
-              <span className="shop-channel-copy"><strong>For professionals</strong><small>Retailer sign in</small></span>
+              <span className="shop-channel-copy"><small>TRADE &amp; COMMERCIAL</small><strong>Professional services</strong></span>
               <PremiumIcon name="arrow" />
             </Link>
           </nav>
@@ -2059,7 +2073,7 @@ function ProductView({
       <header className="frido-product-topbar"><button className="frido-product-back" type="button" onClick={() => {
         if (document.referrer && new URL(document.referrer).origin === window.location.origin) window.history.back();
         else window.location.assign(`/category/${product.category}`);
-      }}><span className="frido-back-icon"><ArrowLeft size={17} strokeWidth={1.8} aria-hidden="true" /></span><span>Back to shop</span></button><div className="frido-product-brand"><img src="/assets/brand/uniq-header-logo.png" alt="UNIQ FLOORS" width="720" height="279" /></div><div className="frido-product-category" aria-label={`Collection: ${category.title}`}><span className="frido-category-icon" aria-hidden="true"><Layers3 size={18} strokeWidth={1.5} /></span><span className="frido-category-copy"><small>THE COLLECTION</small><strong>{category.title}</strong></span></div></header>
+      }}><span className="frido-back-icon"><ArrowLeft size={17} strokeWidth={1.8} aria-hidden="true" /></span><span>Back to shop</span></button><div className="frido-product-brand"><img src="/assets/brand/uniq-header-logo.png" alt="UNIQ FLOORS" width="720" height="279" /></div><div className="frido-product-right"><div className="frido-product-category" aria-label={`Collection: ${category.title}`}><span className="frido-category-icon" aria-hidden="true"><Layers3 size={18} strokeWidth={1.5} /></span><span className="frido-category-copy"><small>THE COLLECTION</small><strong>{category.title}</strong></span></div><Link className="frido-product-account" href="/account" aria-label="Account"><UserRound size={19} strokeWidth={1.8}/></Link></div></header>
       <div className="product-announcement" aria-label="Shopping benefits">
         <div className="product-benefit-track">
           {[0, 1, 2, 3].map((copy) => (
@@ -2707,7 +2721,6 @@ function SampleDrawer({
       >
         <div className="drawer-head">
           <div>
-            <p className="eyebrow">UNIQ FLOORS / YOUR SELECTION</p>
             <h2>Your basket<span aria-hidden="true">.</span></h2>
             <p className="drawer-head-caption">The floors you love, all in one place.</p>
           </div>
@@ -2719,10 +2732,6 @@ function SampleDrawer({
           >
             <PremiumIcon name="x" />
           </button>
-        </div>
-        <div className="drawer-editorial-band" aria-hidden="true">
-          <span>FLOORS FOR LIVING</span>
-          <span>01 / 03</span>
         </div>
         <div className="drawer-scroll-content">
         {cartItems.length ? (
@@ -2794,57 +2803,68 @@ function SampleDrawer({
 function Footer() {
   const { content, whatsappHref, whatsappVideoHref, storeMapHref } = useStoreData();
   return (
-    <footer className="site-footer minimal-footer">
-      <div className="blended-footer-hero">
-        <div>
-          <p className="eyebrow">UNIQ FLOORS</p>
-          <h2>Good floors begin with a better look.</h2>
-          <p>Compare at home, see flooring live in your room or speak with our team before you order.</p>
+    <footer className="site-footer minimal-footer uniq-directory-footer">
+      <div className="uniq-footer-bridge">
+        <div className="uniq-footer-bridge-item">
+          <span className="uniq-footer-bridge-icon"><PremiumIcon name="home" /></span>
+          <div>
+            <small>FOR YOUR HOME</small>
+            <strong>Make room for a better floor.</strong>
+          </div>
+          <Link href="/shop">Explore floors <ArrowUpRight size={19} aria-hidden="true" /></Link>
         </div>
-        <div className="blended-footer-actions">
-          <Link href="/shop">Shop all floors <PremiumIcon name="arrow" /></Link>
-          <Link href="/live-room">Open Live Room <PremiumIcon name="camera" /></Link>
-          <a href={storeMapHref} target="_blank" rel="noreferrer">Visit store <PremiumIcon name="map" /></a>
+        <div className="uniq-footer-bridge-item">
+          <span className="uniq-footer-bridge-icon"><PremiumIcon name="briefcase" /></span>
+          <div>
+            <small>FOR PROFESSIONALS</small>
+            <strong>Source with confidence.</strong>
+          </div>
+          <Link href="/retailers">Explore trade <ArrowUpRight size={19} aria-hidden="true" /></Link>
         </div>
       </div>
-      <div className="minimal-footer-main">
-        <div className="minimal-footer-brand">
-          <Link className="brand footer-brand" href="/">
-            <img className="footer-mini-logo" src="/assets/brand/uniq-mini-logo.png" alt="UNIQ Floors" />
-            <span><strong>UNIQ FLOORS</strong><small>Flooring, clearly chosen.</small></span>
-          </Link>
-          <p>Distinctive floors, free samples and practical guidance for real UK homes.</p>
-          <div className="minimal-footer-promises">
-            <span><PremiumIcon name="sample" /> Free samples</span>
-            <span><PremiumIcon name="shield" /> Price match</span>
-            <span><PremiumIcon name="return" /> 30-day returns</span>
+      <div className="uniq-footer-panel">
+        <div className="minimal-footer-main">
+          <div className="minimal-footer-brand">
+            <Link className="brand footer-brand" href="/">
+              <img className="footer-mini-logo" src="/assets/brand/uniq-mini-logo.png" alt="UNIQ Floors" />
+              <span><strong>UNIQ FLOORS</strong><small>Flooring, clearly chosen.</small></span>
+            </Link>
+            <p>Distinctive floors and honest guidance for the spaces you live and work in.</p>
+            <div className="minimal-footer-promises">
+              <span><PremiumIcon name="sample" /> Free samples</span>
+              <span><PremiumIcon name="shield" /> Price match</span>
+              <span><PremiumIcon name="return" /> 30-day returns</span>
+            </div>
           </div>
-        </div>
 
-        <nav className="minimal-footer-links" aria-label="Footer shop links">
-          <span>Shop</span>
-          <Link href="/shop">All floors</Link>
-          <Link href="/category/engineered">Engineered wood</Link>
-          <Link href="/category/lvt">Luxury vinyl</Link>
-          <Link href="/category/herringbone">Herringbone</Link>
-        </nav>
+          <nav className="minimal-footer-links" aria-label="Footer shop links">
+            <span>Explore flooring</span>
+            <Link href="/shop">All floors</Link>
+            <Link href="/category/engineered">Engineered wood</Link>
+            <Link href="/category/lvt">Luxury vinyl</Link>
+            <Link href="/category/herringbone">Herringbone</Link>
+            <Link href="/carpets">Carpets</Link>
+          </nav>
 
-        <nav className="minimal-footer-links" aria-label="Footer help links">
-          <span>Help</span>
-          <Link href="/about">About us</Link>
-          <Link href="/live-room">Live room view</Link>
-          <Link href="/guides">Buying guides</Link>
-          <Link href="/delivery">Delivery & returns</Link>
-          <Link href="/">Privacy</Link>
-        </nav>
+          <nav className="minimal-footer-links" aria-label="Footer help links">
+            <span>UNIQ &amp; support</span>
+            <Link href="/about">About us</Link>
+            <Link href="/live-room">Live room view</Link>
+            <Link href="/guides">Buying guides</Link>
+            <Link href="/delivery">Delivery &amp; returns</Link>
+            <a href={storeMapHref} target="_blank" rel="noreferrer">Visit our store</a>
+          </nav>
 
-        <div className="minimal-footer-contact">
-          <span>Talk to us</span>
-          {!!content.business?.business_email && <a href={`mailto:${String(content.business.business_email)}`}>{String(content.business.business_email)}</a>}
-          {!!content.business?.address && <p>{String(content.business.address)}</p>}
-          <p>Fast help with samples, quantities and fitting.</p>
-          <a className="footer-whatsapp" href={whatsappHref} target="_blank" rel="noreferrer"><WhatsAppMark /> WhatsApp</a>
-          <a className="footer-video-call" href={whatsappVideoHref} target="_blank" rel="noreferrer"><PremiumIcon name="video" /> Video call</a>
+          <div className="minimal-footer-contact">
+            <span>Talk to us</span>
+            <p>Questions about colour, samples or quantities? We can help.</p>
+            {!!content.business?.business_email && <a className="uniq-footer-email" href={`mailto:${String(content.business.business_email)}`}>{String(content.business.business_email)}</a>}
+            {!!content.business?.address && <p>{String(content.business.address)}</p>}
+            <div className="uniq-footer-contact-actions">
+              <a className="footer-whatsapp" href={whatsappHref} target="_blank" rel="noreferrer"><WhatsAppMark /> WhatsApp</a>
+              <a className="footer-video-call" href={whatsappVideoHref} target="_blank" rel="noreferrer"><PremiumIcon name="video" /> Video call</a>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -2853,6 +2873,7 @@ function Footer() {
         <a href="https://leafcreationism.in/" target="_blank" rel="noreferrer">
           Designed and developed by <strong>Leaf Creationism</strong><PremiumIcon name="arrow" />
         </a>
+        <a className="uniq-footer-top" href="#app">Back to top <ArrowUpRight size={16} aria-hidden="true" /></a>
       </div>
     </footer>
   );

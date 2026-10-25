@@ -49,11 +49,11 @@
   border: 0;
   border-radius: 999px;
   font-family: var(--uniq-display), var(--font-product-sans), sans-serif;
-  font-size: .72rem;
-  font-weight: 650;
-  letter-spacing: -.01em;
+  font-size: .83rem;
+  font-weight: 550;
+  letter-spacing: -.035em;
   text-decoration: none;
-  text-transform: uppercase;
+  text-transform: none;
   white-space: nowrap;
   cursor: pointer;
   transition: color .2s ease, transform .2s ease;
@@ -110,13 +110,13 @@ html.ar-room-route .site-pill-nav,
   .site-pill-nav-glide { top: .3rem; bottom: .3rem; }
   .site-pill-nav-item,
   .site-pill-nav-cart { min-height: 2.9rem; }
-  .site-pill-nav-item { flex-direction: column; gap: .08rem; padding: .22rem .12rem; font-size: .58rem; }
+  .site-pill-nav-item { flex-direction: column; gap: .08rem; padding: .22rem .12rem; font-size: .66rem; }
   .site-pill-nav-item .icon-svg { width: 1.15rem; height: 1.15rem; }
   .site-pill-nav-cart .icon-svg { width: 1.3rem; height: 1.3rem; }
 }
 
 @media (max-width: 370px) {
-  .site-pill-nav-item { font-size: .52rem; }
+  .site-pill-nav-item { font-size: .6rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
