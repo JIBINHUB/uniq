@@ -1073,58 +1073,40 @@ function SampleBoxSection() {
 
 
 function PostHeroReference() {
-  const { products, categories, productBySlug, categoryById, productsByCategory, content, selectionWhatsAppHref, whatsappHref, whatsappVideoHref, storeMapHref } = useStoreData();
-  const benefitStrip = [
+  const floorBenefits = [
     ["price", "Price Match Guarantee"],
     ["truck", "Free Next Day Samples"],
     ["sample", "Free XL Samples"],
     ["return", "30-Day Returns"],
   ];
-  const whyItems = [
-    ["layers", "Considered materials", "Real wood, resilient vinyl and carefully chosen finishes for rooms that feel like yours."],
-    ["palette", "Distinctive by design", "From quiet natural oak to bold parquet, every collection starts with the character of the space."],
-    ["care", "Made for everyday life", "Practical advice, samples and dependable support help you choose a floor you will love living on."],
-  ];
 
   return (
     <section
       className="post-hero-reference"
-      aria-label="Flooring promises and categories"
+      aria-label="About UNIQ FLOORS and flooring categories"
     >
-      <div className="reference-benefits">
-        <div className="reference-benefits-track" aria-label="Why shop with UNIQ FLOORS">
-          {[false, true].map((duplicate) => (
-            <div className="reference-benefits-grid" key={String(duplicate)} aria-hidden={duplicate ? true : undefined}>
-              {benefitStrip.map(([icon, label]) => (
-                <div className="reference-benefit" key={label}>
-                  <span className="reference-benefit-icon" aria-hidden="true"><PremiumIcon name={icon} /></span>
-                  <strong>{label}</strong>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <FlooringCategoryBlocks />
-
       <div className="reference-why">
         <div className="reference-why-head">
           <h2>Floors made for the way you live.</h2>
           <Link href="/about">About us <ArrowUpRight size={17} aria-hidden="true" /></Link>
         </div>
-        <div className="reference-why-grid">
-          {whyItems.map(([icon, title, copy]) => (
-            <article key={title}>
-              <span>
-                <PremiumIcon name={icon} />
-              </span>
-              <h3>{title}</h3>
-              <p>{copy}</p>
-            </article>
-          ))}
+        <div className="reference-why-benefits" aria-label="Why shop with UNIQ FLOORS">
+          <div className="reference-why-benefits-track">
+            {[false, true].map((duplicate) => (
+              <div className="reference-why-benefits-group" key={String(duplicate)} aria-hidden={duplicate || undefined}>
+                {floorBenefits.map(([icon, label]) => (
+                  <div className="reference-why-benefit" key={label}>
+                    <span className="reference-why-benefit-icon" aria-hidden="true"><PremiumIcon name={icon} /></span>
+                    <strong>{label}</strong>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+
+      <FlooringCategoryBlocks />
     </section>
   );
 }
