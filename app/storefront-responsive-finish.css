@@ -1,0 +1,988 @@
+/* Product details share the featured-floor sage palette and display type. */
+.inner-shell .frido-legacy-product.product-experience {
+  --pdp-sage-top: #819b7b;
+  --pdp-sage-mid: #688562;
+  --pdp-sage-bottom: #365540;
+  --pdp-sage-dark: #365540;
+  --pdp-ink: #203027;
+  color: var(--pdp-ink);
+}
+.inner-shell .frido-legacy-product.product-experience,
+.inner-shell .frido-legacy-product.product-experience * {
+  font-family: var(--uniq-display), sans-serif !important;
+}
+.inner-shell .frido-legacy-product #product-overview.product-section,
+.inner-shell .frido-legacy-product :is(.product-shopping-help,.product-confidence-section,.product-tech-section,.product-information-section,.product-reviews-section,.product-faq-section,.product-related-section,.product-story-band) {
+  width: min(calc(100% - clamp(2rem, 7vw, 10rem)), 112rem) !important;
+}
+.inner-shell .frido-legacy-product .product-section .details-grid {
+  width: 100% !important;
+  max-width: none !important;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
+  gap: clamp(1.75rem, 3.2vw, 4.5rem);
+}
+.inner-shell .frido-legacy-product .product-gallery-stage {
+  height: clamp(31rem, 58svh, 49rem) !important;
+  aspect-ratio: auto !important;
+  background: #f2f0eb !important;
+}
+.inner-shell .frido-legacy-product .product-gallery-stage.is-sample .product-gallery-image-frame > img {
+  object-fit: contain !important;
+}
+.inner-shell .frido-legacy-product .reference-product-info h1 {
+  color: var(--pdp-ink) !important;
+  font-size: clamp(2.15rem, 2.45vw, 3.45rem);
+  font-weight: 500;
+  line-height: 1.03;
+  letter-spacing: -.05em;
+  overflow-wrap: anywhere;
+}
+.inner-shell .frido-legacy-product.product-experience .product-announcement,
+.inner-shell .frido-legacy-product.product-experience .reference-product-info .flooring-configurator {
+  color: #fff !important;
+  background: linear-gradient(180deg, var(--pdp-sage-top), var(--pdp-sage-mid) 42%, var(--pdp-sage-bottom)) !important;
+  border-color: rgba(59, 89, 62, .3) !important;
+  box-shadow: none !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.inner-shell .frido-legacy-product.product-experience .product-announcement {
+  margin: 0;
+  border-width: 0;
+  border-radius: 0;
+}
+.inner-shell .frido-legacy-product.product-experience .product-announcement .product-benefit-set > span,
+.inner-shell .frido-legacy-product.product-experience .product-announcement svg { color: #fff !important; }
+.inner-shell .frido-legacy-product .frido-back-icon,
+.inner-shell .frido-legacy-product .frido-product-sticky-order > a,
+.inner-shell .frido-legacy-product .reference-price-block > div > span,
+.inner-shell .frido-legacy-product .product-related-section .product-card .secondary-btn {
+  color: #fff !important;
+  background: var(--pdp-sage-dark) !important;
+  border-color: var(--pdp-sage-dark) !important;
+}
+.inner-shell .frido-legacy-product .frido-product-back,
+.inner-shell .frido-legacy-product .frido-product-category,
+.inner-shell .frido-legacy-product .frido-category-icon,
+.inner-shell .frido-legacy-product .reference-product-info .product-kicker strong,
+.inner-shell .frido-legacy-product .reference-product-info .product-stock strong {
+  color: var(--pdp-sage-dark) !important;
+}
+.inner-shell .frido-legacy-product .frido-category-icon,
+.inner-shell .frido-legacy-product .reference-product-info .product-stock-icon {
+  background: #e8f0e5 !important;
+  border-color: #d8e4d4 !important;
+}
+.inner-shell .frido-legacy-product .reference-product-info .product-kicker-marker {
+  background: var(--pdp-sage-bottom);
+}
+.inner-shell .frido-legacy-product .reference-product-info .product-kicker small,
+.inner-shell .frido-legacy-product .reference-product-info .product-stock small,
+.inner-shell .frido-legacy-product .frido-category-copy small {
+  color: #607c63 !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator :is(.area-input,.waste-options button,.pack-summary) {
+  background: rgba(255,255,255,.12) !important;
+  border-color: rgba(255,255,255,.48) !important;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .waste-options button.active {
+  background: rgba(31,64,43,.46) !important;
+  border-color: rgba(255,255,255,.8) !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .waste-options button.active :is(strong,small) {
+  color: #fff !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .config-title > span {
+  color: #fff;
+  background: rgba(31,64,43,.32);
+  border-color: rgba(255,255,255,.55);
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .buy-order-now {
+  color: var(--pdp-sage-dark) !important;
+  background: #fff !important;
+  border-color: #fff !important;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .buy-order-now small { color: #526d56 !important; }
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .buy-visit-store {
+  background: rgba(31,64,43,.4) !important;
+  border-color: rgba(255,255,255,.55) !important;
+  box-shadow: none;
+}
+.inner-shell .frido-legacy-product .reference-product-info .product-shade-options a.active {
+  border-color: var(--pdp-sage-bottom);
+  box-shadow: 0 0 0 1px var(--pdp-sage-bottom);
+}
+.inner-shell .frido-legacy-product :is(.service-strip-item > svg,.product-tech-layout .spec .icon-svg,.confidence-grid article span,.product-story-band article span,.review-empty-state > span) {
+  color: var(--pdp-sage-bottom) !important;
+}
+@media (max-width: 900px) {
+  .inner-shell .frido-legacy-product .product-section .details-grid { grid-template-columns: minmax(0,1fr); }
+  .inner-shell .frido-legacy-product .product-gallery { position: static; }
+  .inner-shell .frido-legacy-product .product-gallery-stage { height: clamp(25rem, 66svh, 39rem) !important; }
+}
+@media (max-width: 720px) {
+  .inner-shell .frido-legacy-product #product-overview.product-section { width: 100% !important; }
+  .inner-shell .frido-legacy-product .product-gallery-stage { height: auto !important; aspect-ratio: 1 / 1.08 !important; }
+  .inner-shell .frido-legacy-product .reference-product-info h1 { font-size: clamp(1.9rem, 7.4vw, 2.45rem); }
+  .inner-shell .frido-legacy-product :is(.product-shopping-help,.product-confidence-section,.product-tech-section,.product-information-section,.product-reviews-section,.product-faq-section,.product-related-section,.product-story-band) { width: calc(100% - 2rem) !important; }
+}
+
+/* Three shop destinations form one quiet editorial navigation row. */
+.page-shell .shop-page-intro .shop-intro-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 0;
+  border-top: 1px solid #deded3;
+  border-bottom: 1px solid #deded3;
+}
+.page-shell .shop-page-intro .shop-expanded-collection-link,
+.page-shell .shop-page-intro .customer-shop-channel { width: 100%; }
+.page-shell .shop-page-intro .customer-shop-channel { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0; }
+.page-shell .shop-page-intro .shop-intro-actions :is(.shop-expanded-collection-link,.shop-channel-option),
+.page-shell .shop-page-intro .shop-intro-actions .shop-channel-option.is-current {
+  min-height: 5.2rem;
+  margin: 0;
+  padding: .9rem clamp(.85rem,1.5vw,1.5rem);
+  color: #243228 !important;
+  background: #fbfaf4 !important;
+  border: 0;
+  border-right: 1px solid #deded3;
+  border-radius: 0;
+  box-shadow: none;
+}
+.page-shell .shop-page-intro .shop-intro-actions .shop-channel-option:last-child { border-right: 0; }
+.page-shell .shop-page-intro .shop-intro-actions :is(.shop-expanded-collection-link,.shop-channel-option):is(:hover,:focus-visible) {
+  background: #f3eccb !important;
+  box-shadow: inset 0 -3px 0 #9a884b;
+}
+.page-shell .shop-page-intro .shop-intro-actions .shop-channel-option.is-current { box-shadow: inset 0 -3px 0 #aa9656; }
+.page-shell .shop-page-intro .shop-intro-actions :is(.shop-collection-symbol,.shop-channel-icon) {
+  width: 2rem;
+  height: 2rem;
+  color: #4c6650;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+.page-shell .shop-page-intro .shop-intro-actions :is(.shop-collection-label,.shop-channel-copy) small { color: #6e786c; }
+@media (max-width: 900px) {
+  .page-shell .shop-page-intro .shop-intro-actions { grid-template-columns: minmax(0,1fr); }
+  .page-shell .shop-page-intro .shop-intro-actions .shop-expanded-collection-link { border-right: 0; border-bottom: 1px solid #deded3; }
+}
+@media (max-width: 520px) {
+  .page-shell .shop-page-intro .customer-shop-channel { grid-template-columns: minmax(0,1fr); }
+  .page-shell .shop-page-intro .shop-intro-actions .shop-channel-option { border-right: 0; border-bottom: 1px solid #deded3; }
+  .page-shell .shop-page-intro .shop-intro-actions .shop-channel-option:last-child { border-bottom: 0; }
+}
+
+/* The shop routes read as an editorial index rather than a row of small cards. */
+.page-shell .shop-page-intro .shop-intro-actions {
+  margin-top: clamp(2rem, 3.8vw, 3.5rem);
+  border: 0;
+  gap: 1px;
+  background: #d9d9d1;
+}
+.page-shell .shop-page-intro .shop-intro-actions :is(.shop-expanded-collection-link,.shop-channel-option),
+.page-shell .shop-page-intro .shop-intro-actions .shop-channel-option.is-current {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto;
+  grid-template-rows: auto 1fr;
+  align-items: start;
+  gap: clamp(1.5rem, 2.5vw, 2.5rem) .75rem;
+  min-height: clamp(10rem, 13vw, 13.5rem);
+  padding: clamp(1.25rem, 2vw, 2rem);
+  background: #f1f0e9 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  transition: background-color .24s ease;
+}
+.page-shell .shop-page-intro .shop-intro-actions .shop-channel-option.is-current { background: #efda69 !important; }
+.page-shell .shop-page-intro .shop-intro-actions :is(.shop-expanded-collection-link,.shop-channel-option):is(:hover,:focus-visible) {
+  background: #e8dc9b !important;
+  box-shadow: none !important;
+}
+.page-shell .shop-page-intro .shop-intro-actions :is(.shop-collection-symbol,.shop-channel-icon) {
+  grid-column: 1;
+  grid-row: 1;
+  width: 1.6rem;
+  height: 1.6rem;
+  color: #202520 !important;
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.page-shell .shop-page-intro .shop-intro-actions :is(.shop-collection-symbol,.shop-channel-icon) .icon-svg { width: 1.55rem; height: 1.55rem; stroke-width: 1.45; }
+.page-shell .shop-page-intro .shop-intro-actions :is(.shop-collection-label,.shop-channel-copy) {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  align-self: end;
+  align-items: flex-start;
+  width: 100%;
+  text-align: left;
+  gap: .55rem;
+}
+.page-shell .shop-page-intro .shop-intro-actions :is(.shop-collection-label,.shop-channel-copy) strong {
+  color: #1b231e;
+  font-size: clamp(1.8rem, 2.6vw, 3rem);
+  font-weight: 500;
+  letter-spacing: -.065em;
+  line-height: 1;
+}
+.page-shell .shop-page-intro .shop-intro-actions :is(.shop-collection-label,.shop-channel-copy) small {
+  color: #4d5950;
+  font-size: .84rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-transform: none;
+}
+.page-shell .shop-page-intro .shop-intro-actions :is(.shop-expanded-collection-link,.shop-channel-option) > svg {
+  grid-column: 2;
+  grid-row: 1;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  color: #202520;
+  transition: transform .24s ease;
+}
+.page-shell .shop-page-intro .shop-intro-actions :is(.shop-expanded-collection-link,.shop-channel-option):hover > svg { transform: translate(3px,-3px); }
+@media (max-width: 900px) {
+  .page-shell .shop-page-intro .shop-intro-actions { grid-template-columns: minmax(0,1fr); }
+  .page-shell .shop-page-intro .shop-intro-actions :is(.shop-expanded-collection-link,.shop-channel-option),
+  .page-shell .shop-page-intro .shop-intro-actions .shop-channel-option.is-current { min-height: 9rem; }
+}
+@media (max-width: 520px) {
+  .page-shell .shop-page-intro .customer-shop-channel { grid-template-columns: minmax(0,1fr); }
+  .page-shell .shop-page-intro .shop-intro-actions :is(.shop-expanded-collection-link,.shop-channel-option),
+  .page-shell .shop-page-intro .shop-intro-actions .shop-channel-option.is-current { min-height: 8.5rem; }
+}
+
+.page-shell .shop-catalogue .customer-colour-filters label {
+  color: #435449;
+  font-size: .82rem;
+}
+.page-shell .shop-catalogue .customer-colour-filters :is(input,select) {
+  color: #f5f8f3;
+  font-size: .9rem;
+}
+.page-shell .shop-catalogue .customer-colour-filters input::placeholder {
+  color: #cbd8ce;
+  opacity: 1;
+}
+
+/* Material filters are a horizontal index with a single selection rule. */
+.page-shell .shop-catalogue .material-filters {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: clamp(.9rem,2.1vw,2rem);
+  max-width: none;
+  margin-bottom: 1.2rem;
+  padding: 0 0 .1rem;
+  overflow-x: auto;
+  border-bottom: 1px solid #d9ded8;
+  scrollbar-width: thin;
+  scroll-snap-type: x proximity;
+}
+.page-shell .shop-catalogue .material-filters .filter-chip,
+.page-shell .shop-catalogue .material-filters .filter-chip.active {
+  position: relative;
+  flex: 0 0 auto;
+  min-height: 2.9rem;
+  padding: .35rem .1rem .65rem;
+  color: #67746a;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  font-family: var(--uniq-display), sans-serif;
+  font-size: clamp(.72rem,.9vw,.88rem);
+  font-weight: 500;
+  letter-spacing: -.02em;
+  text-transform: none;
+  white-space: nowrap;
+  scroll-snap-align: start;
+}
+.page-shell .shop-catalogue .material-filters .filter-chip.active {
+  color: #1c3427;
+  box-shadow: inset 0 -3px 0 #587455;
+}
+.page-shell .shop-catalogue .material-filters .filter-chip:is(:hover,:focus-visible) { color: #1c3427; }
+.page-shell .shop-catalogue .material-filters .filter-chip .icon-svg { display: none; }
+
+/* The unavailable basket action remains clear but shares the warm yellow palette. */
+.sample-drawer > .drawer-checkout > .primary-btn.full:disabled {
+  color: #615b43 !important;
+  background: #f3e9b9 !important;
+  border: 1px solid #e5dba9 !important;
+  opacity: 1;
+}
+
+/* Final product-page composition: a restrained 3:4 gallery and one clear buying
+   column. Flat surfaces, quiet rules and honest product photography replace the
+   oversized campaign hero and ornamental card effects. */
+.inner-shell .frido-legacy-product {
+  --pdp-paper: #fcfbf7;
+  --pdp-line: #dfe3dc;
+  --pdp-soft: #f1f3ed;
+  --pdp-ink: #17251c;
+  --pdp-muted: #69766d;
+  --pdp-sage-top: #202020;
+  --pdp-sage-mid: #191919;
+  --pdp-sage-bottom: #111;
+  --pdp-sage-dark: #111;
+  --pdp-green: #171717;
+  --pdp-yellow: #f2d756;
+  background: var(--pdp-paper);
+}
+.inner-shell .frido-legacy-product .frido-product-topbar {
+  min-height: 4.15rem;
+  padding: .55rem clamp(1rem, 4vw, 4.5rem);
+  color: #171717;
+  background: #fff;
+  border-bottom-color: #e8e5dc;
+  font-family: var(--uniq-display), sans-serif !important;
+}
+.inner-shell .frido-legacy-product :is(.frido-product-back,.frido-product-category) { color: #171717 !important; }
+.inner-shell .frido-legacy-product .frido-product-back {
+  gap: .55rem;
+  min-height: 2.45rem;
+  padding: .25rem .8rem .25rem .25rem;
+  color: #171717 !important;
+  background: #fff !important;
+  border: 1px solid #dedbd2;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 550;
+  letter-spacing: -.01em;
+  text-transform: none;
+}
+.inner-shell .frido-legacy-product :is(.frido-back-icon,.frido-category-icon,.frido-product-account,.reference-product-info .product-stock-icon) {
+  color: #111 !important;
+  background: #fff !important;
+  border-color: #d8d6cf !important;
+  box-shadow: 0 .15rem .7rem rgba(0,0,0,.06);
+}
+.inner-shell .frido-legacy-product :is(.frido-back-icon,.frido-category-icon,.frido-product-account) {
+  position: relative;
+  overflow: hidden;
+  transition: transform .22s ease, background-color .22s ease;
+}
+.inner-shell .frido-legacy-product :is(.frido-back-icon,.frido-category-icon,.frido-product-account)::after {
+  content: "";
+  position: absolute;
+  top: -.8rem;
+  left: -1.3rem;
+  width: .7rem;
+  height: 4rem;
+  background: rgba(255,255,255,.34);
+  transform: rotate(26deg);
+  transition: left .45s ease;
+}
+.inner-shell .frido-legacy-product :is(.frido-product-back,.frido-product-category,.frido-product-account):is(:hover,:focus-visible) :is(.frido-back-icon,.frido-category-icon),
+.inner-shell .frido-legacy-product .frido-product-account:is(:hover,:focus-visible) { transform: translateY(-1px); }
+.inner-shell .frido-legacy-product :is(.frido-product-back,.frido-product-category):is(:hover,:focus-visible) :is(.frido-back-icon,.frido-category-icon)::after,
+.inner-shell .frido-legacy-product .frido-product-account:is(:hover,:focus-visible)::after { left: 3rem; }
+.inner-shell .frido-legacy-product .frido-back-icon {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+.inner-shell .frido-legacy-product .frido-product-brand img { width: clamp(5.5rem, 6vw, 6.4rem); height: auto; }
+.inner-shell .frido-legacy-product .frido-product-right { gap: 1rem; }
+.inner-shell .frido-legacy-product .frido-product-category {
+  gap: .65rem;
+  padding-left: 1rem;
+  border-left: 1px solid #dedbd2;
+}
+.inner-shell .frido-legacy-product .frido-category-icon,
+.inner-shell .frido-legacy-product .frido-product-account {
+  display: grid;
+  place-items: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 50%;
+}
+.inner-shell .frido-legacy-product .frido-category-copy small {
+  font-size: .56rem;
+  font-weight: 650;
+  letter-spacing: .16em;
+}
+.inner-shell .frido-legacy-product .frido-category-copy strong {
+  color: #171717;
+  font-size: .72rem;
+  font-weight: 550;
+  letter-spacing: -.01em;
+}
+.inner-shell .frido-legacy-product .frido-category-copy small,
+.inner-shell .frido-legacy-product .reference-product-info :is(.product-kicker small,.product-stock small) { color: #777166 !important; }
+.inner-shell .frido-legacy-product .product-announcement,
+.inner-shell .frido-legacy-product .product-section-nav,
+.inner-shell .frido-legacy-product .product-cinematic-hero { display: none !important; }
+.inner-shell .frido-legacy-product #product-overview.product-section {
+  width: min(calc(100% - clamp(2rem, 7vw, 9rem)), 96rem) !important;
+  padding: clamp(2rem, 4.5vw, 5rem) 0 0 !important;
+  background: transparent !important;
+}
+.inner-shell .frido-legacy-product .product-section .details-grid {
+  grid-template-columns: minmax(0, .96fr) minmax(25rem, .8fr) !important;
+  gap: clamp(2.5rem, 5vw, 6.5rem) !important;
+  align-items: start;
+}
+.inner-shell .frido-legacy-product .product-gallery {
+  grid-template-columns: clamp(3.6rem, 4.3vw, 4.5rem) minmax(0, 1fr) !important;
+  gap: .8rem !important;
+  top: 1rem;
+}
+.inner-shell .frido-legacy-product .product-gallery-stage {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: 3 / 4 !important;
+  background: #eeece6 !important;
+  border: 1px solid var(--pdp-line) !important;
+  border-radius: .35rem !important;
+  box-shadow: none !important;
+}
+.inner-shell .frido-legacy-product .product-gallery-image-frame {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 3 / 4 !important;
+  border-radius: .35rem !important;
+  background: #eeece6 !important;
+}
+.inner-shell .frido-legacy-product .product-gallery-stage.is-sample .product-gallery-image-frame > img,
+.inner-shell .frido-legacy-product .product-gallery-stage.is-texture .product-gallery-image-frame > img,
+.inner-shell .frido-legacy-product .product-gallery-stage.is-room .product-gallery-image-frame > img {
+  width: 100% !important;
+  height: 100% !important;
+  aspect-ratio: 3 / 4 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: .35rem !important;
+}
+.inner-shell .frido-legacy-product .product-gallery-thumbnails {
+  gap: .65rem;
+}
+.inner-shell .frido-legacy-product .product-gallery-thumbnails button {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 3 / 4 !important;
+  background: #eeece6 !important;
+  border: 1px solid var(--pdp-line) !important;
+  border-radius: .2rem !important;
+}
+.inner-shell .frido-legacy-product .product-gallery-thumbnails button.active {
+  border-color: var(--pdp-green) !important;
+  box-shadow: inset 0 0 0 1px var(--pdp-green) !important;
+}
+.inner-shell .frido-legacy-product .product-gallery-thumbnails img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.inner-shell .frido-legacy-product .product-gallery-next {
+  right: .85rem;
+  bottom: .85rem;
+  width: 2.6rem;
+  height: 2.6rem;
+  color: #111;
+  background: #fff;
+  border: 1px solid #d8d6cf;
+  border-radius: 50%;
+  box-shadow: none;
+}
+.inner-shell .frido-legacy-product .product-gallery-stage-dots { bottom: 1.65rem; }
+.inner-shell .frido-legacy-product .reference-product-info {
+  padding: .2rem 0 6rem !important;
+  color: var(--pdp-ink) !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.inner-shell .frido-legacy-product .reference-product-info .product-title-row {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-bottom: 1.15rem;
+  border-bottom: 1px solid var(--pdp-line);
+}
+.inner-shell .frido-legacy-product .reference-product-info .product-kicker {
+  padding: 0;
+  color: var(--pdp-green) !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0;
+}
+.inner-shell .frido-legacy-product .reference-product-info .product-kicker-marker { display: none; }
+.inner-shell .frido-legacy-product .reference-product-info h1 {
+  max-width: 15ch;
+  margin: clamp(1.25rem, 2.4vw, 2.25rem) 0 1rem;
+  color: var(--pdp-ink) !important;
+  font-size: clamp(2.45rem, 3.7vw, 4.65rem);
+  font-weight: 500;
+  line-height: .98;
+  letter-spacing: -.06em;
+}
+.inner-shell .frido-legacy-product .reference-price-block {
+  margin: 1.4rem 0 1.2rem;
+  padding: 1rem 0 1.15rem;
+  background: transparent !important;
+  border: 0 !important;
+  border-top: 1px solid var(--pdp-line) !important;
+  border-bottom: 1px solid var(--pdp-line) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.inner-shell .frido-legacy-product .reference-price-block > div > span {
+  color: var(--pdp-ink) !important;
+  background: var(--pdp-yellow) !important;
+  border-radius: 999px;
+}
+.inner-shell .frido-legacy-product .product-shade-choice { margin: 1.5rem 0; }
+.inner-shell .frido-legacy-product .product-shade-options { gap: .55rem; }
+.inner-shell .frido-legacy-product .product-shade-options a {
+  width: clamp(3.2rem, 4vw, 4rem);
+  height: auto;
+  aspect-ratio: 3 / 4;
+  padding: 0;
+  overflow: hidden;
+  background: #eeece6 !important;
+  border: 1px solid var(--pdp-line) !important;
+  border-radius: .2rem !important;
+  box-shadow: none !important;
+}
+.inner-shell .frido-legacy-product .product-shade-options a.active {
+  border-color: var(--pdp-green) !important;
+  box-shadow: inset 0 0 0 1px var(--pdp-green) !important;
+}
+.inner-shell .frido-legacy-product .product-shade-options a img { width: 100%; height: 100%; object-fit: cover; }
+.inner-shell .frido-legacy-product .product-shade-options a span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+.inner-shell .frido-legacy-product .product-lead {
+  max-width: 52ch;
+  color: var(--pdp-muted) !important;
+  font-size: .96rem;
+  line-height: 1.65;
+}
+.inner-shell .frido-legacy-product.product-experience .reference-product-info .flooring-configurator {
+  margin-top: 1.8rem;
+  padding: clamp(1.25rem, 2vw, 2rem) !important;
+  color: var(--pdp-ink) !important;
+  background: #fff !important;
+  border: 1px solid var(--pdp-line) !important;
+  border-radius: .35rem !important;
+  box-shadow: none !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator :is(.config-title strong,.config-title small,.area-input,.area-input span,.pack-summary span,.pack-summary strong,.waste-options button strong,.waste-options button small) {
+  color: var(--pdp-ink) !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator :is(.area-input,.waste-options button,.pack-summary) {
+  background: #fff !important;
+  border-color: var(--pdp-line) !important;
+  border-radius: .2rem !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .waste-options button.active {
+  background: #fff9db !important;
+  border-color: #171717 !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .waste-options button.active :is(strong,small,em) {
+  color: #171717 !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .waste-options button.active em {
+  background: var(--pdp-yellow) !important;
+  border-color: #d7bd3f !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .config-title > span {
+  color: #171717 !important;
+  background: var(--pdp-yellow) !important;
+  border-color: #d7bd3f !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .buy-order-now {
+  color: var(--pdp-ink) !important;
+  background: var(--pdp-yellow) !important;
+  border-color: #d8c463 !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .buy-add-cart {
+  color: #fff !important;
+  background: var(--pdp-green) !important;
+  border-color: var(--pdp-green) !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .buy-visit-store {
+  color: var(--pdp-ink) !important;
+  background: #fff !important;
+  border-color: var(--pdp-line) !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator :is(.checkout-reassurance,.pack-estimate-note) {
+  color: #585858 !important;
+  opacity: 1 !important;
+}
+body .inner-shell .frido-legacy-product.product-experience .reference-product-info .flooring-configurator p.checkout-reassurance,
+body .inner-shell .frido-legacy-product.product-experience .reference-product-info .flooring-configurator p.pack-estimate-note {
+  color: #585858 !important;
+  opacity: 1 !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .checkout-reassurance .icon-svg {
+  color: #111 !important;
+}
+.inner-shell .frido-legacy-product.product-experience .product-buy-actions :is(button,a) > .icon-svg,
+.inner-shell .frido-legacy-product .reference-secondary-actions .secondary-btn > .icon-svg {
+  box-sizing: border-box;
+  flex: 0 0 1.9rem;
+  width: 1.9rem;
+  height: 1.9rem;
+  padding: .42rem;
+  color: #111 !important;
+  background: #fff !important;
+  border: 1px solid #d8d6cf;
+  border-radius: 50%;
+}
+.inner-shell .frido-legacy-product .reference-service-strip .service-strip-item > svg,
+.inner-shell .frido-legacy-product :is(.product-tech-layout .spec .icon-svg,.confidence-grid article > span .icon-svg,.product-story-band article > span .icon-svg,.review-empty-state > span .icon-svg) {
+  box-sizing: content-box;
+  padding: .55rem;
+  color: #111 !important;
+  background: #fff !important;
+  border: 1px solid #d8d6cf;
+  border-radius: 50%;
+}
+.inner-shell .frido-legacy-product .reference-secondary-actions .secondary-btn {
+  color: #171717 !important;
+  background: #fff !important;
+  border-color: #d8d6cf !important;
+  box-shadow: none !important;
+}
+.inner-shell .frido-legacy-product .reference-secondary-actions .secondary-btn:first-child {
+  background: #fff9db !important;
+  border-color: #e1cd69 !important;
+}
+
+/* Editorial service grid: fine rules, generous white space and large outline
+   symbols echo the supplied reference without copying its retail content. */
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip {
+  display: grid;
+  grid-template-columns: minmax(15rem, .9fr) repeat(3, minmax(0, 1fr));
+  width: 100% !important;
+  margin: clamp(3rem, 6vw, 7rem) 0 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  color: #171717 !important;
+  background: #fff !important;
+  border: 1px solid #d9d9d5 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-heading {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 25rem;
+  padding: clamp(1.75rem, 2.6vw, 2.7rem);
+  background: #fff;
+  border: 0;
+  border-right: 1px solid #d9d9d5;
+}
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-heading::after {
+  content: "UNIQ / 01—03";
+  color: #aaaead;
+  font-size: .64rem;
+  font-weight: 600;
+  letter-spacing: .15em;
+}
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-heading .eyebrow { display: none; }
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-heading h2 {
+  max-width: 100%;
+  margin: 0;
+  color: #171717 !important;
+  font-size: clamp(1.85rem, 2.45vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -.055em;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  min-height: 25rem;
+  padding: clamp(1.6rem, 2.4vw, 2.5rem);
+  background: #fff !important;
+  border: 0 !important;
+  border-right: 1px solid #d9d9d5 !important;
+}
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item:last-child { border-right: 0 !important; }
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-number {
+  color: #c9cdcc !important;
+  font-size: clamp(1.75rem, 2.25vw, 2.75rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -.055em;
+}
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item > svg {
+  box-sizing: border-box;
+  width: clamp(5.75rem, 7.5vw, 8rem);
+  height: clamp(5.75rem, 7.5vw, 8rem);
+  margin: clamp(2.25rem, 4.25vw, 4.5rem) 0 auto;
+  padding: 0;
+  color: #c5cac9 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  stroke-width: 1;
+}
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item > div {
+  width: 100%;
+  margin: 2rem 0 0;
+}
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item h3 {
+  margin: 0 0 .65rem;
+  color: #171717 !important;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -.02em;
+}
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item p {
+  min-height: 0;
+  margin: 0;
+  color: #666 !important;
+  font-size: .77rem;
+  font-weight: 400;
+  line-height: 1.58;
+}
+.inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item :is(a,button) {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  margin-top: 1.25rem;
+  padding: 0 0 .25rem;
+  color: #171717 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-bottom: 2px solid var(--pdp-yellow) !important;
+  border-radius: 0;
+  font: inherit;
+  font-size: .74rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+@media (max-width: 960px) {
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-heading {
+    grid-column: 1 / -1;
+    min-height: auto;
+    flex-direction: row;
+    align-items: end;
+    gap: 2rem;
+    border-right: 0;
+    border-bottom: 1px solid #d9d9d5;
+  }
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-heading h2 { max-width: 16ch; font-size: clamp(2rem, 4.5vw, 3rem); }
+}
+@media (max-width: 720px) {
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip {
+    grid-template-columns: minmax(0, 1fr);
+    width: calc(100% - 2rem) !important;
+    margin: 3rem auto 0 !important;
+  }
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-heading {
+    grid-column: auto;
+    padding: 1.5rem;
+  }
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-heading h2 { font-size: clamp(1.95rem, 9vw, 2.35rem); }
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item {
+    display: grid;
+    grid-template-columns: 3.2rem minmax(0, 1fr);
+    gap: .5rem 1.15rem;
+    min-height: 0;
+    padding: 1.5rem;
+    border-right: 0 !important;
+    border-bottom: 1px solid #d9d9d5 !important;
+  }
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item:last-child { border-bottom: 0 !important; }
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-number { grid-column: 1; font-size: 1.65rem; }
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item > svg {
+    grid-column: 1;
+    grid-row: 2;
+    width: 3.75rem;
+    height: 3.75rem;
+    margin: .35rem 0 0;
+  }
+  .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-item > div {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin: 0;
+  }
+}
+.inner-shell .frido-legacy-product .frido-product-sticky-order {
+  right: 50%;
+  left: auto;
+  bottom: 1rem;
+  width: min(45rem, calc(100% - 2rem));
+  min-height: 3.65rem;
+  padding: .3rem;
+  transform: translateX(50%);
+  background: rgba(255,255,255,.96) !important;
+  border: 1px solid var(--pdp-line);
+  border-radius: .35rem;
+  box-shadow: 0 .65rem 2rem rgba(18,35,23,.14);
+  backdrop-filter: none;
+}
+.inner-shell .frido-legacy-product .frido-product-sticky-order > strong { padding-left: .75rem; font-size: .83rem; font-weight: 500; }
+.inner-shell .frido-legacy-product .frido-product-sticky-order > span { font-size: .97rem; font-weight: 600; }
+.inner-shell .frido-legacy-product .frido-product-sticky-order > a { min-height: 2.9rem; border-radius: .2rem; }
+
+/* Recommended floors use the same quiet black, white and yellow product palette. */
+.inner-shell .frido-legacy-product.product-experience .product-related-section.section.tight {
+  background: #fff !important;
+}
+.inner-shell .frido-legacy-product.product-experience .product-related-section .section-head h2 {
+  color: #171717 !important;
+}
+.inner-shell .frido-legacy-product.product-experience .product-related-section.section.tight .product-card {
+  color: #171717 !important;
+  background: #fff !important;
+  border: 1px solid #deded8 !important;
+  border-radius: .45rem !important;
+  box-shadow: none !important;
+  backdrop-filter: none;
+}
+.inner-shell .frido-legacy-product.product-experience .product-related-section.section.tight .product-card:hover {
+  border-color: #b9b9af !important;
+  box-shadow: 0 .65rem 1.75rem rgba(0, 0, 0, .08) !important;
+}
+.inner-shell .frido-legacy-product.product-experience .product-related-section .product-image {
+  background: #f5f3ee !important;
+  border-radius: .4rem .4rem 0 0 !important;
+}
+.inner-shell .frido-legacy-product.product-experience .product-related-section .product-card :is(h3, h3 a, .price) {
+  color: #171717 !important;
+}
+.inner-shell .frido-legacy-product.product-experience .product-related-section .product-card :is(.product-card-head, .product-card-specline, .old-price, .price small) {
+  color: #686862 !important;
+}
+.inner-shell .frido-legacy-product.product-experience .product-related-section .product-card .badge,
+.inner-shell .frido-legacy-product.product-experience .product-related-section .product-card-favourite {
+  color: #171717 !important;
+  background: #fff !important;
+  border: 1px solid #e2e0d9 !important;
+  backdrop-filter: none;
+}
+.inner-shell .frido-legacy-product.product-experience .product-related-section .product-card .product-actions :is(.primary-btn, .secondary-btn) {
+  min-height: 2.6rem;
+  border-radius: .3rem !important;
+  box-shadow: none !important;
+  font-weight: 600 !important;
+}
+.inner-shell .frido-legacy-product.product-experience .product-related-section .product-card .product-actions .primary-btn {
+  color: #fff !important;
+  background: #171717 !important;
+  border-color: #171717 !important;
+}
+.inner-shell .frido-legacy-product.product-experience .product-related-section .product-card .product-actions .secondary-btn {
+  color: #171717 !important;
+  background: #f3d95a !important;
+  border-color: #e7cc4f !important;
+}
+.inner-shell .frido-legacy-product.product-experience .product-related-section .product-card .product-actions .primary-btn:hover {
+  background: #303030 !important;
+}
+.inner-shell .frido-legacy-product.product-experience .product-related-section .product-card .product-actions .secondary-btn:hover {
+  background: #ebcf4e !important;
+}
+@media (min-width: 1600px) {
+  .inner-shell .frido-legacy-product #product-overview.product-section { width: min(calc(100% - 12rem), 104rem) !important; }
+  .inner-shell .frido-legacy-product .product-section .details-grid { grid-template-columns: minmax(0, 46rem) minmax(28rem, 40rem) !important; justify-content: center; }
+}
+@media (max-width: 900px) {
+  .inner-shell .frido-legacy-product .product-section .details-grid { grid-template-columns: minmax(0, 1fr) !important; }
+  .inner-shell .frido-legacy-product .product-gallery { position: static; }
+  .inner-shell .frido-legacy-product .reference-product-info { padding-top: 1rem !important; }
+}
+@media (max-width: 720px) {
+  .inner-shell .frido-legacy-product .frido-product-topbar {
+    position: relative;
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr) 2.25rem;
+    align-items: center;
+    min-height: 3.5rem;
+    padding: .45rem .75rem;
+    border-bottom: 1px solid #e8e5dc;
+  }
+  .inner-shell .frido-legacy-product .frido-product-back {
+    width: max-content;
+    max-width: 4.5rem;
+    min-height: 2.15rem;
+    gap: .3rem;
+    padding: .2rem .42rem .2rem .2rem;
+    color: #171717 !important;
+    background: #fff !important;
+    border: 1px solid #dedbd2;
+    border-radius: 999px;
+    font-size: .62rem;
+    letter-spacing: .045em;
+    white-space: nowrap;
+  }
+  .inner-shell .frido-legacy-product .frido-back-label { font-size: 0; }
+  .inner-shell .frido-legacy-product .frido-back-label::after { content: "Back"; font-size: .62rem; }
+  .inner-shell .frido-legacy-product .frido-back-icon {
+    display: grid;
+    place-items: center;
+    width: 1.65rem;
+    height: 1.65rem;
+    border-radius: 50%;
+  }
+  .inner-shell .frido-legacy-product .frido-back-icon svg { width: .9rem; height: .9rem; }
+  .inner-shell .frido-legacy-product .frido-product-brand {
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+  }
+  .inner-shell .frido-legacy-product .frido-product-brand img {
+    width: 4.75rem;
+    height: auto;
+  }
+  .inner-shell .frido-legacy-product .frido-product-right {
+    justify-self: end;
+  }
+  .inner-shell .frido-legacy-product .frido-product-category { display: none; }
+  .inner-shell .frido-legacy-product .frido-product-account {
+    display: grid;
+    place-items: center;
+    width: 2.15rem;
+    height: 2.15rem;
+    border-radius: 50%;
+  }
+  .inner-shell .frido-legacy-product #product-overview.product-section { width: 100% !important; padding-top: 0 !important; }
+  .inner-shell .frido-legacy-product .product-gallery { display: flex; flex-direction: column; gap: .65rem !important; }
+  .inner-shell .frido-legacy-product .product-gallery-stage { border-right: 0 !important; border-left: 0 !important; border-radius: 0 !important; }
+  .inner-shell .frido-legacy-product .product-gallery-image-frame,
+  .inner-shell .frido-legacy-product .product-gallery-image-frame > img { border-radius: 0 !important; }
+  .inner-shell .frido-legacy-product .product-gallery-thumbnails {
+    order: 2;
+    display: grid;
+    grid-template-columns: repeat(3, 3.25rem);
+    padding: 0 1rem;
+  }
+  .inner-shell .frido-legacy-product .reference-product-info { padding: 1.5rem 1rem 6rem !important; }
+  .inner-shell .frido-legacy-product .reference-product-info h1 { font-size: clamp(2.15rem, 10.5vw, 3.15rem); }
+  .inner-shell .frido-legacy-product .reference-product-info .product-title-row { align-items: end; }
+  .inner-shell .frido-legacy-product .frido-product-sticky-order > strong { display: none; }
+  .inner-shell .frido-legacy-product .frido-product-sticky-order > span { flex: 1; padding-left: .6rem; }
+}

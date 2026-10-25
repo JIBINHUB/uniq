@@ -1092,11 +1092,15 @@ function PostHeroReference() {
       aria-label="Flooring promises and categories"
     >
       <div className="reference-benefits">
-        <div className="reference-benefits-grid" aria-label="Why shop with UNIQ FLOORS">
-          {benefitStrip.map(([icon, label]) => (
-            <div className="reference-benefit" key={label}>
-              <span className="reference-benefit-icon" aria-hidden="true"><PremiumIcon name={icon} /></span>
-              <strong>{label}</strong>
+        <div className="reference-benefits-track" aria-label="Why shop with UNIQ FLOORS">
+          {[false, true].map((duplicate) => (
+            <div className="reference-benefits-grid" key={String(duplicate)} aria-hidden={duplicate ? true : undefined}>
+              {benefitStrip.map(([icon, label]) => (
+                <div className="reference-benefit" key={label}>
+                  <span className="reference-benefit-icon" aria-hidden="true"><PremiumIcon name={icon} /></span>
+                  <strong>{label}</strong>
+                </div>
+              ))}
             </div>
           ))}
         </div>
@@ -1628,18 +1632,18 @@ function ShopView({
         <div className="shop-intro-actions">
           <Link className="shop-expanded-collection-link" href="/carpets" aria-label="Explore carpet collections">
             <span className="shop-collection-symbol" aria-hidden="true"><PremiumIcon name="layers" /></span>
-            <span className="shop-collection-label"><small>CARPET COLLECTION</small><strong>Explore carpets</strong></span>
+            <span className="shop-collection-label"><strong>Carpets</strong><small>Explore the softer side of flooring</small></span>
             <PremiumIcon name="arrow" />
           </Link>
           <nav className="customer-shop-channel" aria-label="Choose how to shop">
             <Link className="shop-channel-option is-current" href="#products" aria-current="page">
               <span className="shop-channel-icon"><PremiumIcon name="home" /></span>
-              <span className="shop-channel-copy"><small>RESIDENTIAL FLOORING</small><strong>Floors &amp; samples</strong></span>
+              <span className="shop-channel-copy"><strong>Floors</strong><small>Browse materials and order samples</small></span>
               <PremiumIcon name="arrow" />
             </Link>
             <Link className="shop-channel-option" href="/retailers">
               <span className="shop-channel-icon"><PremiumIcon name="briefcase" /></span>
-              <span className="shop-channel-copy"><small>TRADE &amp; COMMERCIAL</small><strong>Professional services</strong></span>
+              <span className="shop-channel-copy"><strong>Trade</strong><small>Flooring for your next project</small></span>
               <PremiumIcon name="arrow" />
             </Link>
           </nav>
@@ -2073,7 +2077,7 @@ function ProductView({
       <header className="frido-product-topbar"><button className="frido-product-back" type="button" onClick={() => {
         if (document.referrer && new URL(document.referrer).origin === window.location.origin) window.history.back();
         else window.location.assign(`/category/${product.category}`);
-      }}><span className="frido-back-icon"><ArrowLeft size={17} strokeWidth={1.8} aria-hidden="true" /></span><span>Back to shop</span></button><div className="frido-product-brand"><img src="/assets/brand/uniq-header-logo.png" alt="UNIQ FLOORS" width="720" height="279" /></div><div className="frido-product-right"><div className="frido-product-category" aria-label={`Collection: ${category.title}`}><span className="frido-category-icon" aria-hidden="true"><Layers3 size={18} strokeWidth={1.5} /></span><span className="frido-category-copy"><small>THE COLLECTION</small><strong>{category.title}</strong></span></div><Link className="frido-product-account" href="/account" aria-label="Account"><UserRound size={19} strokeWidth={1.8}/></Link></div></header>
+      }}><span className="frido-back-icon"><ArrowLeft size={17} strokeWidth={1.8} aria-hidden="true" /></span><span className="frido-back-label">Back to shop</span></button><div className="frido-product-brand"><img src="/assets/brand/uniq-header-logo.png" alt="UNIQ FLOORS" width="720" height="279" /></div><div className="frido-product-right"><div className="frido-product-category" aria-label={`Collection: ${category.title}`}><span className="frido-category-icon" aria-hidden="true"><Layers3 size={18} strokeWidth={1.5} /></span><span className="frido-category-copy"><small>THE COLLECTION</small><strong>{category.title}</strong></span></div><Link className="frido-product-account" href="/account" aria-label="Account"><UserRound size={19} strokeWidth={1.65}/></Link></div></header>
       <div className="product-announcement" aria-label="Shopping benefits">
         <div className="product-benefit-track">
           {[0, 1, 2, 3].map((copy) => (
@@ -2087,32 +2091,6 @@ function ProductView({
         </div>
       </div>
       <div className="frido-product-sticky-order"><strong>{product.name}</strong><span>{money(product.price)} <small>per m²</small></span><a href={orderWhatsAppHref} target="_blank" rel="noopener noreferrer">Order on WhatsApp <span aria-hidden="true">↗</span></a></div>
-      <section className="product-cinematic-hero" aria-labelledby="product-hero-title">
-        <img src={product.roomImage} alt={`${product.name} fitted in a room`} />
-        <div className="product-hero-shade" />
-        <div className="product-hero-inner">
-          <button className="product-back-button" type="button" onClick={() => {
-            if (document.referrer && new URL(document.referrer).origin === window.location.origin) window.history.back();
-            else window.location.assign(`/category/${product.category}`);
-          }}><span aria-hidden="true">←</span> Back</button>
-          <div className="product-hero-copy">
-            <span className="product-hero-eyebrow">UNIQ FLOORS <i /> {category.title}</span>
-            <h1 id="product-hero-title">{product.name}</h1>
-            <p>{product.finish} finish <span aria-hidden="true">·</span> {product.colour} colour</p>
-            <div className="product-hero-actions">
-              <a href="#product-buy" className="product-hero-primary">Buy now <span aria-hidden="true">↗</span></a>
-            </div>
-            <p className="product-hero-price">From <del>{money(product.old)}</del> <strong>{money(product.price)}</strong> per m²</p>
-          </div>
-          <div className="product-hero-bottom">
-            <span><PremiumIcon name="sample" /> Free samples</span>
-            <span><PremiumIcon name="return" /> 30-day returns</span>
-            <span><PremiumIcon name="expert" /> Flooring experts</span>
-            <strong>Free sample available <span aria-hidden="true">↗</span></strong>
-          </div>
-        </div>
-      </section>
-
       <nav className="product-section-nav" aria-label="On this page">
         <span>{product.name}</span>
         <div>
@@ -2271,7 +2249,7 @@ function ProductView({
         </div>
 
         <section className="reference-service-strip" aria-label="Why choose UNIQ FLOORS">
-          <div className="service-strip-heading"><p className="eyebrow">THE UNIQ EXPERIENCE</p><h2>Why choose <br />UNIQ FLOORS.</h2></div>
+          <div className="service-strip-heading"><p className="eyebrow">THE UNIQ EXPERIENCE</p><h2>Why customers choose UNIQ FLOORS.</h2></div>
           <article className="service-strip-item"><span className="service-strip-number">01</span><PackageCheck aria-hidden="true" strokeWidth={1.1} /><div><h3>See it at home</h3><p>Order a free sample and compare the colour in your own light before choosing.</p><button type="button" onClick={() => addSample(product.slug)}>Order a sample <ArrowUpRight size={16} /></button></div></article>
           <article className="service-strip-item"><span className="service-strip-number">02</span><Ruler aria-hidden="true" strokeWidth={1.1} /><div><h3>Plan with confidence</h3><p>Our team can help check your measurements, pack estimate and delivery options.</p><a href={productWhatsappHref} target="_blank" rel="noopener noreferrer">Ask our team <ArrowUpRight size={16} /></a></div></article>
           <article className="service-strip-item"><span className="service-strip-number">03</span><RotateCcw aria-hidden="true" strokeWidth={1.1} /><div><h3>Support after purchase</h3><p>30-day returns on unopened packs. Listed warranty: {product.warranty}. Ask us for the terms.</p><a href={productWhatsappHref} target="_blank" rel="noopener noreferrer">View your options <ArrowUpRight size={16} /></a></div></article>
@@ -2700,6 +2678,9 @@ function SampleDrawer({
   onChangeCartQuantity: (slug: string, change: number) => void;
 }) {
   const { products, categories, productBySlug, categoryById, productsByCategory, content, selectionWhatsAppHref, whatsappHref, whatsappVideoHref, storeMapHref } = useStoreData();
+  const [deliveryNote, setDeliveryNote] = useState("");
+  const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0) + samples.length;
+  const recommendedProduct = products.find((product) => !cartItems.some((item) => item.slug === product.slug) && !samples.includes(product.slug));
   const subtotal = cartItems.reduce((total, item) => {
     const product = productBySlug(item.slug);
     return total + product.price * (product.packCoverage || 2.2) * item.quantity;
@@ -2708,6 +2689,10 @@ function SampleDrawer({
     ...cartItems.map(item => { const product = productBySlug(item.slug); return { name: product.name, colour: product.colour, quantity: item.quantity, unit: "packs" as const }; }),
     ...samples.map(slug => { const product = productBySlug(slug); return { name: product.name, colour: product.colour, quantity: 1, unit: "samples" as const }; }),
   ]);
+  const basketMessageUrl = new URL(basketWhatsAppHref);
+  if (deliveryNote.trim()) {
+    basketMessageUrl.searchParams.set("text", `${basketMessageUrl.searchParams.get("text") || ""}\n\nDelivery notes: ${deliveryNote.trim()}`);
+  }
 
   return (
     <>
@@ -2720,10 +2705,8 @@ function SampleDrawer({
         aria-modal={open}
       >
         <div className="drawer-head">
-          <div>
-            <h2>Your basket<span aria-hidden="true">.</span></h2>
-            <p className="drawer-head-caption">The floors you love, all in one place.</p>
-          </div>
+          <div className="drawer-head-title"><h2>Bag</h2><span>{itemCount} {itemCount === 1 ? "item" : "items"}</span></div>
+          <button className="drawer-head-shop" type="button" onClick={onClose}>Continue shopping</button>
           <button
             className="icon-btn"
             type="button"
@@ -2734,15 +2717,16 @@ function SampleDrawer({
           </button>
         </div>
         <div className="drawer-scroll-content">
+        <div className="drawer-request-note"><span aria-hidden="true" /> Samples are free. Our team confirms your order details.</div>
         {cartItems.length ? (
           <div className="cart-list">
-            <p className="drawer-section-label">Flooring packs <span>{cartItems.reduce((total, item) => total + item.quantity, 0)}</span></p>
+            <p className="drawer-section-label">Flooring packs</p>
             {cartItems.map((item) => {
               const product = productBySlug(item.slug);
               return (
                 <div className="cart-row" key={item.slug}>
                   <span className="thumb"><img src={product.image} alt="" /></span>
-                  <span className="cart-row-copy"><strong>{product.name}</strong><small>{product.colour} · {money(product.price)} / m²</small><span className="cart-quantity"><button type="button" aria-label={`Remove one pack of ${product.name}`} onClick={() => onChangeCartQuantity(item.slug, -1)}>−</button><output aria-label={`${item.quantity} packs`}>{item.quantity}</output><button type="button" aria-label={`Add one pack of ${product.name}`} onClick={() => onChangeCartQuantity(item.slug, 1)}>+</button></span></span>
+                  <span className="cart-row-copy"><strong>{product.name}</strong><small>{product.colour} · {money(product.price)} / m²</small><span className="cart-quantity"><span>Quantity</span><button type="button" aria-label={`Remove one pack of ${product.name}`} onClick={() => onChangeCartQuantity(item.slug, -1)}>−</button><output aria-label={`${item.quantity} packs`}>{item.quantity}</output><button type="button" aria-label={`Add one pack of ${product.name}`} onClick={() => onChangeCartQuantity(item.slug, 1)}>+</button></span></span>
                   <span className="cart-row-price"><b>{money(product.price * (product.packCoverage || 2.2) * item.quantity)}</b><button type="button" onClick={() => onRemoveCart(item.slug)}>Remove</button></span>
                 </div>
               );
@@ -2775,25 +2759,19 @@ function SampleDrawer({
               );
             })
           ) : !cartItems.length ? (
-            <div className="drawer-empty-state"><PremiumIcon name="package" /><h3>Your next floor starts here.</h3><p>Explore the collection and bring home the finish that feels right.</p><Link href="/shop" onClick={onClose}>Explore floors <PremiumIcon name="arrow" /></Link></div>
+            <div className="drawer-empty-state"><PremiumIcon name="package" /><h3>Your bag is empty.</h3><p>Find a floor you love, then request a sample or add packs here.</p><Link href="/shop" onClick={onClose}>Explore floors <PremiumIcon name="arrow" /></Link></div>
           ) : <p className="drawer-muted">No free samples added yet.</p>}
         </div>
+        {recommendedProduct ? <div className="drawer-recommendation"><p>Recommended for you</p><Link href={`/product/${recommendedProduct.slug}`} onClick={onClose}><span className="thumb"><img src={recommendedProduct.image} alt="" /></span><span><strong>{recommendedProduct.name}</strong><small>{money(recommendedProduct.price)} / m²</small><span className="drawer-recommendation-action">View floor <ArrowUpRight size={14} /></span></span></Link></div> : null}
         </div>
         <div className="drawer-checkout">
+        <details className="drawer-delivery-notes"><summary>Add delivery instructions <span aria-hidden="true">⌄</span></summary><label htmlFor="basket-delivery-note">Notes for our team</label><textarea id="basket-delivery-note" value={deliveryNote} onChange={(event) => setDeliveryNote(event.target.value)} maxLength={500} placeholder="Anything we should know about your delivery?" /></details>
         <div className="drawer-total">
-          <span>{cartItems.length ? "Estimated subtotal" : "Free samples"}</span>
-          <strong>{cartItems.length ? money(subtotal) : samples.length}</strong>
+          <span>{cartItems.length ? "Estimated subtotal" : "Sample subtotal"}</span>
+          <strong>{cartItems.length ? money(subtotal) : "Free"}</strong>
         </div>
-        <div className="drawer-promises">
-          <span><PremiumIcon name="sample" /> Free samples</span>
-          <span><PremiumIcon name="truck" /> Fast dispatch</span>
-          <span><PremiumIcon name="shield" /> Secure request</span>
-        </div>
-        {cartItems.length || samples.length ? <a className="primary-btn full" href={basketWhatsAppHref} target="_blank" rel="noopener noreferrer"><PremiumIcon name="message" />{cartItems.length ? "Order through WhatsApp" : "Request samples on WhatsApp"}</a> : <button className="primary-btn full" type="button" disabled>Select flooring or samples first</button>}
-        <p className="drawer-muted">Review and send your message in WhatsApp. The team confirms your order and payment arrangements.</p>
-        <button className="skip-popup full" type="button" onClick={onClose}>
-          Continue shopping
-        </button>
+        {cartItems.length || samples.length ? <a className="primary-btn full" href={basketMessageUrl.toString()} target="_blank" rel="noopener noreferrer">Send enquiry on WhatsApp <ArrowUpRight size={17} /></a> : <button className="primary-btn full" type="button" disabled>Add flooring or samples to continue</button>}
+        <p className="drawer-muted">Your request is reviewed by our team before any payment or delivery is arranged.</p>
         </div>
       </aside>
     </>
@@ -2805,22 +2783,24 @@ function Footer() {
   return (
     <footer className="site-footer minimal-footer uniq-directory-footer">
       <div className="uniq-footer-bridge">
-        <div className="uniq-footer-bridge-item">
-          <span className="uniq-footer-bridge-icon"><PremiumIcon name="home" /></span>
-          <div>
-            <small>FOR YOUR HOME</small>
-            <strong>Make room for a better floor.</strong>
-          </div>
-          <Link href="/shop">Explore floors <ArrowUpRight size={19} aria-hidden="true" /></Link>
-        </div>
-        <div className="uniq-footer-bridge-item">
-          <span className="uniq-footer-bridge-icon"><PremiumIcon name="briefcase" /></span>
-          <div>
-            <small>FOR PROFESSIONALS</small>
-            <strong>Source with confidence.</strong>
-          </div>
-          <Link href="/retailers">Explore trade <ArrowUpRight size={19} aria-hidden="true" /></Link>
-        </div>
+        <Link className="uniq-footer-bridge-item" href="/shop">
+          <span className="uniq-footer-bridge-icon" aria-hidden="true"><PremiumIcon name="home" /></span>
+          <span className="uniq-footer-bridge-content">
+            <small>For your home</small>
+            <strong>Find the floor that feels like yours.</strong>
+            <span>Explore floors, finishes and free samples.</span>
+          </span>
+          <ArrowUpRight className="uniq-footer-bridge-arrow" size={27} aria-hidden="true" />
+        </Link>
+        <Link className="uniq-footer-bridge-item" href="/retailers">
+          <span className="uniq-footer-bridge-icon" aria-hidden="true"><PremiumIcon name="briefcase" /></span>
+          <span className="uniq-footer-bridge-content">
+            <small>For professionals</small>
+            <strong>Make the right choice for every project.</strong>
+            <span>Explore trade support and project sourcing.</span>
+          </span>
+          <ArrowUpRight className="uniq-footer-bridge-arrow" size={27} aria-hidden="true" />
+        </Link>
       </div>
       <div className="uniq-footer-panel">
         <div className="minimal-footer-main">

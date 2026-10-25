@@ -31,6 +31,7 @@ import "./hero-reviews.css";
 import "./home-benefits.css";
 import "./home-proof-samples.css";
 import "./retailer-account-unified.css";
+import "./storefront-responsive-finish.css";
 
 const productSans = DM_Sans({
   subsets: ["latin"],
