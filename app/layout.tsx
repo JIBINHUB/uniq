@@ -32,6 +32,7 @@ import "./home-benefits.css";
 import "./home-proof-samples.css";
 import "./retailer-account-unified.css";
 import "./storefront-responsive-finish.css";
+import "./product-shop-finish.css";
 
 const productSans = DM_Sans({
   subsets: ["latin"],

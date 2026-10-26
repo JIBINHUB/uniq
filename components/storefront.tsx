@@ -958,7 +958,7 @@ function MaterialFinishShowcase() {
         onPointerCancel={() => { swipeStartX.current = null; }}
       >
         <div className="floor-editorial-heading">
-          <span className="floor-editorial-overline">THE UNIQ FLOOR EDIT <i /> {String(activeIndex + 1).padStart(2, "0")} / {String(floors.length).padStart(2, "0")}</span>
+          <span className="floor-editorial-overline">THE UNIQ FLOOR EDIT <i /> {String(activeIndex + 1).padStart(2, "0")} of {String(floors.length).padStart(2, "0")}</span>
           <h2 id="floor-editorial-title" key={active.product.slug}>{active.product.colour || active.material.title}</h2>
         </div>
 
@@ -1176,7 +1176,7 @@ function FlooringCategoryBlocks() {
         ))}
       </div>
       <div className="home-category-blocks-detail" aria-live="polite">
-        <div><span>{String(selectedIndex + 1).padStart(2, "0")} / {String(collection.length).padStart(2, "0")}</span><h2>{selected.title}</h2></div>
+        <div><span>{String(selectedIndex + 1).padStart(2, "0")} of {String(collection.length).padStart(2, "0")}</span><h2>{selected.title}</h2></div>
         <Link href={selected.href}>Explore this category <ArrowUpRight size={20} aria-hidden="true" /></Link>
       </div>
     </section>
@@ -2025,6 +2025,20 @@ function ProductView({
     },
   ];
   const [activeGalleryItem, setActiveGalleryItem] = useState(0);
+  const [showStickyOrder, setShowStickyOrder] = useState(true);
+  useEffect(() => {
+    const updateStickyOrder = () => {
+      const reviews = document.getElementById("reviews");
+      setShowStickyOrder(!reviews || reviews.getBoundingClientRect().bottom > 120);
+    };
+    updateStickyOrder();
+    window.addEventListener("scroll", updateStickyOrder, { passive: true });
+    window.addEventListener("resize", updateStickyOrder);
+    return () => {
+      window.removeEventListener("scroll", updateStickyOrder);
+      window.removeEventListener("resize", updateStickyOrder);
+    };
+  }, []);
   const activeGallery = galleryItems[activeGalleryItem];
   const showPreviousImage = () =>
     setActiveGalleryItem((current) =>
@@ -2072,7 +2086,7 @@ function ProductView({
           ))}
         </div>
       </div>
-      <div className="frido-product-sticky-order"><strong>{product.name}</strong><span>{money(product.price)} <small>per m²</small></span><a href={orderWhatsAppHref} target="_blank" rel="noopener noreferrer">Order on WhatsApp <span aria-hidden="true">↗</span></a></div>
+      {showStickyOrder && <div className="frido-product-sticky-order"><strong>{product.name}</strong><span>{money(product.price)} <small>per m²</small></span><a href={orderWhatsAppHref} target="_blank" rel="noopener noreferrer">Order on WhatsApp <ArrowUpRight size={18} strokeWidth={1.7} aria-hidden="true" /></a></div>}
       <nav className="product-section-nav" aria-label="On this page">
         <span>{product.name}</span>
         <div>
@@ -2137,7 +2151,7 @@ function ProductView({
           </div>
           <div className="product-info reference-product-info" id="product-buy">
             <div className="product-title-row">
-              <p className="product-kicker"><span className="product-kicker-marker" aria-hidden="true" /><span><small>UNIQ SELECT / {product.badge}</small><strong>{category.title}</strong></span></p>
+              <p className="product-kicker"><span className="product-kicker-marker" aria-hidden="true" /><span><small><span className="product-kicker-brand">UNIQ Select</span><span className="product-kicker-badge">{product.badge}</span></small><strong>{category.title}</strong></span></p>
               <span className="product-stock"><span className="product-stock-icon"><MessageCircle size={17} strokeWidth={1.7} aria-hidden="true" /></span><span><small>AVAILABILITY</small><strong>{product.availability === "in_stock" ? "In stock" : product.availability === "out_of_stock" ? "Out of stock" : product.availability === "made_to_order" ? "Made to order" : "Ask our team"}</strong></span></span>
             </div>
             <h1>{product.name}</h1>
@@ -2263,9 +2277,9 @@ function ProductView({
           <p>Explore the finish, see it in a room and check the details before you choose.</p>
         </div>
         <div className="confidence-grid">
-          <article><img src={product.textureImage} alt={`${product.name} surface detail`} loading="lazy" /><div><span>01 / THE FINISH</span><h3>Colour with character</h3><p>{product.finish} surface in {product.colour.toLowerCase()}.</p></div></article>
-          <article><img src={product.roomImage} alt={`${product.name} in a room`} loading="lazy" /><div><span>02 / IN YOUR SPACE</span><h3>Picture the room</h3><p>View the floor in a styled interior, then order a sample to check it in your own light.</p></div></article>
-          <article><img src={product.image} alt={`${product.name} board detail`} loading="lazy" /><div><span>03 / THE DETAILS</span><h3>Built around your project</h3><p>{product.thickness} construction with {product.install.toLowerCase()} installation.</p></div></article>
+          <article><img src={product.textureImage} alt={`${product.name} surface detail`} loading="lazy" /><div><span>01 · THE FINISH</span><h3>Colour with character</h3><p>{product.finish} surface in {product.colour.toLowerCase()}.</p></div></article>
+          <article><img src={product.roomImage} alt={`${product.name} in a room`} loading="lazy" /><div><span>02 · IN YOUR SPACE</span><h3>Picture the room</h3><p>View the floor in a styled interior, then order a sample to check it in your own light.</p></div></article>
+          <article><img src={product.image} alt={`${product.name} board detail`} loading="lazy" /><div><span>03 · THE DETAILS</span><h3>Built around your project</h3><p>{product.thickness} construction with {product.install.toLowerCase()} installation.</p></div></article>
         </div>
       </section>
 
@@ -2276,7 +2290,7 @@ function ProductView({
           <p>See the key specifications before choosing a sample or planning your order.</p>
         </div>
         <div className="product-tech-layout">
-          <div className="product-tech-image"><img src={product.textureImage} alt={`${product.name} surface and grain detail`} /><span>01 / SURFACE DETAIL</span></div>
+          <div className="product-tech-image"><img src={product.textureImage} alt={`${product.name} surface and grain detail`} /><span>01 · SURFACE DETAIL</span></div>
           <div className="spec-grid">
             <Spec icon="palette" label="Colour" value={product.colour} />
             <Spec icon="sparkles" label="Finish" value={product.finish} />
@@ -2392,7 +2406,7 @@ function ShopProductCard({
         </Link>
         {images.length > 1 && <div className="shop-product-image-controls" aria-label={`${product.name} images`}>
           <button type="button" aria-label={`Previous image of ${product.name}`} onClick={() => setImageIndex((index) => (index - 1 + images.length) % images.length)}><ChevronLeft aria-hidden="true" /></button>
-          <span aria-live="polite">{imageIndex + 1} / {images.length}</span>
+          <span aria-live="polite">{imageIndex + 1} of {images.length}</span>
           <button type="button" aria-label={`Next image of ${product.name}`} onClick={() => setImageIndex((index) => (index + 1) % images.length)}><ChevronRight aria-hidden="true" /></button>
         </div>}
       </div>

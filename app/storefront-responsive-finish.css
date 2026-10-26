@@ -730,7 +730,7 @@ body .inner-shell .frido-legacy-product.product-experience .reference-product-in
   border-right: 1px solid #d9d9d5;
 }
 .inner-shell .frido-legacy-product.product-experience #product-overview .reference-service-strip .service-strip-heading::after {
-  content: "UNIQ / 01—03";
+  content: "UNIQ · 01—03";
   color: #aaaead;
   font-size: .64rem;
   font-weight: 600;
