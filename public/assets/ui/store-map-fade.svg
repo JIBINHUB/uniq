@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 260" role="img" aria-labelledby="title desc">
+  <title id="title">Stylised store location map</title>
+  <desc id="desc">A subtle street map illustration with a location marker.</desc>
+  <rect width="1200" height="260" fill="#dce4dd"/>
+  <g fill="#c6d2c8" opacity=".72">
+    <path d="M0 15h190v64H0zM219 16h158v65H219zM407 15h221v66H407zM660 15h186v64H660zM875 15h325v66H875z"/>
+    <path d="M0 111h134v48H0zM163 110h244v50H163zM438 111h126v48H438zM594 110h238v50H594zM864 110h148v50H864zM1043 111h157v48h-157z"/>
+    <path d="M0 190h234v70H0zM264 190h174v70H264zM469 190h261v70H469zM761 190h190v70H761zM982 190h218v70H982z"/>
+  </g>
+  <g fill="none" stroke-linecap="round">
+    <path d="M-20 94C188 89 286 102 456 96s308-23 502-11 235 5 278-2" stroke="#f8faf8" stroke-width="25"/>
+    <path d="M-20 94C188 89 286 102 456 96s308-23 502-11 235 5 278-2" stroke="#a8b6aa" stroke-width="2" opacity=".75"/>
+    <path d="M147-30c15 85 5 158 24 320M645-30c-12 87 17 151 4 320M1028-30c-8 104 17 184 5 320" stroke="#f8faf8" stroke-width="18"/>
+    <path d="M147-30c15 85 5 158 24 320M645-30c-12 87 17 151 4 320M1028-30c-8 104 17 184 5 320" stroke="#acb9ae" stroke-width="2" opacity=".65"/>
+    <path d="M-40 222C174 196 300 230 495 212s350-11 747 24" stroke="#f8faf8" stroke-width="14"/>
+    <path d="M-40 222C174 196 300 230 495 212s350-11 747 24" stroke="#b3beb5" stroke-width="2" opacity=".6"/>
+  </g>
+  <g transform="translate(712 54)">
+    <path d="M34 0C15.2 0 0 15.2 0 34c0 25.5 34 62 34 62s34-36.5 34-62C68 15.2 52.8 0 34 0Z" fill="#28a95f"/>
+    <circle cx="34" cy="34" r="13" fill="#effff4"/>
+  </g>
+  <circle cx="746" cy="88" r="58" fill="none" stroke="#28a95f" stroke-width="3" opacity=".22"/>
+</svg>

@@ -1,0 +1,18 @@
+.frido-inspired-product{background:#f8f7f2!important;color:#18231c}
+.frido-inspired-product .manufacturer-product-container{width:min(94%,1450px);margin-top:clamp(1.5rem,3vw,3rem)}
+.frido-inspired-product .manufacturer-product-layout{gap:clamp(2rem,5vw,5rem)}
+.frido-inspired-product .manufacturer-product-visual{overflow:hidden;border:1px solid #ebe8dd;border-radius:1.2rem;background:#eeede7}
+.frido-inspired-product .manufacturer-product-visual>img{transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.frido-inspired-product .manufacturer-product-visual:hover>img{transform:scale(1.035)}
+.frido-inspired-product .manufacturer-product-gallery-thumbs button{border-radius:.45rem;background:#f2f0ea}
+.frido-inspired-product .manufacturer-product-gallery-thumbs button.active,.frido-inspired-product .manufacturer-colour-swatches button.active{border-color:#203e2a;box-shadow:0 0 0 2px #dfff72}
+.frido-inspired-product .manufacturer-product-badge{border-color:#dde8d8;border-radius:999px;background:#e9f3e6;color:#264e35}
+.frido-inspired-product .manufacturer-product-details h1{font-size:clamp(2.8rem,4.2vw,5rem);font-weight:550;letter-spacing:-.075em;line-height:.98}
+.frido-inspired-product .manufacturer-price-panel{padding:1.25rem 1.4rem;border-color:#dce5d8;border-radius:.8rem;background:#f0f5ed;box-shadow:none}
+.frido-inspired-product .manufacturer-price-panel span{color:#56765a}
+.frido-inspired-product .manufacturer-main-cta{background:#dfff72!important;color:#1a311e!important;box-shadow:none!important}
+.frido-inspired-product .manufacturer-main-cta:hover{background:#cffe52!important}
+.frido-inspired-product .manufacturer-order-actions .retailer-outline{border-color:#d2ded0;background:#fffef9;color:#254731}
+.frido-inspired-product .manufacturer-sample{border-color:#d1e5cd;background:#edf6e9;color:#255a36!important}
+.frido-inspired-product .manufacturer-specifications{background:#fff;padding:clamp(2rem,4vw,4rem);border-radius:1.2rem}
+@media(max-width:720px){.frido-inspired-product .manufacturer-product-visual{border-radius:0}.frido-inspired-product .manufacturer-product-details h1{font-size:clamp(2.65rem,9vw,3.8rem)}.frido-inspired-product .manufacturer-specifications{padding:1.5rem}}

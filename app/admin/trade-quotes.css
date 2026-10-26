@@ -1,0 +1,23 @@
+.ow-trade-quotes { margin-bottom:1.2rem; }
+.ow-trade-quotes .ow-card-heading { align-items:start; gap:1rem; }
+.ow-trade-quotes .ow-card-heading p:not(.ow-kicker) { max-width:48rem; color:#677a71; }
+.ow-trade-filters { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1rem 0; color:#60756b; font-size:.85rem; }
+.ow-trade-filters label { display:flex; align-items:center; gap:.65rem; }
+.ow-trade-filters select { padding:.55rem .75rem; border:1px solid #dbe6e0; border-radius:.65rem; background:#fff; color:#153d2b; font:inherit; }
+.ow-trade-list { display:grid; gap:.7rem; }
+.ow-trade-request { border:1px solid #dde8e0; border-radius:.9rem; background:#fafcfb; }
+.ow-trade-request summary { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1rem 1.1rem; cursor:pointer; list-style:none; }
+.ow-trade-request summary::-webkit-details-marker { display:none; }
+.ow-trade-request summary>span { display:flex; align-items:center; gap:.8rem; }
+.ow-trade-request summary>span:first-child>span { display:grid; gap:.2rem; }
+.ow-trade-request small { color:#687c71; }
+.ow-trade-request em { font-style:normal; text-transform:capitalize; }
+.ow-trade-detail { padding:0 1.1rem 1.1rem; }
+.ow-trade-detail ul { list-style:none; padding:0; margin:0 0 1rem; border-top:1px solid #e1e8e2; }
+.ow-trade-detail li { display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:1rem; padding:.7rem 0; border-bottom:1px solid #e1e8e2; }
+.ow-trade-detail label { display:grid; gap:.45rem; font-size:.8rem; font-weight:600; }
+.ow-trade-detail textarea { width:100%; min-height:5rem; padding:.8rem; border:1px solid #dbe6e0; border-radius:.7rem; font:inherit; }
+.ow-trade-actions { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:.85rem; }
+.ow-trade-error { color:#b73b2e; }
+.ow-trade-success { color:#176a3b; }
+@media(max-width:700px) { .ow-trade-request summary, .ow-trade-request summary>span:last-child { align-items:start; } .ow-trade-request summary { flex-direction:column; } .ow-trade-detail li { grid-template-columns:1fr auto; } .ow-trade-detail li strong { grid-column:1/-1; } }

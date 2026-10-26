@@ -1,0 +1,128 @@
+/* Keep shop and product controls in the same fine-line icon language as home. */
+.page-shell .shop-page-intro .shop-intro-actions :is(.shop-collection-symbol,.shop-channel-icon) .icon-svg,
+.page-shell .shop-catalogue :is(.category-tab,.shop-card-actions,.shop-product-rating) .icon-svg,
+.inner-shell .frido-legacy-product :is(.frido-product-topbar,.reference-product-info,.product-shopping-help,.product-related-section) svg.icon-svg {
+  stroke-width: 1.55;
+}
+
+.inner-shell .frido-legacy-product :is(.frido-back-icon,.frido-category-icon,.frido-product-account,.product-stock-icon) {
+  color: #171717 !important;
+  background: #fff !important;
+  border-color: #deded8 !important;
+}
+.inner-shell .frido-legacy-product :is(.frido-back-icon,.frido-category-icon,.frido-product-account,.product-stock-icon) svg {
+  color: #171717 !important;
+  stroke-width: 1.55;
+}
+.inner-shell .frido-legacy-product .reference-product-info .product-kicker > span:last-child {
+  gap: .45rem;
+}
+.inner-shell .frido-legacy-product .reference-product-info .product-kicker small {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .45rem;
+  font-size: .66rem !important;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.inner-shell .frido-legacy-product .reference-product-info .product-kicker-brand {
+  color: #1b2a20;
+}
+.inner-shell .frido-legacy-product .reference-product-info .product-kicker-badge {
+  padding: .25rem .45rem;
+  color: #282317;
+  background: #f4df70;
+  border-radius: .2rem;
+  font-size: .62rem;
+  letter-spacing: .035em;
+  line-height: 1;
+}
+.inner-shell .frido-legacy-product .reference-product-info .product-kicker strong {
+  color: #202820 !important;
+  font-size: .88rem;
+  font-weight: 550;
+  letter-spacing: -.015em;
+}
+.inner-shell .frido-legacy-product .frido-product-sticky-order > a {
+  color: #171717 !important;
+  background: #f2da63 !important;
+  border-color: #e2c74e !important;
+  font-weight: 650;
+}
+.inner-shell .frido-legacy-product .frido-product-sticky-order > a:hover {
+  background: #ffea82 !important;
+}
+.inner-shell .frido-legacy-product .frido-product-sticky-order > a svg {
+  flex: none;
+  color: currentColor;
+}
+
+/* A quiet directions row and clear, distinct sample and range actions. */
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .buy-visit-store {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: .75rem;
+  min-height: 4.25rem;
+  color: #171717 !important;
+  background: #fff !important;
+  background-image: none !important;
+  border: 1px solid #d9d9d2 !important;
+  border-radius: .35rem;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .buy-visit-store:hover {
+  background: #faf9f5 !important;
+  background-image: none !important;
+  border-color: #96958e !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .buy-visit-store > .icon-svg {
+  width: 2.3rem;
+  height: 2.3rem;
+  padding: .55rem;
+  border-radius: .2rem;
+  background: #f5f4ee !important;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .buy-visit-store > span {
+  min-width: 0;
+  font-weight: 650;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .buy-visit-store small {
+  color: #686863 !important;
+  opacity: 1;
+}
+.inner-shell .frido-legacy-product.product-experience .flooring-configurator .buy-visit-store .store-directions-arrow {
+  grid-column: 3;
+  justify-self: end;
+  color: #171717;
+}
+.inner-shell .frido-legacy-product.product-experience .reference-secondary-actions .secondary-btn:first-child {
+  color: #171717 !important;
+  background: #f3dc67 !important;
+  border-color: #e0c34e !important;
+}
+.inner-shell .frido-legacy-product.product-experience .reference-secondary-actions .secondary-btn:last-child {
+  color: #352854 !important;
+  background: #eee9f5 !important;
+  border-color: #d7cce9 !important;
+}
+.inner-shell .frido-legacy-product .reference-secondary-actions .secondary-btn:hover {
+  filter: brightness(.97);
+}
+
+/* A legacy product-page footer override otherwise turns this pale panel white on white. */
+.inner-shell:has(.product-experience) .minimal-footer .uniq-footer-bridge-item :is(strong,small),
+.inner-shell:has(.product-experience) .minimal-footer .uniq-footer-bridge-content > span {
+  color: #172c23 !important;
+}
+.inner-shell:has(.product-experience) .minimal-footer .uniq-footer-bridge-item :is(svg,.uniq-footer-bridge-icon) {
+  color: #214937 !important;
+}
+
+@media (max-width: 600px) {
+  .inner-shell .frido-legacy-product .reference-product-info .product-kicker small {
+    font-size: .58rem !important;
+  }
+  .inner-shell .frido-legacy-product .reference-product-info .product-kicker-badge {
+    font-size: .55rem;
+  }
+}

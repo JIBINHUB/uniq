@@ -1,0 +1,197 @@
+.home-shell .home-category-blocks {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: clamp(25rem, 43vw, 36rem);
+  overflow: hidden;
+  padding: clamp(1.25rem, 3vw, 2.5rem) clamp(1.25rem, 5vw, 5rem);
+  color: #fff;
+  background:
+    radial-gradient(ellipse at 48% 48%, rgba(109, 143, 143, .32), transparent 45%),
+    radial-gradient(circle at 10% 20%, rgba(164, 145, 157, .17), transparent 32%),
+    linear-gradient(115deg, #172b40, #10253a 55%, #152c40);
+}
+
+.home-category-blocks-top,
+.home-category-blocks-detail {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.home-category-blocks-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .1rem;
+  padding: .28rem;
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 10px 25px rgba(3,16,29,.25);
+}
+
+.home-category-blocks-switch button {
+  position: relative;
+  min-width: 6.85rem;
+  padding: .7rem 1.12rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: #63447f;
+  background: transparent;
+  font-family: var(--font-product-sans), sans-serif;
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .015em;
+  cursor: pointer;
+  transition: color .25s ease, background-color .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+
+.home-category-blocks-switch button:not([aria-pressed="true"]):hover {
+  color: #4e2f6e;
+  background: #f1eafa;
+}
+
+.home-category-blocks-switch button[aria-pressed="true"] {
+  color: #fff;
+  border-color: #172b40;
+  background: #172b40;
+  box-shadow: 0 3px 9px rgba(4,22,36,.24);
+}
+
+.home-category-blocks-arrows { display: flex; gap: .5rem; }
+.home-category-blocks-arrows button {
+  display: grid;
+  place-items: center;
+  width: 2.65rem;
+  height: 2.65rem;
+  padding: 0;
+  border: 0;
+  color: #fff;
+  background: transparent;
+  cursor: pointer;
+  transition: transform .2s ease, opacity .2s ease;
+}
+.home-category-blocks-arrows button:hover { transform: translateY(-2px); }
+
+.home-category-blocks-backdrop {
+  position: absolute;
+  z-index: -1;
+  top: 29%;
+  left: 50%;
+  width: 100%;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,.075);
+  font-family: var(--font-product-sans), sans-serif;
+  font-size: clamp(3.8rem, 8.5vw, 8.8rem);
+  font-weight: 700;
+  line-height: .95;
+  letter-spacing: -.07em;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.home-category-blocks-grid {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 56rem);
+  margin: 2rem auto 1.5rem;
+}
+
+.home-category-block {
+  position: relative;
+  flex: 0 0 clamp(6.2rem, 11vw, 10.25rem);
+  width: clamp(6.2rem, 11vw, 10.25rem);
+  height: clamp(6.2rem, 11vw, 10.25rem);
+  margin: 0 0 0 clamp(-1.4rem, -2vw, -.75rem);
+  padding: 0;
+  overflow: visible;
+  border: 3px solid rgba(255,255,255,.83);
+  border-radius: 50%;
+  background: #5d675d;
+  box-shadow: 0 16px 40px rgba(0,0,0,.25);
+  cursor: pointer;
+  transition: transform .45s cubic-bezier(.2,.85,.25,1.2), box-shadow .35s ease, border-color .35s ease;
+}
+.home-category-block:first-child { margin-left: 0; }
+.home-category-block[aria-pressed="true"] {
+  z-index: 3;
+  transform: translateY(-.35rem) scale(1.2);
+  border-color: #fff;
+  box-shadow: 0 0 0 4px rgba(255,255,255,.3), 0 22px 48px rgba(0,0,0,.38);
+}
+.home-category-block:hover { z-index: 4; transform: translateY(-.35rem) scale(1.12); }
+.home-category-block[aria-pressed="true"]:hover { transform: translateY(-.35rem) scale(1.2); }
+.home-category-block img { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+.home-category-blocks-detail { min-height: 4rem; }
+.home-category-blocks-detail span {
+  display: block;
+  margin-bottom: .2rem;
+  color: rgba(255,255,255,.57);
+  font-size: .69rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+}
+.home-category-blocks-detail h2 {
+  margin: 0;
+  color: #fff;
+  font-family: var(--font-product-sans), sans-serif;
+  font-size: clamp(1.45rem, 2.2vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1.1;
+}
+.home-category-blocks-detail a {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: .88rem 1rem;
+  color: #19313a;
+  background: #e1eee5;
+  border-radius: .25rem;
+  font-size: .8rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.home-category-blocks-detail a:hover { background: #fff; }
+.home-category-blocks button:focus-visible,
+.home-category-blocks a:focus-visible { outline: 3px solid #cce97a; outline-offset: 4px; }
+
+@media (max-width: 700px) {
+  .home-shell .home-category-blocks { min-height: 25rem; padding: 1rem 1rem 1.5rem; }
+  .home-category-blocks-switch { padding: .22rem; }
+  .home-category-blocks-switch button { min-width: 0; padding: .58rem .78rem; font-size: .74rem; }
+  .home-category-blocks-arrows button { width: 2rem; height: 2rem; }
+  .home-category-blocks-backdrop { top: 36%; font-size: clamp(3.2rem, 13vw, 5.5rem); }
+  .home-category-blocks-grid { width: 100%; margin: 2rem auto; }
+  .home-category-block {
+    flex-basis: clamp(3.7rem, 17vw, 6rem);
+    width: clamp(3.7rem, 17vw, 6rem);
+    height: clamp(3.7rem, 17vw, 6rem);
+    margin-left: clamp(-1.3rem, -3vw, -.75rem);
+    border-width: 2px;
+  }
+  .home-category-blocks-detail { align-items: flex-end; gap: .65rem; }
+  .home-category-blocks-detail h2 { max-width: 14rem; font-size: clamp(1.25rem, 5vw, 1.6rem); }
+  .home-category-blocks-detail a { gap: .25rem; padding: .65rem .7rem; font-size: .68rem; }
+  .home-category-blocks-detail a svg { width: .9rem; height: .9rem; }
+}
+
+@media (max-width: 390px) {
+  .home-category-block { flex-basis: 17vw; width: 17vw; height: 17vw; margin-left: -3.5vw; }
+  .home-category-blocks-detail a { max-width: 7.5rem; white-space: normal; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-category-blocks button, .home-category-blocks a { transition: none; }
+}

@@ -1,0 +1,24 @@
+.trade-account-page { background:#fff; color:#102d20; }
+.trade-account-intro { max-width:1440px; margin:auto; padding:clamp(4rem,8vw,8rem) clamp(1.25rem,5vw,5rem) clamp(3rem,5vw,5rem); }
+.trade-account-intro h1 { max-width:12ch; font-size:clamp(3.2rem,8vw,7rem); line-height:.98; letter-spacing:-.065em; margin:.8rem 0 1.6rem; }
+.trade-account-intro p:not(.retailer-kicker) { max-width:47rem; color:#587064; line-height:1.55; margin-bottom:1.6rem; }
+.trade-account-intro .retailer-outline { margin-left:.75rem; }
+.trade-account-content { max-width:1440px; margin:auto; padding:2rem clamp(1.25rem,5vw,5rem) 6rem; }
+.trade-account-heading { display:flex; align-items:end; justify-content:space-between; gap:1rem; padding-bottom:1.5rem; border-bottom:1px solid #dbe5de; }
+.trade-account-heading h2 { font-size:clamp(2rem,4vw,3.5rem); letter-spacing:-.05em; margin:.25rem 0 0; }
+.trade-account-heading>span { display:flex; align-items:center; gap:.5rem; color:#587064; }
+.trade-account-list { display:grid; gap:1rem; margin-top:1.5rem; }
+.trade-account-row { display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:1.2rem; align-items:start; padding:1.5rem; border:1px solid #dce8df; border-radius:1rem; background:#f8fbf8; }
+.trade-account-row-icon { display:grid; place-items:center; width:3rem; height:3rem; border-radius:50%; background:#e1f0e4; }
+.trade-account-row small { color:#60776a; font-size:.72rem; letter-spacing:.08em; }
+.trade-account-row h3 { font-size:1.15rem; margin:.4rem 0; }
+.trade-account-row p { color:#587064; margin:.25rem 0; }
+.trade-account-note { padding-top:.5rem; }
+.trade-account-status { padding:.45rem .75rem; border-radius:99px; background:#e9efe9; text-transform:capitalize; white-space:nowrap; font-size:.75rem; font-weight:700; }
+.trade-account-status.status-approved { background:#d6f1d9; }
+.trade-account-status.status-rejected { background:#ffe4df; }
+.trade-account-empty { margin:1.5rem 0; padding:clamp(2rem,5vw,5rem); border:1px dashed #b7cbbd; border-radius:1rem; background:#f8fbf8; }
+.trade-account-empty h3 { font-size:1.7rem; margin:1rem 0 .4rem; }
+.trade-account-empty p { color:#587064; }
+.trade-account-disclaimer { color:#60776a; font-size:.85rem; margin-top:1.5rem; }
+@media(max-width:640px) { .trade-account-intro .retailer-outline { margin:.75rem 0 0; } .trade-account-row { grid-template-columns:auto minmax(0,1fr); } .trade-account-status { grid-column:2; justify-self:start; } .trade-account-content { padding-bottom:7rem; } }

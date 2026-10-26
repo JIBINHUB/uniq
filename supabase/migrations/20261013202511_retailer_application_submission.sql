@@ -1,0 +1,1 @@
+create policy applicant_submit on public.retailer_applications for insert to authenticated with check (user_id=(select auth.uid()) and email=(select auth.jwt()->>'email') and status='pending' and reviewed_by is null and reviewed_at is null);

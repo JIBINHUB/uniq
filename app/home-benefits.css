@@ -1,0 +1,111 @@
+/* Four concise benefits take the place of the former three-column story. */
+.home-shell .reference-why {
+  overflow: hidden;
+  background: #fff !important;
+  padding-bottom: clamp(2.5rem, 4vw, 4rem);
+}
+
+.home-shell .reference-why-head {
+  margin-bottom: clamp(2.1rem, 3.5vw, 3.6rem);
+}
+
+.home-shell .reference-why-benefits {
+  width: 100%;
+  overflow: hidden;
+  border-block: 1px solid #e5e9e6;
+}
+
+.reference-why-benefits-track {
+  display: flex;
+  width: max-content;
+  animation: why-benefits-slide 32s linear infinite;
+}
+
+.reference-why-benefits-group {
+  display: flex;
+  flex: 0 0 auto;
+}
+
+.reference-why-benefit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(.65rem, 1vw, 1rem);
+  flex: 0 0 clamp(15rem, 23vw, 25rem);
+  min-height: clamp(5.5rem, 8vw, 7rem);
+  padding: .85rem 1.25rem;
+  border-right: 1px solid #e5e9e6;
+  color: #173c2a;
+}
+
+.reference-why-benefit-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 2.45rem;
+  height: 2.45rem;
+  color: #173c2a;
+}
+
+.reference-why-benefit-icon .icon-svg {
+  width: 2rem;
+  height: 2rem;
+  stroke-width: 1.55;
+}
+
+.reference-why-benefit strong {
+  font-family: var(--uniq-display), sans-serif;
+  font-size: clamp(.98rem, 1.15vw, 1.2rem);
+  font-weight: 550;
+  letter-spacing: -.035em;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.reference-why-benefits:hover .reference-why-benefits-track,
+.reference-why-benefits:focus-within .reference-why-benefits-track {
+  animation-play-state: paused;
+}
+
+@keyframes why-benefits-slide {
+  to { transform: translateX(-50%); }
+}
+
+@media (max-width: 760px) {
+  .home-shell .reference-why {
+    padding-bottom: 2.5rem;
+  }
+
+  .home-shell .reference-why-head {
+    margin-bottom: 2rem;
+  }
+
+  .reference-why-benefits-track {
+    animation-duration: 24s;
+  }
+
+  .reference-why-benefit {
+    flex-basis: 13.75rem;
+    min-height: 4.8rem;
+    padding-inline: .8rem;
+  }
+
+  .reference-why-benefit-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+
+  .reference-why-benefit-icon .icon-svg {
+    width: 1.55rem;
+    height: 1.55rem;
+  }
+
+  .reference-why-benefit strong {
+    font-size: .88rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reference-why-benefits-track { animation: none; }
+  .home-shell .reference-why-benefits { overflow-x: auto; }
+}
