@@ -2217,7 +2217,7 @@ function ProductView({
               <div className="product-buy-actions">
                 <button className="buy-add-cart" type="button" onClick={() => addToCart(product.slug, packs)}><PremiumIcon name="cart" /><span>Add to cart<small>{packs} packs · {money(estimatedTotal)}</small></span></button>
                 <a className="buy-order-now" href={orderWhatsAppHref} target="_blank" rel="noopener noreferrer"><PremiumIcon name="message" /><span>Order on WhatsApp<small>Confirm with our flooring team</small></span></a>
-                <a className="buy-visit-store" href={storeMapHref} target="_blank" rel="noreferrer"><PremiumIcon name="map" /><span>Visit store<small>Open Google Maps</small></span></a>
+                <a className="buy-visit-store" href={storeMapHref} target="_blank" rel="noopener noreferrer"><PremiumIcon name="map" /><span>Visit our showroom<small>Directions on Google Maps</small></span><ArrowUpRight className="store-directions-arrow" size={19} strokeWidth={1.7} aria-hidden="true" /></a>
               </div>
               <p className="checkout-reassurance"><PremiumIcon name="shield" /> Our team confirms stock, price, delivery and payment on WhatsApp</p>
               <p className="pack-estimate-note">Pack quantities use {packCoverage} m² coverage. Our team confirms the pack size and availability before you order.</p>
